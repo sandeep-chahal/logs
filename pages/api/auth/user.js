@@ -1,6 +1,7 @@
-import withPassport from "../../../config/withPassport";
+import withPassport from "../../../middlewares/withPassport";
+import withMiddlewares from "../../../middlewares/withMiddlewares";
 
-export default withPassport((req, res) => {
+export default withMiddlewares([withPassport], (req, res) => {
 	return res.json(
 		req.isAuthenticated() ? { ...req.user, isAuth: true } : { isAuth: false }
 	);

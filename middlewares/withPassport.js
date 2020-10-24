@@ -1,6 +1,5 @@
 import passport from "passport";
-import { GithubStrategy, GoogleStrategy } from "./passportStrategy";
-import redirect from "micro-redirect";
+import { GithubStrategy, GoogleStrategy } from "../config/passportStrategy";
 import cookieSession from "cookie-session";
 import url from "url";
 
@@ -19,10 +18,7 @@ passport.deserializeUser(async (serializedUser, done) => {
 	done(null, serializedUser);
 });
 
-export default (fn) => (req, res) => {
-	if (!res.redirect) {
-		res.redirect = (location) => redirect(res, 302, location);
-	}
+export default (req, res, next) => {
 	cookieSession({
 		name: "ps",
 		keys: [process.env.SS_KEY],
@@ -30,7 +26,7 @@ export default (fn) => (req, res) => {
 		maxAge: 24 * 60 * 60 * 1000, // 24 hours
 	})(req, res, () =>
 		passport.initialize()(req, res, () =>
-			passport.session()(req, res, () => fn(req, res))
+			passport.session()(req, res, () => next())
 		)
 	);
 };
