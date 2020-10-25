@@ -6,6 +6,8 @@ export default (type) => (req, res, next) => {
 			addPostValidation(req, res);
 		case "post-edit":
 			editPostValidation(req, res);
+		case "post-delete":
+			deletePostValidation(req, res);
 		default:
 			next();
 	}
@@ -51,4 +53,14 @@ function editPostValidation(req, res) {
 			errors: [...idError.array, ...titleErrors.array, ...markdownErrors.array],
 		});
 	}
+}
+
+function deletePostValidation(req, res) {
+	const idError = validator("Id", req.body._id).isMongoDbId().errors;
+	if (idError.hasError)
+		return res.json({
+			error: true,
+			code: 1,
+			errors: idError.array,
+		});
 }
