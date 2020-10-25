@@ -6,7 +6,7 @@ import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 
 export default withMiddlewares(
-	[withPassport, authorized, withValidation("post-delete")],
+	[withPassport, authorized, withValidation("post-id")],
 	async (req, res) => {
 		await dbConnect();
 
