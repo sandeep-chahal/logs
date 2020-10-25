@@ -8,6 +8,8 @@ export default (type) => (req, res, next) => {
 			editPostValidation(req, res);
 		case "post-id":
 			checkPostId(req, res);
+		case "post-comment":
+			commentPostValidation(req, res);
 		default:
 			next();
 	}
@@ -62,5 +64,19 @@ function checkPostId(req, res) {
 			error: true,
 			code: 1,
 			errors: idError.array,
+		});
+}
+
+function commentPostValidation(req, res) {
+	const idError = validator("Comment Id", req.body._id).isMongoDbId().errors;
+	const contentErrors = validator("Comment", req.body.content)
+		.notEmpty()
+		.isString()
+		.hasLength({ min: 3, max: 400 }).errors;
+	if (idError.hasError || contentErrors.hasError)
+		return res.json({
+			error: true,
+			code: 1,
+			errors: [...idError.array, ...contentErrors.array],
 		});
 }
