@@ -7,6 +7,14 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		index: true,
 	},
+	follower_counter: {
+		type: Number,
+		default: 0,
+	},
+	following_counter: {
+		type: Number,
+		default: 0,
+	},
 	provider: String,
 	photo: String,
 });

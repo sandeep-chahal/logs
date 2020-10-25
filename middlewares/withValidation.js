@@ -2,14 +2,22 @@ import validator from "../utils/validation";
 
 export default (type) => (req, res, next) => {
 	switch (type) {
-		case "post-add":
-			addPostValidation(req, res);
-		case "post-edit":
-			editPostValidation(req, res);
 		case "post-id":
 			checkPostId(req, res);
+			next();
+			break;
+		case "post-add":
+			addPostValidation(req, res);
+			next();
+			break;
+		case "post-edit":
+			editPostValidation(req, res);
+			next();
+			break;
 		case "post-comment":
 			commentPostValidation(req, res);
+			next();
+			break;
 		default:
 			next();
 	}

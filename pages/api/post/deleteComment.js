@@ -11,7 +11,7 @@ export default withMiddlewares(
 	async (req, res) => {
 		await dbConnect();
 
-		// check if post exist
+		// check if comment exist
 		const comment = await Comment.findById(req.body._id);
 		if (!comment) {
 			return res.json({
