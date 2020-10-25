@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const validator = (name, value) => ({
 	errors: { hasError: false, array: [] },
 	name,
@@ -98,6 +100,29 @@ const validator = (name, value) => ({
 			this.errors.array.push({
 				field: name,
 				msg: `${name} should equals to ${options.exact}.`,
+			});
+		}
+		return this;
+	},
+	isMongoDbId() {
+		if (!this.check) return this;
+		if (!mongoose.isValidObjectId(this.value)) {
+			this.errors.hasError = true;
+			this.errors.array.push({
+				field: name,
+				msg: `Invalid ${name}.`,
+			});
+		}
+		return this;
+	},
+	isSameUser() {
+		if (!this.check) return this;
+
+		if (this.value[0] !== this.value[1]) {
+			this.errors.hasError = true;
+			this.errors.array.push({
+				field: name,
+				msg: `You don't have permissions to do this task.`,
 			});
 		}
 		return this;
