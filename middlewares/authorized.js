@@ -1,9 +1,10 @@
-export default (req, res, next) => {
+export default (req, res) => {
 	if (!req.isAuthenticated()) {
 		res.json({
 			error: true,
 			code: 0,
 		});
-		next(true);
-	} else next();
+		return false;
+	}
+	return true;
 };

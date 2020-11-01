@@ -4,6 +4,8 @@ const commentSchema = new mongoose.Schema({
 	on_post: {
 		type: mongoose.Types.ObjectId,
 		ref: "Post",
+		index: true,
+		unique: false,
 	},
 	by_user: {
 		type: mongoose.Types.ObjectId,

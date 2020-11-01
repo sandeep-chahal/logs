@@ -18,15 +18,17 @@ passport.deserializeUser(async (serializedUser, done) => {
 	done(null, serializedUser);
 });
 
-export default (req, res, next) => {
-	cookieSession({
-		name: "ps",
-		keys: [process.env.SS_KEY],
-		domain: url.parse(req.url).host,
-		maxAge: 24 * 60 * 60 * 1000, // 24 hours
-	})(req, res, () =>
-		passport.initialize()(req, res, () =>
-			passport.session()(req, res, () => next())
-		)
-	);
+export default (req, res) => {
+	return new Promise((resolve) => {
+		cookieSession({
+			name: "ps",
+			keys: [process.env.SS_KEY],
+			domain: url.parse(req.url).host,
+			maxAge: 24 * 60 * 60 * 1000, // 24 hours
+		})(req, res, () =>
+			passport.initialize()(req, res, () =>
+				passport.session()(req, res, () => resolve(true))
+			)
+		);
+	});
 };

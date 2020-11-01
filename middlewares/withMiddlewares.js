@@ -1,19 +1,15 @@
 import redirect from "micro-redirect";
+import dbConnect from "../config/mongodb";
 
-export default (middlewares = [], cb = () => {}) => (req, res) => {
-	if (!res.redirect) {
-		res.redirect = (location) => redirect(res, 302, location);
+export default async (req, res, middleware = []) => {
+	await dbConnect();
+
+	if (!res.redirect) res.redirect = (location) => redirect(res, 302, location);
+
+	for (let i = 0; i < middleware.length; i++) {
+		let result = await middleware[i](req, res);
+		if (result instanceof Function) result = await middleware(req, res);
+		if (!result) return false;
 	}
-
-	const callMiddleware = (middlewares, counter) => {
-		if (counter >= middlewares.length) {
-			return cb(req, res);
-		} else {
-			middlewares[counter](req, res, (error) => {
-				if (error) return;
-				return callMiddleware(middlewares, ++counter);
-			});
-		}
-	};
-	callMiddleware(middlewares, 0);
+	return true;
 };

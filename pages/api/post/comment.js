@@ -6,33 +6,35 @@ import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 
-export default withMiddlewares(
-	[withPassport, authorized, withValidation("post-comment")],
-	async (req, res) => {
-		await dbConnect();
+export default async (req, res) => {
+	await withMiddlewares(req, res, [
+		withPassport,
+		authorized,
+		withValidation("post-comment"),
+	]);
+	await dbConnect();
 
-		// check if post exist
-		const isPostExist = await Post.exists({ _id: req.body._id });
-		if (!isPostExist) {
-			return res.json({
-				error: true,
-				code: 4, //404
-				msg: "This post doesn't exist anymore.",
-			});
-		}
-		const comment = await Comment.create({
-			on_post: req.body._id,
-			by_user: req.user._id,
-			content: req.body.content,
-		});
-		await Post.findByIdAndUpdate(req.body._id, {
-			$inc: {
-				comments_counter: 1,
-			},
-		});
+	// check if post exist
+	const isPostExist = await Post.exists({ _id: req.body._id });
+	if (!isPostExist) {
 		return res.json({
-			error: false,
-			data: comment,
+			error: true,
+			code: 4, //404
+			msg: "This post doesn't exist anymore.",
 		});
 	}
-);
+	const comment = await Comment.create({
+		on_post: req.body._id,
+		by_user: req.user._id,
+		content: req.body.content,
+	});
+	await Post.findByIdAndUpdate(req.body._id, {
+		$inc: {
+			comments_counter: 1,
+		},
+	});
+	return res.json({
+		error: false,
+		data: comment,
+	});
+};

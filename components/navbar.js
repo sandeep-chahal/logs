@@ -29,7 +29,10 @@ const Navbar = () => {
 						viewBox="0 0 24 24"
 					></svg>
 				) : user ? (
-					<img className="mx-4 h-8 w-8 rounded-full" src={user.photo} />
+					<img
+						className="mx-4 h-8 w-8 cursor-pointer rounded-full"
+						src={user.photo}
+					/>
 				) : (
 					<div className="mx-4 cursor-pointer">Login</div>
 				)}
