@@ -7,7 +7,11 @@ import Post from "../../../models/post";
 import Like from "../../../models/like";
 
 export default async (req, res) => {
-	await withMiddlewares([withPassport, authorized, withValidation("post-id")]);
+	await withMiddlewares(req, res, [
+		withPassport,
+		authorized,
+		withValidation("post-id"),
+	]);
 	await dbConnect();
 
 	// check if the user has liked the post

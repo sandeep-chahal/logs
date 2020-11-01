@@ -6,11 +6,12 @@ import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 
 export default async (req, res) => {
-	await withMiddlewares([
+	const success = await withMiddlewares(req, res, [
 		withPassport,
 		authorized,
 		withValidation("post-edit"),
 	]);
+	if (!success) return;
 	await dbConnect();
 
 	// check if the pst belongs to this users
@@ -27,6 +28,7 @@ export default async (req, res) => {
 	if (req.body.title) editedPostData.title = req.body.title;
 	if (req.body.markdown) editedPostData.markdown = req.body.markdown;
 	if (req.body.tags) editedPostData.tags = req.body.tags;
+	console.log(req.body.tags, typeof req.body.tags);
 	const post = await Post.findByIdAndUpdate(
 		{ _id: req.body._id },
 		{

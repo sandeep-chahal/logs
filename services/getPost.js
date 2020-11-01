@@ -17,7 +17,12 @@ export default async (postId, user) => {
 		})
 	);
 	if (user) proms.push(Like.exists({ on_post: postId, by_user: user._id }));
-	if (user) proms.push(Comment.find({ on_post: postId }).limit(5));
+	if (user)
+		proms.push(
+			Comment.find({ on_post: postId })
+				.limit(5)
+				.populate({ path: "by_user", model: User, select: "name" })
+		);
 
 	const [post, liked, comments] = await Promise.all(proms);
 
