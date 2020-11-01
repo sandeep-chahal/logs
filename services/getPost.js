@@ -16,15 +16,10 @@ export default async (postId, user) => {
 			model: User,
 		})
 	);
+	proms.push(Comment.find({ on_post: postId }).limit(5));
 	if (user) proms.push(Like.exists({ on_post: postId, by_user: user._id }));
-	if (user)
-		proms.push(
-			Comment.find({ on_post: postId })
-				.limit(5)
-				.populate({ path: "by_user", model: User, select: "name" })
-		);
 
-	const [post, liked, comments] = await Promise.all(proms);
+	const [post, comments, liked] = await Promise.all(proms);
 
 	let following;
 	if (user)
@@ -36,9 +31,9 @@ export default async (postId, user) => {
 	if (post)
 		return {
 			post,
-			liked: liked || null,
-			comments: comments || null,
-			following: following || null,
+			liked: liked || 0,
+			comments: Array.isArray(comments) ? comments : [],
+			following: !!following || false,
 		};
 	else null;
 };

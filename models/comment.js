@@ -8,8 +8,8 @@ const commentSchema = new mongoose.Schema({
 		unique: false,
 	},
 	by_user: {
-		type: mongoose.Types.ObjectId,
-		ref: "User",
+		_id: { type: mongoose.Types.ObjectId },
+		name: String,
 	},
 	content: {
 		type: String,

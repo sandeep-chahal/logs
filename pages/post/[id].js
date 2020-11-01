@@ -5,9 +5,15 @@ import withValidation from "../../middlewares/withValidation";
 import dayjs from "dayjs";
 import ReactMarkdown from "react-markdown";
 import { formatNumber } from "../../utils";
+import { handleLikeClick } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
+import { useState } from "react";
 
-const Post = ({ post, liked, comments }) => {
+const Post = (props) => {
+	const [liked, setLiked] = useState(props.liked || 0);
+	const [comments, setComments] = useState(props.comments);
+	const [post, setPost] = useState(props.post);
+
 	return (
 		<section className="p-6 px-20 ">
 			{/* post */}
@@ -31,7 +37,17 @@ const Post = ({ post, liked, comments }) => {
 				</div>
 				{/* likes and comments */}
 				<div className="flex items-center font-light">
-					<div className="flex items-center mx-3">
+					<div
+						className="flex items-center mx-3 cursor-pointer"
+						onClick={() =>
+							handleLikeClick(
+								liked ? "unlike" : "like",
+								post._id,
+								setLiked,
+								setPost
+							)
+						}
+					>
 						<div>{formatNumber(parseInt(post.likes_counter))}</div>
 						<img
 							className="w-6 mx-1 pb-2"
@@ -51,7 +67,12 @@ const Post = ({ post, liked, comments }) => {
 				<ReactMarkdown className="mt-6" children={post.markdown} />
 			</article>
 			{/* comments */}
-			<Comments comments={comments} />
+			<Comments
+				id={post._id}
+				comments={comments}
+				setPost={setPost}
+				setComments={setComments}
+			/>
 		</section>
 	);
 };

@@ -7,11 +7,12 @@ import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 
 export default async (req, res) => {
-	await withMiddlewares(req, res, [
+	const success = await withMiddlewares(req, res, [
 		withPassport,
 		authorized,
 		withValidation("post-comment"),
 	]);
+	if (!success) return;
 	await dbConnect();
 
 	// check if post exist
@@ -25,7 +26,7 @@ export default async (req, res) => {
 	}
 	const comment = await Comment.create({
 		on_post: req.body._id,
-		by_user: req.user._id,
+		by_user: { _id: req.user._id, name: req.user.name },
 		content: req.body.content,
 	});
 	await Post.findByIdAndUpdate(req.body._id, {
