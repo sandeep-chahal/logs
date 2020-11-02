@@ -102,3 +102,38 @@ export const handleDeleteComment = (
 			}
 		});
 };
+
+export const loadMoreComments = (
+	id,
+	comLen,
+	setLoadMore,
+	setMoreError,
+	setComments
+) => {
+	setLoadMore(true);
+	fetch("/api/post/moreComments", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			_id: id,
+			skip: comLen,
+		}),
+	})
+		.then((res) => res.json())
+		.then((data) => {
+			if (data.error) {
+				alert(data.msg);
+				setMoreError(data.msg ? data.msg : "Something went wrong");
+			} else {
+				setComments((prev) => [...prev, ...data.data]);
+				setLoadMore(false);
+			}
+		})
+		.catch((err) => {
+			console.log(err);
+			setMoreError("Something went wrong");
+			setLoadMore(false);
+		});
+};

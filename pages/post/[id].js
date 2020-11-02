@@ -69,8 +69,9 @@ const Post = (props) => {
 			{/* comments */}
 			<Comments
 				id={post._id}
-				comments={comments}
+				post={post}
 				setPost={setPost}
+				comments={comments}
 				setComments={setComments}
 			/>
 		</section>

@@ -27,7 +27,7 @@ export default ({ userId, comment, deleteComment }) => {
 					/>
 				) : null}
 			</div>
-			<div className="text-xs font-light">
+			<div className="text-xs font-light border-b border-black inline-block border-opacity-25">
 				{dayjs(comment.date).format("dddd, MMMM D YYYY")}
 			</div>
 			<p className="mt-2 whitespace-pre-wrap	">{comment.content}</p>

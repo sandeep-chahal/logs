@@ -1,17 +1,29 @@
 import Comment from "./comment";
 import AddComment from "./add";
 import { getUser } from "../../utils";
-import { handleDeleteComment } from "../../utils/fetch/post";
+import { handleDeleteComment, loadMoreComments } from "../../utils/fetch/post";
 import { useEffect, useState } from "react";
 
-export default ({ id, comments, setPost, setComments }) => {
+export default ({ id, comments, post, setPost, setComments }) => {
 	let [user, setUser] = useState(null);
+	let [loadMore, setLoadMore] = useState(false);
+	let [moreError, setMoreError] = useState(false);
+
 	useEffect(() => {
 		setUser(getUser());
 	}, []);
 
 	const deleteComment = (id, setBtnDisable) => {
 		handleDeleteComment(id, setBtnDisable, setComments, setPost);
+	};
+	const handleMoreComments = () => {
+		loadMoreComments(
+			post._id,
+			comments.length,
+			setLoadMore,
+			setMoreError,
+			setComments
+		);
 	};
 	return (
 		<div className="text-black mt-6 bg-white p-4">
@@ -29,6 +41,18 @@ export default ({ id, comments, setPost, setComments }) => {
 					))
 				) : (
 					<div className="text-center">No Comments</div>
+				)}
+				{comments.length < post.comments_counter && !moreError ? (
+					<button
+						onClick={handleMoreComments}
+						disabled={loadMore}
+						className="bg-primary px-3 py-1 m-auto block"
+					>
+						{loadMore ? "Wait" : "More"}
+					</button>
+				) : null}
+				{moreError && (
+					<div className="text-center text-primary my-3">{moreError}</div>
 				)}
 			</div>
 		</div>

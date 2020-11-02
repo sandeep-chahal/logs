@@ -7,7 +7,7 @@ import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 
 export default async (req, res) => {
-	await withMiddlewares(req, req, [
+	await withMiddlewares(req, res, [
 		withPassport,
 		authorized,
 		withValidation("post-id"),
