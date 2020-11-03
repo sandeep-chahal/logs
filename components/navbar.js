@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
-import { getUser } from "../utils";
+import { useState } from "../store";
 
 const Navbar = () => {
-	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState(null);
-	useEffect(() => {
-		setUser(getUser());
-		setLoading(false);
-	}, []);
+	const state = useState();
 	return (
 		<nav className="flex justify-between h-12 items-center px-20 bg-white">
 			<h2 className="text-2xl">
@@ -23,15 +17,15 @@ const Navbar = () => {
 					className="cursor-pointer mx-4 w-6"
 					src="/icons/notification-1.svg"
 				/>
-				{loading ? (
+				{state.userloading ? (
 					<svg
 						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-black border-t-2"
 						viewBox="0 0 24 24"
 					></svg>
-				) : user ? (
+				) : state.user ? (
 					<img
 						className="mx-4 h-8 w-8 cursor-pointer rounded-full"
-						src={user.photo}
+						src={state.user.photo}
 					/>
 				) : (
 					<div className="mx-4 cursor-pointer">Login</div>

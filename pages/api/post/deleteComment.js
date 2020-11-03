@@ -7,11 +7,12 @@ import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 
 export default async (req, res) => {
-	await withMiddlewares(req, res, [
+	const success = await withMiddlewares(req, res, [
 		withPassport,
 		authorized,
 		withValidation("post-id"),
 	]);
+	if (!success) return;
 	await dbConnect();
 
 	// check if comment exist
