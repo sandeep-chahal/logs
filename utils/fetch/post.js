@@ -137,3 +137,29 @@ export const loadMoreComments = (
 			setLoadMore(false);
 		});
 };
+
+export const addPost = async (headerImg, title, tags, markdown) => {
+	try {
+		let result = await fetch("/api/post/add", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				headerImg,
+				title,
+				tags,
+				markdown,
+			}),
+		});
+		result = result.json();
+		console.log(result);
+		return result;
+	} catch (err) {
+		console.log(err);
+		return {
+			error: true,
+			msg: err.message,
+		};
+	}
+};

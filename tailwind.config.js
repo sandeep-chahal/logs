@@ -12,6 +12,9 @@ module.exports = {
 				white: "#F8F8F8",
 				primary: "#FB8585",
 			},
+			font: {
+				overpass: "Overpass Mono",
+			},
 		},
 	},
 	variants: {},
