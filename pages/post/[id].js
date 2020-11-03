@@ -15,7 +15,7 @@ const Post = (props) => {
 	const [post, setPost] = useState(props.post);
 
 	return (
-		<section className="p-6 px-20 ">
+		<section className="p-6 px-20">
 			{/* post */}
 			<article className="bg-white p-4 text-black">
 				{/* title */}
