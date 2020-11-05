@@ -138,19 +138,52 @@ export const loadMoreComments = (
 		});
 };
 
-export const addPost = async (headerImg, title, tags, markdown) => {
+// export const addPost = async (headerImg, title, tags, markdown) => {
+// 	try {
+// 		let result = await fetch("/api/post/add", {
+// 			method: "POST",
+// 			headers: {
+// 				"Content-Type": "application/json",
+// 			},
+// 			body: JSON.stringify({
+// 				headerImg,
+// 				title,
+// 				tags,
+// 				markdown,
+// 			}),
+// 		});
+// 		result = result.json();
+// 		console.log(result);
+// 		return result;
+// 	} catch (err) {
+// 		console.log(err);
+// 		return {
+// 			error: true,
+// 			msg: err.message,
+// 		};
+// 	}
+// };
+export const modifyPost = async (
+	edit,
+	postId,
+	headerImg,
+	title,
+	tags,
+	markdown
+) => {
 	try {
-		let result = await fetch("/api/post/add", {
+		const data = {};
+		if (edit) data._id = postId;
+		if (headerImg) data.headerImg = headerImg;
+		if (title) data.title = title;
+		if (tags) data.tags = tags;
+		if (markdown) data.markdown = markdown;
+		let result = await fetch(edit ? `/api/post/edit` : "/api/post/add", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				headerImg,
-				title,
-				tags,
-				markdown,
-			}),
+			body: JSON.stringify(data),
 		});
 		result = result.json();
 		console.log(result);

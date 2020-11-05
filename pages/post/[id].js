@@ -66,7 +66,7 @@ const Post = (props) => {
 				</div>
 
 				{/* markdown */}
-				<ReactMarkdown className="mt-6" children={post.markdown} />
+				<ReactMarkdown className="mt-6 markdown" children={post.markdown} />
 			</article>
 			{/* comments */}
 			<Comments
