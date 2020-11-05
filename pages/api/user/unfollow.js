@@ -1,13 +1,22 @@
-import withPassport from "../../../middlewares/withPassport";
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withValidation from "../../../middlewares/withValidation";
-import authorized from "../../../middlewares/authorized";
+import {
+	withMiddlewares,
+	withAuthentication,
+	withPassport,
+	withValidation,
+} from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import User from "../../../models/user";
 import Follow from "../../../models/follow";
 
 export default async (req, res) => {
-	await withMiddlewares([withPassport, authorized, withValidation("post-id")]);
+	const result = await withMiddlewares([
+		withPassport,
+		withAuthentication,
+		withValidation("valid-id"),
+	]);
+	if (result.error) {
+		return res.json(result);
+	}
 	await dbConnect();
 
 	// check if user trying to follow him/herself

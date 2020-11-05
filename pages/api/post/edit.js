@@ -1,17 +1,21 @@
-import withPassport from "../../../middlewares/withPassport";
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withValidation from "../../../middlewares/withValidation";
-import authorized from "../../../middlewares/authorized";
+import {
+	withMiddlewares,
+	withAuthentication,
+	withPassport,
+	withValidation,
+} from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 
 export default async (req, res) => {
-	const success = await withMiddlewares(req, res, [
+	const result = await withMiddlewares(req, res, [
 		withPassport,
-		authorized,
+		withAuthentication,
 		withValidation("post-edit"),
 	]);
-	if (!success) return;
+	if (result.error) {
+		return res.json(result);
+	}
 	await dbConnect();
 
 	// check if the pst belongs to this users

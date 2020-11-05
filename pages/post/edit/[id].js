@@ -1,22 +1,23 @@
 import { useState } from "react";
 import {
-	withMiddlewares,
 	withAuthentication,
+	withMiddlewares,
 	withPassport,
-} from "../../middlewares";
-import TagSelector from "../../components/tagSelector";
+	withValidation,
+} from "../../../middlewares";
+import TagSelector from "../../../components/tagSelector";
 import ReactMarkdown from "react-markdown";
-import { addPost } from "../../utils/fetch/post";
+import { addPost } from "../../../utils/fetch/post";
 import { useRouter } from "next/router";
+import getEditPostData from "../../../services/getEditPostData";
 
-const Add = () => {
+const Add = (props) => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState([]);
-	const [title, setTitle] = useState("");
-	const [markdown, setMarkdown] = useState("");
-	const [headerImg, setHeaderImg] = useState(null);
-	const [tags, setTags] = useState([]);
-
+	const [title, setTitle] = useState(props.title);
+	const [markdown, setMarkdown] = useState(props.markdown);
+	const [headerImg, setHeaderImg] = useState(props.headerImg);
+	const [tags, setTags] = useState(props.tags);
 	const router = useRouter();
 
 	const handleFileChange = (e) => {
@@ -66,6 +67,7 @@ const Add = () => {
 					placeholder="Title"
 					className="mt-6 p-2 w-full"
 					onChange={(e) => setTitle(e.target.value)}
+					value={title}
 				/>
 				{/* tags */}
 				<TagSelector
@@ -89,6 +91,7 @@ const Add = () => {
 						onChange={(e) =>
 							setMarkdown(e.target.value.replaceAll("\n", "\n\n"))
 						}
+						value={markdown}
 					></textarea>
 					<ReactMarkdown
 						style={{ minHeight: "16rem" }}
@@ -102,7 +105,7 @@ const Add = () => {
 					disabled={loading}
 					className="bg-primary py-1 px-4 mt-8 m-auto block"
 				>
-					{!loading ? "Let's show it to the world" : "okay, wait!"}
+					{!loading ? "Edit" : "okay, wait!"}
 				</button>
 				{Array.isArray(error) && error.length > 0 ? (
 					<div className="text-center my-8">
@@ -116,16 +119,18 @@ const Add = () => {
 	);
 };
 
-export const getServerSideProps = async ({ req, res }) => {
-	const result = await withMiddlewares(req, res, [
+export const getServerSideProps = async (ctx) => {
+	ctx.req.body = { _id: ctx.params.id };
+	const result = await withMiddlewares(ctx.req, ctx.res, [
 		withPassport,
 		withAuthentication,
+		withValidation("valid-id"),
 	]);
-	if (result.error) {
-		res.redirect("/error?error_code=" + result.code);
-	}
+	if (result.error) return res.redirect("/error?error_code=" + result.code);
+	const data = await getEditPostData(ctx.params.id, ctx.req.user);
+	if (data.error) return ctx.res.redirect("/error?code=" + data.code);
 	return {
-		props: {},
+		props: JSON.parse(JSON.stringify(data.post)),
 	};
 };
 

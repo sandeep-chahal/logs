@@ -1,17 +1,22 @@
-import withPassport from "../../../middlewares/withPassport";
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withValidation from "../../../middlewares/withValidation";
-import authorized from "../../../middlewares/authorized";
+import {
+	withMiddlewares,
+	withAuthentication,
+	withPassport,
+	withValidation,
+} from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 import Like from "../../../models/like";
 
 export default async (req, res) => {
-	await withMiddlewares(req, res, [
+	const result = await withMiddlewares(req, res, [
 		withPassport,
-		authorized,
-		withValidation("post-id"),
+		withAuthentication,
+		withValidation("valid-id"),
 	]);
+	if (result.error) {
+		return res.json(result);
+	}
 	await dbConnect();
 
 	// check if post exist

@@ -1,10 +1,11 @@
 import Comment from "../../../models/comment";
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withValidation from "../../../middlewares/withValidation";
+import { withMiddlewares, withValidation } from "../../../middlewares";
 
 export default async (req, res) => {
-	const success = await withMiddlewares(req, res, [withValidation("post-id")]);
-	if (!success) return;
+	const result = await withMiddlewares(req, res, [withValidation("valid-id")]);
+	if (result.error) {
+		return res.json(result);
+	}
 	const id = req.body._id;
 	const skip = req.body.skip;
 

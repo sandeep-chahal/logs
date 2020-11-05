@@ -15,6 +15,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `Invalid Email.`,
 			});
 		}
@@ -27,6 +28,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} length should not be less than ${options.min}.`,
 			});
 		}
@@ -34,6 +36,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} length should not be greater than ${options.max}.`,
 			});
 		}
@@ -51,6 +54,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} can't be empty.`,
 			});
 		}
@@ -62,6 +66,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} should be string.`,
 			});
 		}
@@ -73,6 +78,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} should be number.`,
 			});
 		}
@@ -85,6 +91,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} should not be less than ${options.min}.`,
 			});
 		}
@@ -92,6 +99,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} should not be greater than ${options.max}.`,
 			});
 		}
@@ -99,6 +107,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `${name} should equals to ${options.exact}.`,
 			});
 		}
@@ -110,6 +119,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `Invalid ${name}.`,
 			});
 		}
@@ -122,6 +132,7 @@ const validator = (name, value) => ({
 			this.errors.hasError = true;
 			this.errors.array.push({
 				field: name,
+				code: 102,
 				msg: `You don't have permissions to do this task.`,
 			});
 		}

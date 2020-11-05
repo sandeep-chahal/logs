@@ -2,8 +2,8 @@ import validator from "../utils/validation";
 
 export default (type) => (req, res) => {
 	switch (type) {
-		case "post-id":
-			return checkPostId(req, res);
+		case "valid-id":
+			return checkValidId(req, res);
 		case "post-add":
 			return addPostValidation(req, res);
 		case "post-edit":
@@ -13,7 +13,7 @@ export default (type) => (req, res) => {
 		case "get-post":
 			return getPostValidation(req, res);
 		default:
-			return true;
+			return false;
 	}
 };
 
@@ -29,14 +29,13 @@ function addPostValidation(req, res) {
 		.hasLength({ min: 20, max: 1500 }).errors;
 
 	if (titleErrors.hasError || markdownErrors.hasError) {
-		res.json({
+		return {
 			error: true,
-			code: 1,
+			code: 102,
 			errors: [...titleErrors.array, ...markdownErrors.array],
-		});
-		return false;
+		};
 	}
-	return true;
+	return false;
 }
 
 function editPostValidation(req, res) {
@@ -53,27 +52,13 @@ function editPostValidation(req, res) {
 		.hasLength({ min: 20, max: 1500 }).errors;
 
 	if (idError.hasError || titleErrors.hasError || markdownErrors.hasError) {
-		res.json({
+		return {
 			error: true,
-			code: 1,
+			code: 102,
 			errors: [...idError.array, ...titleErrors.array, ...markdownErrors.array],
-		});
-		return false;
+		};
 	}
-	return true;
-}
-
-function checkPostId(req, res) {
-	const idError = validator("Id", req.body._id).isMongoDbId().errors;
-	if (idError.hasError) {
-		res.json({
-			error: true,
-			code: 1,
-			errors: idError.array,
-		});
-		return false;
-	}
-	return true;
+	return false;
 }
 
 function commentPostValidation(req, res) {
@@ -83,21 +68,22 @@ function commentPostValidation(req, res) {
 		.isString()
 		.hasLength({ min: 3, max: 400 }).errors;
 	if (idError.hasError || contentErrors.hasError) {
-		res.json({
+		return {
 			error: true,
-			code: 1,
+			code: 102,
 			errors: [...idError.array, ...contentErrors.array],
-		});
-		return false;
+		};
 	}
-	return true;
+	return false;
 }
 
-function getPostValidation(req, res) {
-	const idError = validator("id", req.params.id).isMongoDbId().errors;
-	if (idError.hasError) {
-		res.redirect("/");
-		return false;
-	}
-	return true;
+function checkValidId(req, res) {
+	const idError = validator("Id", req.body._id).isMongoDbId().errors;
+	if (idError.hasError)
+		return {
+			error: true,
+			code: 102,
+			errors: idError.array,
+		};
+	return false;
 }

@@ -1,5 +1,4 @@
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withPassport from "../../../middlewares/withPassport";
+import { withMiddlewares, withPassport } from "../../../middlewares";
 
 export default async (req, res) => {
 	await withMiddlewares(req, res, [withPassport]);

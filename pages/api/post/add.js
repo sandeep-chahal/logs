@@ -1,17 +1,26 @@
-import withPassport from "../../../middlewares/withPassport";
-import withMiddlewares from "../../../middlewares/withMiddlewares";
-import withValidation from "../../../middlewares/withValidation";
-import authorized from "../../../middlewares/authorized";
 import Post from "../../../models/post";
+
+import {
+	withAuthentication,
+	withPassport,
+	withMiddlewares,
+	withValidation,
+} from "../../../middlewares";
+// const {
+// 	withAuthentication,
+// 	withPassport,
+// 	withMiddlewares,
+// 	withValidation,
+// } = middlewares;
 
 export default async (req, res) => {
 	try {
-		const success = await withMiddlewares(req, res, [
+		const result = await withMiddlewares(req, res, [
 			withPassport,
-			authorized,
+			withAuthentication,
 			withValidation("post-add"),
 		]);
-		if (!success) return;
+		if (result.error) return res.json(result);
 
 		// creating post
 		const post = await Post.create({

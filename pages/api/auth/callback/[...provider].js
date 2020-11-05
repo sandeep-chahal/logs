@@ -1,5 +1,4 @@
-import withPassport from "../../../../middlewares/withPassport";
-import withMiddlewares from "../../../../middlewares/withMiddlewares";
+import { withMiddlewares, withPassport } from "../../../../middlewares";
 import { STRATEGIES } from "../../../../config/passportStrategy";
 import passport from "passport";
 

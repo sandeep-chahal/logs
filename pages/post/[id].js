@@ -1,7 +1,9 @@
 import getPost from "../../services/getPost";
-import withMiddleware from "../../middlewares/withMiddlewares";
-import withPassport from "../../middlewares/withPassport";
-import withValidation from "../../middlewares/withValidation";
+import {
+	withMiddlewares,
+	withPassport,
+	withValidation,
+} from "../../middlewares";
 import dayjs from "dayjs";
 import ReactMarkdown from "react-markdown";
 import { formatNumber } from "../../utils";
@@ -79,13 +81,16 @@ const Post = (props) => {
 };
 
 export const getServerSideProps = async (ctx) => {
-	ctx.req.params = ctx.params;
-	await withMiddleware(ctx.req, ctx.res, [
+	ctx.req.body = ctx.params;
+	const result = await withMiddlewares(ctx.req, ctx.res, [
 		withPassport,
-		withValidation("get-post"),
+		withValidation("valid-id"),
 	]);
+	if (result.error) {
+		return res.redirect("/error?error_code=105");
+	}
 	const data = await getPost(ctx.params.id, ctx.req.user);
-	if (!data) ctx.res.redirect("/");
+	if (!data) ctx.res.redirect("/error?error_code=104");
 	return {
 		props: JSON.parse(JSON.stringify(data)),
 	};
