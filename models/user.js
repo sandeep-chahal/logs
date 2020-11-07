@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
 	},
 	provider: String,
 	photo: String,
+	title: String,
+	summary: String,
+	location: String,
+	linkedin: String,
+	github: String,
+	twitter: String,
+	web: String,
 });
 
 export default mongoose.models.user || mongoose.model("user", userSchema);

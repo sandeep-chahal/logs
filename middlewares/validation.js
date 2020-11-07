@@ -12,6 +12,8 @@ export default (type) => (req, res) => {
 			return commentPostValidation(req, res);
 		case "get-post":
 			return getPostValidation(req, res);
+		case "user-update":
+			return validateUserUpdate(req.body);
 		default:
 			return false;
 	}
@@ -84,6 +86,76 @@ function checkValidId(req, res) {
 			error: true,
 			code: 102,
 			errors: idError.array,
+		};
+	return false;
+}
+
+export function validateUserUpdate(data = {}) {
+	let titleError, summaryError, locationError;
+	let regexError = [];
+	if (data.title)
+		titleError = validator("Title", data.title)
+			.isString()
+			.notEmpty()
+			.hasLength({ min: 3, max: 50 });
+	if (data.summary)
+		summaryError = validator("Summary", data.summary)
+			.isString()
+			.notEmpty()
+			.hasLength({ min: 3, max: 150 });
+
+	if (data.location)
+		locationError = validator("Location", data.summary)
+			.isString()
+			.notEmpty()
+			.hasLength({ min: 3, max: 50 });
+
+	const githubRegex = new RegExp("https://github.com/");
+	if (data.github && !githubRegex.test(data.github)) {
+		regexError.push({
+			field: "github",
+			msg: "Invalid Github Link",
+		});
+	}
+	const linkedinRegex = new RegExp("https://linkedin.com/");
+	if (data.linkedin && !linkedinRegex.test(data.linkedin)) {
+		regexError.push({
+			field: "linkedin",
+			msg: "Invalid Linkedin Link",
+		});
+	}
+	const twitterRegex = new RegExp("https://twitter.com/");
+	if (data.twitter && !twitterRegex.test(data.twitter)) {
+		regexError.push({
+			field: "twitter",
+			msg: "Invalid Twitter Link",
+		});
+	}
+	const webRegex = new RegExp("http");
+	if (data.web && !webRegex.test(data.web)) {
+		regexError.push({
+			field: "web",
+			msg: "Invalid Web Link",
+		});
+	}
+	const photoRegex = new RegExp("http");
+	if (data.photo && !photoRegex.test(data.photo)) {
+		regexError.push({
+			field: "photo",
+			msg: "Upload photo again",
+		});
+	}
+	const errors = [
+		...regexError,
+		...(titleError || []),
+		...(summaryError || []),
+		...(locationError || []),
+	];
+	if (errors.length > 0)
+		return {
+			error: true,
+			code: 102,
+			errors,
 		};
 	return false;
 }
