@@ -1,8 +1,9 @@
-import { useState } from "../store";
+import { useStore } from "../store";
 import { useRouter } from "next/router";
+import { useReducer } from "react";
 
 const Navbar = () => {
-	const state = useState();
+	const [state, dispatch] = useStore();
 	const router = useRouter();
 	return (
 		<nav className="flex justify-between h-12 items-center px-20 bg-white">

@@ -3,10 +3,10 @@ import AddComment from "./add";
 import { getUser } from "../../utils";
 import { handleDeleteComment, loadMoreComments } from "../../utils/fetch/post";
 import { useEffect, useState } from "react";
-import { useState as useStore } from "../../store";
+import { useStore } from "../../store";
 
 export default ({ id, comments, post, setPost, setComments }) => {
-	let { user } = useStore();
+	let [{ user }] = useStore();
 	let [loadMore, setLoadMore] = useState(false);
 	let [moreError, setMoreError] = useState(false);
 

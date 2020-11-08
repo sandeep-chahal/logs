@@ -29,7 +29,12 @@ const Input = ({
 			return (
 				<div className="flex items-center">
 					<img src={value} className="w-16 rounded-full mr-4" />
-					<input type="file" id={name} disabled={disabled} />
+					<input
+						type="file"
+						id={name}
+						disabled={disabled}
+						onChange={setState}
+					/>
 				</div>
 			);
 		return (

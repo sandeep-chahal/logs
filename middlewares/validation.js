@@ -91,24 +91,26 @@ function checkValidId(req, res) {
 }
 
 export function validateUserUpdate(data = {}) {
-	let titleError, summaryError, locationError;
+	let titleError = [];
+	let summaryError = [];
+	let locationError = [];
 	let regexError = [];
+
 	if (data.title)
 		titleError = validator("Title", data.title)
 			.isString()
 			.notEmpty()
-			.hasLength({ min: 3, max: 50 });
+			.hasLength({ min: 3, max: 50 }).errors.array;
 	if (data.summary)
 		summaryError = validator("Summary", data.summary)
 			.isString()
 			.notEmpty()
-			.hasLength({ min: 3, max: 150 });
-
+			.hasLength({ min: 3, max: 150 }).errors.array;
 	if (data.location)
-		locationError = validator("Location", data.summary)
+		locationError = validator("Location", data.location)
 			.isString()
 			.notEmpty()
-			.hasLength({ min: 3, max: 50 });
+			.hasLength({ min: 3, max: 50 }).errors.array;
 
 	const githubRegex = new RegExp("https://github.com/");
 	if (data.github && !githubRegex.test(data.github)) {
@@ -117,13 +119,14 @@ export function validateUserUpdate(data = {}) {
 			msg: "Invalid Github Link",
 		});
 	}
-	const linkedinRegex = new RegExp("https://linkedin.com/");
+	const linkedinRegex = new RegExp("https://www.linkedin.com/");
 	if (data.linkedin && !linkedinRegex.test(data.linkedin)) {
 		regexError.push({
 			field: "linkedin",
 			msg: "Invalid Linkedin Link",
 		});
 	}
+
 	const twitterRegex = new RegExp("https://twitter.com/");
 	if (data.twitter && !twitterRegex.test(data.twitter)) {
 		regexError.push({
@@ -138,6 +141,7 @@ export function validateUserUpdate(data = {}) {
 			msg: "Invalid Web Link",
 		});
 	}
+
 	const photoRegex = new RegExp("http");
 	if (data.photo && !photoRegex.test(data.photo)) {
 		regexError.push({
@@ -145,11 +149,12 @@ export function validateUserUpdate(data = {}) {
 			msg: "Upload photo again",
 		});
 	}
+
 	const errors = [
 		...regexError,
-		...(titleError || []),
-		...(summaryError || []),
-		...(locationError || []),
+		...titleError,
+		...summaryError,
+		...locationError,
 	];
 	if (errors.length > 0)
 		return {

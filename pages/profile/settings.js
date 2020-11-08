@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useState as useStore, useDispatch } from "../../store";
+import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 import { setUser as setUserToLS } from "../../utils";
 import { updateProfile } from "../../utils/fetch/user";
@@ -7,22 +7,24 @@ import Input from "../../components/Input";
 import { useRouter } from "next/router";
 
 const Settings = () => {
-	const { user, loadingUser } = useStore();
+	const [state, dispatch] = useStore();
+
+	if (!state.isClient) return <div>Loading</div>;
+	if (!state.user) {
+		return router.push("/error?error_code=101");
+	}
 	const router = useRouter();
-	const dispatch = useDispatch();
-	if (loadingUser) return <div className="text-center mt-8">Loading</div>;
-	if (!user) return router.push("/error?error_code=101");
 
 	const [error, setError] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [photo, setPhoto] = useState(user.photo);
-	const [title, setTitle] = useState(user.title);
-	const [summary, setSummary] = useState(user.summary);
-	const [location, setLocation] = useState(user.location);
-	const [web, setWeb] = useState(user.web);
-	const [linkedin, setLinkedin] = useState(user.linkedin);
-	const [github, setGithub] = useState(user.github);
-	const [twitter, setTwitter] = useState(user.twitter);
+	const [photo, setPhoto] = useState(state.user.photo);
+	const [title, setTitle] = useState(state.user.title);
+	const [summary, setSummary] = useState(state.user.summary);
+	const [location, setLocation] = useState(state.user.location);
+	const [web, setWeb] = useState(state.user.web);
+	const [linkedin, setLinkedin] = useState(state.user.linkedin);
+	const [github, setGithub] = useState(state.user.github);
+	const [twitter, setTwitter] = useState(state.user.twitter);
 
 	const handleSave = () => {
 		setLoading(true);
@@ -54,19 +56,33 @@ const Settings = () => {
 			});
 	};
 
+	const handlePhotoChange = (e) => {
+		alert("uploading photo is not available at the moment");
+	};
+
 	return (
 		<section className="w-2/4 m-auto mt-8 mb-8 text-black">
 			<div className="bg-white p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">User</h2>
-				<Input disabled={true} type="email" name="Email" value={user.email} />
-				<Input disabled={true} type="text" name="Name" value={user.name} />
+				<Input
+					disabled={true}
+					type="email"
+					name="Email"
+					value={state.user.email}
+				/>
+				<Input
+					disabled={true}
+					type="text"
+					name="Name"
+					value={state.user.name}
+				/>
 				<Input
 					err={error["photo"]}
 					disabled={loading}
 					type="file"
 					name="Photo"
 					value={photo}
-					setState={setPhoto}
+					setState={handlePhotoChange}
 				/>
 			</div>
 
@@ -109,7 +125,7 @@ const Settings = () => {
 					name="Website"
 					value={web}
 					setState={setWeb}
-					placeholder={user.name.replaceAll(" ", "") + ".com"}
+					placeholder={state.user.name.replaceAll(" ", "") + ".com"}
 				/>
 				<Input
 					err={error["linkedin"]}

@@ -2,8 +2,8 @@ import { TYPES } from "./actions";
 
 export const initialState = {
 	user: null,
-	loadingUser: true,
 	post: null,
+	isClient: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,7 +12,6 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload.user,
-				loadingUser: false,
 			};
 		default:
 			return state;

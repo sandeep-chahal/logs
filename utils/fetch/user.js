@@ -3,7 +3,7 @@ import { validateUserUpdate } from "../../middlewares/validation";
 const formatErrors = (errors) => {
 	const temp = {};
 	errors.forEach((err) => {
-		if (err.field) temp[err.field] = err.msg;
+		if (err.field) temp[err.field.toLowerCase()] = err.msg;
 		else temp["other"] = err.msg;
 	});
 	return temp;
@@ -13,6 +13,7 @@ export const updateProfile = async (data) => {
 	data.photo = "";
 
 	let result = validateUserUpdate(data);
+	console.log(result);
 	if (result.error) {
 		result.errors = formatErrors(result.errors);
 		return result;
