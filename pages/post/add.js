@@ -15,7 +15,7 @@ export const getServerSideProps = async ({ req, res }) => {
 		withAuthentication,
 	]);
 	if (result.error) {
-		res.redirect("/error?error_code=" + result.code);
+		return res.redirect("/error?error_code=" + result.code);
 	}
 	return {
 		props: {},
