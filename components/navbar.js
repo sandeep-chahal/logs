@@ -33,6 +33,7 @@ const Navbar = () => {
 					></svg>
 				) : state.user ? (
 					<img
+						onClick={() => router.push(`/profile/${state.user._id}`)}
 						className="mx-4 h-8 w-8 cursor-pointer rounded-full"
 						src={state.user.photo}
 					/>

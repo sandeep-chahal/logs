@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "../../store";
+import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 const User = () => {
 	const router = useRouter();
-	const dispatch = useDispatch();
+	const [_, dispatch] = useStore();
 
 	useEffect(() => {
 		fetch("/api/auth/user")
