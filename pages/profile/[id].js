@@ -9,6 +9,7 @@ import UserPost from "../../components/userPost";
 import { useState } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
 import { data } from "autoprefixer";
+import NProgress from "nprogress";
 
 const Profile = (props) => {
 	const { user, me } = props;
@@ -18,6 +19,7 @@ const Profile = (props) => {
 	const [loadingMore, setLoadingMore] = useState(false);
 
 	const handleDeletePost = (id) => {
+		if (deleting) return alert("wait!");
 		setDeleting(id);
 		deletePost(id).then((data) => {
 			if (data.error) {
@@ -30,9 +32,12 @@ const Profile = (props) => {
 	};
 
 	const handleLoadMore = () => {
+		if (loadingMore) return alert("wait");
+		NProgress.start();
 		loadMorePostsByUser(user._id, posts.length).then((res) => {
 			if (!data.error) setPosts((prev) => [...prev, ...res.data]);
 			setLoadingMore(false);
+			NProgress.done();
 		});
 	};
 

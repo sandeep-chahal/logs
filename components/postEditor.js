@@ -3,6 +3,7 @@ import TagSelector from "./tagSelector";
 import ReactMarkdown from "react-markdown";
 import { modifyPost } from "../utils/fetch/post";
 import { useRouter } from "next/router";
+import NProgress from "nprogress";
 
 const PostEditor = (props) => {
 	const [loading, setLoading] = useState(false);
@@ -19,10 +20,12 @@ const PostEditor = (props) => {
 
 	const handleSubmit = () => {
 		if (loading) return;
+		NProgress.start();
 		setLoading(true);
 		setError([]);
 		modifyPost(props.edit, props._id, headerImg, title, tags, markdown).then(
 			(res) => {
+				nProgress.done();
 				if (res.error) {
 					if (res.msg) setError(res.msg);
 					else setError(res.errors);
