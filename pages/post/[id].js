@@ -90,7 +90,7 @@ export const getServerSideProps = async (ctx) => {
 		return res.redirect("/error?error_code=105");
 	}
 	const data = await getPost(ctx.params.id, ctx.req.user);
-	if (!data) ctx.res.redirect("/error?error_code=104");
+	if (data.error) ctx.res.redirect("/error?error_code=" + data.code);
 	return {
 		props: JSON.parse(JSON.stringify(data)),
 	};

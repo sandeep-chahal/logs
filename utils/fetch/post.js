@@ -163,6 +163,7 @@ export const loadMoreComments = (
 // 		};
 // 	}
 // };
+
 export const modifyPost = async (
 	edit,
 	postId,
@@ -193,6 +194,51 @@ export const modifyPost = async (
 		return {
 			error: true,
 			msg: err.message,
+		};
+	}
+};
+
+export const deletePost = async (id) => {
+	try {
+		const res = await fetch("/api/post/delete", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				_id: id,
+			}),
+		});
+		const data = await res.json();
+		return data;
+	} catch (err) {
+		console.log(err);
+		return {
+			error: true,
+			code: 106,
+			msg: "Something Went Wrong",
+		};
+	}
+};
+
+export const loadMorePostsByUser = async (id, skip) => {
+	try {
+		const res = await fetch("/api/user/posts", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				_id: id,
+				skip,
+			}),
+		});
+		const data = await res.json();
+		return data;
+	} catch {
+		return {
+			error: true,
+			code: 106,
 		};
 	}
 };

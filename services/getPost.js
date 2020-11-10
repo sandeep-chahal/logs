@@ -24,6 +24,12 @@ export default async (postId, user) => {
 
 	const [post, comments, liked] = await Promise.all(proms);
 
+	if (!post)
+		return {
+			error: true,
+			code: 104,
+		};
+
 	let following;
 	if (user)
 		following = await Follow.exists({
@@ -31,12 +37,10 @@ export default async (postId, user) => {
 			from: user._id,
 		});
 
-	if (post)
-		return {
-			post,
-			liked: liked || 0,
-			comments: Array.isArray(comments) ? comments : [],
-			following: !!following || false,
-		};
-	else null;
+	return {
+		post,
+		liked: liked || 0,
+		comments: Array.isArray(comments) ? comments : [],
+		following: !!following || false,
+	};
 };

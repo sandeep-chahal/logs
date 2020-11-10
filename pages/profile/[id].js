@@ -6,8 +6,36 @@ import {
 import getUserData from "../../services/getUserData";
 import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
+import { useState } from "react";
+import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
+import { data } from "autoprefixer";
 
-const Profile = ({ user, posts, me, isFollowing }) => {
+const Profile = (props) => {
+	const { user, me } = props;
+	const [isFollowing, setFollowing] = useState(props.isFollowing || false);
+	const [posts, setPosts] = useState(props.posts || []);
+	const [deleting, setDeleting] = useState(null);
+	const [loadingMore, setLoadingMore] = useState(false);
+
+	const handleDeletePost = (id) => {
+		setDeleting(id);
+		deletePost(id).then((data) => {
+			if (data.error) {
+				alert(`ERROR:(${data.code})` + data.msg);
+			} else {
+				setPosts((posts) => posts.filter((post) => post._id !== id));
+			}
+			setDeleting(null);
+		});
+	};
+
+	const handleLoadMore = () => {
+		loadMorePostsByUser(user._id, posts.length).then((res) => {
+			if (!data.error) setPosts((prev) => [...prev, ...res.data]);
+			setLoadingMore(false);
+		});
+	};
+
 	return (
 		<div className="text-black">
 			{/* header */}
@@ -81,15 +109,28 @@ const Profile = ({ user, posts, me, isFollowing }) => {
 			</div>
 			{/* posts and some stats */}
 
-			<div className="bg-white m-auto w-4/5 mt-20 p-6">
+			<div className="bg-white m-auto w-4/5 mt-20 p-6 mb-12">
 				<div className="mb-6 text-2xl font-extrabold border-b-2 border-black border-opacity-50 inline-block">
 					Posts
 				</div>
 				{posts && posts.length ? (
 					<div>
 						{posts.map((post) => (
-							<UserPost post={post} author={user} />
+							<UserPost
+								me={me}
+								post={post}
+								author={user}
+								deleting={deleting === post._id}
+								handleDeletePost={handleDeletePost}
+							/>
 						))}
+						<button
+							className="bg-primary py-1 px-2 m-auto block"
+							disabled={loadingMore}
+							onClick={handleLoadMore}
+						>
+							Load More
+						</button>
 					</div>
 				) : (
 					<div className="text-center">
@@ -138,7 +179,7 @@ export const getServerSideProps = async (ctx) => {
 			props: {
 				user: data.user,
 				posts: data.posts,
-				// me,
+				me: me || ctx.req.user._id === ctx.params.id,
 			},
 		};
 	} catch (err) {
