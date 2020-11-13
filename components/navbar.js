@@ -1,6 +1,5 @@
 import { useStore } from "../store";
 import { useRouter } from "next/router";
-import { useReducer } from "react";
 
 const Navbar = () => {
 	const [state, dispatch] = useStore();
@@ -34,7 +33,7 @@ const Navbar = () => {
 				) : state.user ? (
 					<img
 						onClick={() => router.push(`/profile/${state.user._id}`)}
-						className="mx-4 h-8 w-8 cursor-pointer rounded-full"
+						className="mx-4 h-8 w-8 cursor-pointer rounded-full object-cover object-center"
 						src={state.user.photo}
 					/>
 				) : (

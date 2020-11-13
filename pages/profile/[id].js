@@ -50,7 +50,7 @@ const Profile = (props) => {
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 					alt={user.name}
 					src={user.photo}
-					className="w-32 m-auto rounded-full  border-pureWhite"
+					className="w-32 h-32 object-cover object-center m-auto rounded-full  border-pureWhite"
 				/>
 				{/* follow , counts ,edit */}
 				<div className="absolute top-0 right-0 p-8 flex flex-col">

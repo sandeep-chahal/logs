@@ -28,7 +28,10 @@ const Input = ({
 		if (type === "file")
 			return (
 				<div className="flex items-center">
-					<img src={value} className="w-16 rounded-full mr-4" />
+					<img
+						src={value}
+						className="w-16 h-16 object-cover object-center rounded-full mr-4"
+					/>
 					<input
 						type="file"
 						id={name}

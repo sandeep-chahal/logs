@@ -1,3 +1,11 @@
+import {
+	withAuthentication,
+	withMiddlewares,
+	withPassport,
+} from "../../middlewares";
+import dbConnect from "../../config/mongodb";
+import getUserProfile from "../../services/getUserProfile";
+
 import { useState } from "react";
 import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
@@ -7,25 +15,25 @@ import Input from "../../components/Input";
 import { useRouter } from "next/router";
 import uploadFile from "../../utils/fetch/uploadFile";
 
-const Settings = () => {
+const Settings = ({ user }) => {
 	const [state, dispatch] = useStore();
 
 	if (!state.isClient) return <div>Loading</div>;
-	if (!state.user) {
+	if (!user) {
 		return router.push("/error?error_code=101");
 	}
 	const router = useRouter();
 
 	const [error, setError] = useState({});
 	const [loading, setLoading] = useState(false);
-	const [photo, setPhoto] = useState(state.user.photo);
-	const [title, setTitle] = useState(state.user.title);
-	const [summary, setSummary] = useState(state.user.summary);
-	const [location, setLocation] = useState(state.user.location);
-	const [web, setWeb] = useState(state.user.web);
-	const [linkedin, setLinkedin] = useState(state.user.linkedin);
-	const [github, setGithub] = useState(state.user.github);
-	const [twitter, setTwitter] = useState(state.user.twitter);
+	const [photo, setPhoto] = useState(user.photo);
+	const [title, setTitle] = useState(user.title);
+	const [summary, setSummary] = useState(user.summary);
+	const [location, setLocation] = useState(user.location);
+	const [web, setWeb] = useState(user.web);
+	const [linkedin, setLinkedin] = useState(user.linkedin);
+	const [github, setGithub] = useState(user.github);
+	const [twitter, setTwitter] = useState(user.twitter);
 
 	const handleSave = () => {
 		setLoading(true);
@@ -183,6 +191,28 @@ const Settings = () => {
 			</button>
 		</section>
 	);
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+	await dbConnect();
+
+	const result = await withMiddlewares(req, res, [
+		withPassport,
+		withAuthentication,
+	]);
+
+	// if any error during validation
+	if (result.error) return res.redirect("/error?error_code=" + result.code);
+
+	// get user profile
+	const data = await getUserProfile(req.user._id);
+	if (data.error) return res.redirect("/error?error_code=" + data.code);
+
+	return {
+		props: {
+			user: JSON.parse(JSON.stringify(data.user)),
+		},
+	};
 };
 
 export default Settings;

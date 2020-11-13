@@ -1,27 +1,28 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
-const User = () => {
+import { withMiddlewares, withPassport } from "../../middlewares";
+const User = ({ user }) => {
 	const router = useRouter();
 	const [_, dispatch] = useStore();
 
-	useEffect(() => {
-		fetch("/api/auth/user")
-			.then((res) => res.json())
-			.then((user) => {
-				localStorage.setItem("user", JSON.stringify(user));
-				dispatch(setUser(user));
-			})
-			.catch((err) => {
-				localStorage.setItem("user", null);
-				dispatch(setUser(null));
-			})
-			.finally(() => {
-				router.replace("/");
-			});
-	}, []);
+	if (typeof window !== "undefined") {
+		localStorage.setItem("user", JSON.stringify(user));
+		dispatch(setUser(user));
+		router.replace("/");
+	}
+
 	return <div>Wait</div>;
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+	await withMiddlewares(req, res, [withPassport]);
+
+	return {
+		props: {
+			user: req.user,
+		},
+	};
 };
 
 export default User;
