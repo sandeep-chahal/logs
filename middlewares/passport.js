@@ -8,7 +8,13 @@ passport.use(GoogleStrategy);
 
 passport.serializeUser((user, done) => {
 	const { _id, name, photo, email } = user;
-	done(null, { _id, name, photo, email });
+	done(null, {
+		_id,
+		name,
+		photo,
+		email,
+		expiresOn: Date.now() + 24 * 60 * 60 * 1000,
+	});
 });
 passport.deserializeUser(async (serializedUser, done) => {
 	if (!serializedUser) {

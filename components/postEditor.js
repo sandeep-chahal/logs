@@ -4,18 +4,32 @@ import ReactMarkdown from "react-markdown";
 import { modifyPost } from "../utils/fetch/post";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
+import uploadFile from "../utils/fetch/uploadFile";
 
 const PostEditor = (props) => {
+	const [uploading, setUploading] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState([]);
 	const [title, setTitle] = useState(props.title);
 	const [markdown, setMarkdown] = useState(props.markdown || "");
-	const [headerImg, setHeaderImg] = useState(props.headerImg || null);
+	const [headerImg, setHeaderImg] = useState(props.header_img || null);
 	const [tags, setTags] = useState(props.tags || []);
 	const router = useRouter();
 
 	const handleFileChange = (e) => {
-		setHeaderImg(e.target.files[0]);
+		if (uploading) return;
+		setUploading(true);
+		setError([]);
+		const file = e.target.files[0];
+		e.target.value = null;
+		uploadFile(file).then((res) => {
+			if (res.error) {
+				setError(res.errors);
+			} else {
+				setHeaderImg(res.data);
+			}
+			setUploading(false);
+		});
 	};
 
 	const handleSubmit = () => {
@@ -25,13 +39,13 @@ const PostEditor = (props) => {
 		setError([]);
 		modifyPost(props.edit, props._id, headerImg, title, tags, markdown).then(
 			(res) => {
-				nProgress.done();
+				NProgress.done();
 				if (res.error) {
 					if (res.msg) setError(res.msg);
 					else setError(res.errors);
 					setLoading(false);
 				} else {
-					router.replace("/post/" + res.data._id);
+					router.push("/post/" + res.data._id);
 				}
 			}
 		);
@@ -46,18 +60,17 @@ const PostEditor = (props) => {
 						htmlFor="header-img"
 						className="bg-pureWhite py-1 px-2 cursor-pointer"
 					>
-						Upload Header Image
+						{uploading ? "Uploading" : "Upload Header Image"}
 					</label>
 					<input
 						onChange={handleFileChange}
 						id="header-img"
 						type="file"
+						disabled={loading || uploading}
 						accept="image/png,image/jpeg"
 						hidden
 					/>
-					{headerImg ? (
-						<img src={URL.createObjectURL(headerImg)} className="mt-6 h-64" />
-					) : null}
+					{headerImg ? <img src={headerImg} className="mt-6 h-64" /> : null}
 				</div>
 				{/* title */}
 				<input
@@ -66,9 +79,11 @@ const PostEditor = (props) => {
 					className="mt-6 p-2 w-full"
 					onChange={(e) => setTitle(e.target.value)}
 					value={title}
+					disabled={loading}
 				/>
 				{/* tags */}
 				<TagSelector
+					disabled={loading}
 					className="my-8 flex items-center"
 					setTags={setTags}
 					tags={tags}
@@ -84,6 +99,7 @@ const PostEditor = (props) => {
 				{/* markdown */}
 				<div className="flex justify-evenly">
 					<textarea
+						disabled={loading}
 						style={{ minHeight: "16rem" }}
 						className="w-full mr-4 p-4"
 						onChange={(e) =>
@@ -101,7 +117,7 @@ const PostEditor = (props) => {
 
 				<button
 					onClick={handleSubmit}
-					disabled={loading}
+					disabled={loading || uploading}
 					className="bg-primary py-1 px-4 mt-8 m-auto block"
 				>
 					{!loading ? (props.edit ? "Edit" : "Post it") : "okay, wait!"}

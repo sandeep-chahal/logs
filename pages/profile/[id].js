@@ -3,6 +3,7 @@ import {
 	withPassport,
 	withValidation,
 } from "../../middlewares";
+import Link from "next/link";
 import getUserData from "../../services/getUserData";
 import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
@@ -55,18 +56,20 @@ const Profile = (props) => {
 				<div className="absolute top-0 right-0 p-8 flex flex-col">
 					<div className="mb-2">Following: {user.following_counter}</div>
 
-					{
-						<button
-							className={`${
-								me || isFollowing ? "bg-pureWhite" : "bg-primary"
-							} py-1 px-2`}
-						>
+					{me ? (
+						<Link href={`/profile/settings`}>
+							<a className="block bg-primary text-center cursor-pointer py-1 px-2 pt-2">
+								Edit
+							</a>
+						</Link>
+					) : (
+						<button className={`bg-primary py-1 px-2 pt-2`}>
 							{me
 								? "Edit"
 								: (isFollowing ? `UnFollow` : `Follow`) +
 								  ` ${user.follower_counter}`}
 						</button>
-					}
+					)}
 				</div>
 				<div style={{ transform: "translateY(-50px)" }} className="text-center">
 					<h1 className="text-4xl font-extrabold">{user.name}</h1>
@@ -153,7 +156,7 @@ export const getServerSideProps = async (ctx) => {
 		await dbConnect();
 
 		// check if user opens his own profile
-		const me = ctx.params.id === "me";
+		let me = ctx.params.id === "me";
 
 		// map id from url to body [for validation]
 		ctx.req.body = ctx.params;
@@ -171,6 +174,8 @@ export const getServerSideProps = async (ctx) => {
 		// if not logged in
 		if (me && !ctx.req.isAuthenticated())
 			return ctx.res.redirect("/error?error_code=101");
+		if (!me && ctx.req.isAuthenticated())
+			me = ctx.req.user._id === ctx.params.id;
 
 		// get user personal data
 		const data = JSON.parse(
@@ -184,11 +189,11 @@ export const getServerSideProps = async (ctx) => {
 			props: {
 				user: data.user,
 				posts: data.posts,
-				me: me || ctx.req.user._id === ctx.params.id,
+				me: me,
 			},
 		};
 	} catch (err) {
-		console.error(err.message);
+		console.error(err);
 		return ctx.res.redirect("/error?error_code=106");
 	}
 };

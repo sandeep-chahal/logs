@@ -10,6 +10,7 @@
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^3.0.0",
     "autoprefixer": "^10.0.1",
+    "axios": "^0.21.0",
     "cookie-session": "^1.4.0",
     "dayjs": "^1.9.4",
     "micro-redirect": "^1.0.2",

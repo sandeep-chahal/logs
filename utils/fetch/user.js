@@ -10,10 +10,7 @@ const formatErrors = (errors) => {
 };
 
 export const updateProfile = async (data) => {
-	data.photo = "";
-
 	let result = validateUserUpdate(data);
-	console.log(result);
 	if (result.error) {
 		result.errors = formatErrors(result.errors);
 		return result;

@@ -32,6 +32,7 @@ export default async (req, res) => {
 	if (req.body.title) editedPostData.title = req.body.title;
 	if (req.body.markdown) editedPostData.markdown = req.body.markdown;
 	if (req.body.tags) editedPostData.tags = req.body.tags;
+	if (req.body.headerImg) editedPostData.header_img = req.body.headerImg;
 	console.log(req.body.tags, typeof req.body.tags);
 	const post = await Post.findByIdAndUpdate(
 		{ _id: req.body._id },

@@ -1,7 +1,15 @@
 import { useState } from "react";
 
-const TagSelector = ({ tags, setTags, availTags = [], max, className }) => {
+const TagSelector = ({
+	tags,
+	setTags,
+	availTags = [],
+	max,
+	className,
+	disabled,
+}) => {
 	const handleRemoveTag = (tag) => {
+		if (disabled) return;
 		setTags((prev) => prev.filter((t) => t !== tag));
 	};
 	const handleTagSelected = (e) => {
@@ -27,6 +35,7 @@ const TagSelector = ({ tags, setTags, availTags = [], max, className }) => {
 			))}
 			{tags.length < availTags.length || max < tags.length ? (
 				<select
+					disabled={disabled}
 					onChange={handleTagSelected}
 					className="p-2"
 					defaultValue="select"

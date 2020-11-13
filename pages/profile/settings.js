@@ -5,6 +5,7 @@ import { setUser as setUserToLS } from "../../utils";
 import { updateProfile } from "../../utils/fetch/user";
 import Input from "../../components/Input";
 import { useRouter } from "next/router";
+import uploadFile from "../../utils/fetch/uploadFile";
 
 const Settings = () => {
 	const [state, dispatch] = useStore();
@@ -57,7 +58,19 @@ const Settings = () => {
 	};
 
 	const handlePhotoChange = (e) => {
-		alert("uploading photo is not available at the moment");
+		if (loading) return;
+		setLoading(true);
+		setError([]);
+		const file = e.target.files[0];
+		e.target.value = null;
+		uploadFile(file).then((res) => {
+			if (res.error) {
+				setError(res.errors);
+			} else {
+				setPhoto(res.data);
+			}
+			setLoading(false);
+		});
 	};
 
 	return (
