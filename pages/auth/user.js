@@ -2,15 +2,16 @@ import { useRouter } from "next/router";
 import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 import { withMiddlewares, withPassport } from "../../middlewares";
+import { useEffect } from "react";
 const User = ({ user }) => {
 	const router = useRouter();
 	const [_, dispatch] = useStore();
 
-	if (typeof window !== "undefined") {
-		localStorage.setItem("user", JSON.stringify(user));
+	useEffect(() => {
 		dispatch(setUser(user));
-		router.replace("/");
-	}
+		localStorage.setItem("user", JSON.stringify(user));
+		router.push("/");
+	}, []);
 
 	return <div>Wait</div>;
 };

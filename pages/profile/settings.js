@@ -49,6 +49,8 @@ const Settings = ({ user }) => {
 			twitter,
 		})
 			.then((data) => {
+				console.log("-user-".repeat(50));
+				console.log(data);
 				if (data.error) {
 					setError(data.errors || {});
 					setLoading(false);

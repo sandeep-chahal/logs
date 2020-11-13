@@ -23,8 +23,6 @@ export const updateProfile = async (data) => {
 		body: JSON.stringify(data),
 	});
 	res = await res.json();
-	console.log("data".repeat(10));
-	console.log(res);
 	if (res.error) {
 		res.errors = formatErrors(res.errors);
 		return res;

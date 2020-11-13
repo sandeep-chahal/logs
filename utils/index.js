@@ -1,4 +1,13 @@
-export const getUser = () => JSON.parse(localStorage.getItem("user"));
+export const getUser = () => {
+	try {
+		const user = JSON.parse(localStorage.getItem("user"));
+		if (typeof user === "string") return null;
+		else return user;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+};
 export const setUser = (user) => {
 	localStorage.setItem("user", JSON.stringify(user));
 };

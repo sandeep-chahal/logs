@@ -23,12 +23,11 @@ function addPostValidation(req, res) {
 	const titleErrors = validator("Title", req.body.title)
 		.notEmpty()
 		.isString()
-		.hasLength({ min: 5, max: 100 }).errors;
-
+		.hasLength({ min: 5, max: 150 }).errors;
 	const markdownErrors = validator("Markdown", req.body.markdown)
 		.notEmpty()
 		.isString()
-		.hasLength({ min: 20, max: 1500 }).errors;
+		.hasLength({ min: 20, max: 10000 }).errors;
 
 	if (titleErrors.hasError || markdownErrors.hasError) {
 		return {
@@ -46,12 +45,12 @@ function editPostValidation(req, res) {
 	const titleErrors = validator("Title", req.body.title)
 		.notEmpty()
 		.isString()
-		.hasLength({ min: 5, max: 100 }).errors;
+		.hasLength({ min: 5, max: 150 }).errors;
 
 	const markdownErrors = validator("Markdown", req.body.markdown)
 		.notEmpty()
 		.isString()
-		.hasLength({ min: 20, max: 1500 }).errors;
+		.hasLength({ min: 20, max: 10000 }).errors;
 
 	if (idError.hasError || titleErrors.hasError || markdownErrors.hasError) {
 		return {

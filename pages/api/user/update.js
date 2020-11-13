@@ -27,17 +27,18 @@ export default async (req, res) => {
 		data.github = req.body.github;
 		data.twitter = req.body.twitter;
 
-		console.log(req.body);
-
 		await User.findByIdAndUpdate(req.user._id, data);
-		const user = await User.findById(req.user._id);
+		const user = await User.findById(req.user._id).select(
+			"_id email photo name"
+		);
 		console.log(user);
-
+		req.login(user, (err) => {});
 		res.json({
 			error: false,
 			data: user,
 		});
 	} catch (err) {
+		console.log(err);
 		res.json({
 			err: true,
 			errors: [{ field: null, msg: "Something Went Wrong" }],
