@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useStore } from "../store";
 import { useRouter } from "next/router";
 
@@ -31,11 +32,17 @@ const Navbar = () => {
 						viewBox="0 0 24 24"
 					></svg>
 				) : state.user ? (
-					<img
-						onClick={() => router.push(`/profile/${state.user._id}`)}
-						className="mx-4 h-8 w-8 cursor-pointer rounded-full object-cover object-center"
-						src={state.user.photo}
-					/>
+					<div className="w-8 h-8">
+						<Image
+							width="35px"
+							height="35px"
+							quality={50}
+							onClick={() => router.push(`/profile/${state.user._id}`)}
+							className="object-cover object-center rounded-full"
+							src={state.user.photo}
+							alt="user image"
+						/>
+					</div>
 				) : (
 					<div
 						className="mx-4 cursor-pointer"

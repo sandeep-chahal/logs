@@ -11,6 +11,7 @@ import { useState } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
 import { data } from "autoprefixer";
 import NProgress from "nprogress";
+import Image from "next/image";
 
 const Profile = (props) => {
 	const { user, me } = props;
@@ -46,12 +47,18 @@ const Profile = (props) => {
 		<div className="text-black">
 			{/* header */}
 			<div className="mt-16 bg-white w-4/5 m-auto  relative">
-				<img
+				<div
+					className="w-32 h-32 m-auto border-pureWhite rounded-full"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
-					alt={user.name}
-					src={user.photo}
-					className="w-32 h-32 object-cover object-center m-auto rounded-full  border-pureWhite"
-				/>
+				>
+					<Image
+						width="120px"
+						height="120px"
+						alt={user.name}
+						src={user.photo}
+						className="object-cover object-center rounded-full"
+					/>
+				</div>
 				{/* follow , counts ,edit */}
 				<div className="absolute top-0 right-0 p-8 flex flex-col">
 					<div className="mb-2">Following: {user.following_counter}</div>

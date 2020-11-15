@@ -15,7 +15,7 @@
     "dayjs": "^1.9.4",
     "micro-redirect": "^1.0.2",
     "mongoose": "^5.10.9",
-    "next": "9.5.5",
+    "next": "^10.0.1",
     "next-redux-wrapper": "^6.0.2",
     "nprogress": "^0.2.0",
     "passport": "^0.4.1",
@@ -24,6 +24,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-markdown": "^5.0.2",
+    "redis": "^3.0.2",
     "sass": "^1.27.0",
     "tailwindcss": "^1.9.5"
   }

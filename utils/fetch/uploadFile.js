@@ -23,7 +23,7 @@ export default async (file) => {
 		} else {
 			return {
 				error: false,
-				data: results.data.url1,
+				data: results.data.url2,
 			};
 		}
 	} catch (err) {
