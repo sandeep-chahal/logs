@@ -65,6 +65,15 @@ const Post = (props) => {
 					</label>
 				</div>
 
+				{/* header image */}
+				{post.header_img ? (
+					<img
+						alt="post header image"
+						src={post.header_img}
+						className="block m-auto my-4"
+					/>
+				) : null}
+
 				{/* markdown */}
 				<ReactMarkdown className="mt-6 markdown" children={post.markdown} />
 			</article>
