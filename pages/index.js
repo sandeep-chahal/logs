@@ -1,14 +1,22 @@
-import Link from "next/link";
-
-const Home = () => {
+import { getLatest } from "../services/redis";
+import Post from "../components/post";
+const Home = ({ posts }) => {
 	return (
 		<div>
-			<h1 className="text-center text-yellow-500">Work In Progress</h1>
-			<Link href="/post/5f9d4807deb75c1f10798c7b">
-				<a className="bg-white p-2 my-5 text-center block">Open a dummy blog</a>
-			</Link>
+			{posts.map((post) => (
+				<Post post={post} />
+			))}
 		</div>
 	);
+};
+
+export const getServerSideProps = async () => {
+	const posts = await getLatest();
+	return {
+		props: {
+			posts: posts,
+		},
+	};
 };
 
 export default Home;

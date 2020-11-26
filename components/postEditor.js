@@ -6,6 +6,22 @@ import { useRouter } from "next/router";
 import NProgress from "nprogress";
 import uploadFile from "../utils/fetch/uploadFile";
 
+import gfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
+const renderers = {
+	code: ({ language = "js", value = "" }) => {
+		return <SyntaxHighlighter language={language} children={value} />;
+	},
+	link: ({ href, children }) => {
+		return (
+			<a className="text-blue-600" href={href} target="_blank">
+				{children}
+			</a>
+		);
+	},
+};
+
 const PostEditor = (props) => {
 	const [uploading, setUploading] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -109,6 +125,8 @@ const PostEditor = (props) => {
 						{props.markdown}
 					</textarea>
 					<ReactMarkdown
+						renderers={renderers}
+						plugins={[gfm]}
 						style={{ minHeight: "16rem" }}
 						className="bg-pureWhite w-full ml-4 p-4 markdown"
 						children={markdown}

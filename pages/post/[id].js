@@ -11,6 +11,22 @@ import { handleLikeClick } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
 import { useState } from "react";
 
+import gfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
+const renderers = {
+	code: ({ language = "js", value = "" }) => {
+		return <SyntaxHighlighter language={language} children={value} />;
+	},
+	link: ({ href, children }) => {
+		return (
+			<a className="text-blue-600" href={href} target="_blank">
+				{children}
+			</a>
+		);
+	},
+};
+
 const Post = (props) => {
 	const [liked, setLiked] = useState(props.liked || 0);
 	const [comments, setComments] = useState(props.comments);
@@ -75,7 +91,12 @@ const Post = (props) => {
 				) : null}
 
 				{/* markdown */}
-				<ReactMarkdown className="mt-6 markdown" children={post.markdown} />
+				<ReactMarkdown
+					renderers={renderers}
+					plugins={[gfm]}
+					className="mt-6 markdown"
+					children={post.markdown}
+				/>
 			</article>
 			{/* comments */}
 			<Comments
