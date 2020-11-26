@@ -14,8 +14,10 @@ export default async (req, res) => {
 
 		const { _id, skip } = req.body;
 
-		const posts = await Post.find({ _id }).select("-markdown").skip();
-
+		const posts = await Post.find({ author: _id })
+			.select("-markdown")
+			.skip(skip)
+			.limit(5);
 		return res.json({
 			error: false,
 			data: posts,
