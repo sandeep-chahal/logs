@@ -9,21 +9,19 @@
 		font-family: Overpass Mono;
 		scroll-behavior: smooth;
 	}
-	.markdown {
-		h1 {
-			font-size: 2rem;
-		}
-		h2 {
-			font-size: 1.5rem;
-		}
-		h3 {
-			font-size: 1.3rem;
-		}
-		p {
-			margin-bottom: 1rem;
-		}
-		a {
-			color: "blue";
-		}
+	.markdown h1 {
+		font-size: 2rem;
+	}
+	.markdown h2 {
+		font-size: 1.5rem;
+	}
+	.markdown h3 {
+		font-size: 1.3rem;
+	}
+	.markdown p {
+		margin-bottom: 1rem;
+	}
+	.markdown a {
+		color: "blue";
 	}
 }

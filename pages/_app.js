@@ -5,7 +5,7 @@ import Router from "next/router";
 import NProgress from "nprogress"; //nprogress module
 import "nprogress/nprogress.css"; //styles of nprogress
 
-import "../styles/tailwind.scss";
+import "../styles/tailwind.css";
 
 NProgress.configure({
 	showSpinner: false,

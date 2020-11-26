@@ -37,13 +37,13 @@ export const GithubStrategy = new _GithubStrategy(
 	},
 	callbackHandler
 );
-export const GoogleStrategy = new _GoogleStrategy(
-	{
-		passReqToCallback: false,
-		clientID: process.env.Google_CLIENTID,
-		clientSecret: process.env.Google_CLIENTSECRET,
-		callbackURL: `/api/auth/callback/google`,
-		scope: "user:email",
-	},
-	callbackHandler
-);
+// export const GoogleStrategy = new _GoogleStrategy(
+// 	{
+// 		passReqToCallback: false,
+// 		clientID: process.env.Google_CLIENTID,
+// 		clientSecret: process.env.Google_CLIENTSECRET,
+// 		callbackURL: `/api/auth/callback/google`,
+// 		scope: "user:email",
+// 	},
+// 	callbackHandler
+// );
