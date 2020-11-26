@@ -32,7 +32,7 @@ export const GithubStrategy = new _GithubStrategy(
 		passReqToCallback: false,
 		clientID: process.env.GITHUB_CLIENTID,
 		clientSecret: process.env.GITHUB_CLIENTSECRET,
-		callbackURL: `/api/auth/callback/github`,
+		callbackURL: process.env.GITHUB_CB_URL,
 		scope: "user:email",
 	},
 	callbackHandler
