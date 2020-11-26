@@ -15,6 +15,7 @@ export default async (req, res) => {
 			if (err.code === "bad_verification_code")
 				return res.redirect("/?error_code=invalid_auth_code");
 			return res.redirect("/?error_code=unknown");
+			console.log(err);
 		}
 		return res.redirect("/auth/user");
 	});
