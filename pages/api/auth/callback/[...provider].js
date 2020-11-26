@@ -11,11 +11,9 @@ export default async (req, res) => {
 	passport.authenticate(req.query.provider)(req, res, (err) => {
 		if (err) {
 			console.log(err);
-
 			if (err.code === "bad_verification_code")
 				return res.redirect("/?error_code=invalid_auth_code");
 			return res.redirect("/?error_code=unknown");
-			console.log(err);
 		}
 		return res.redirect("/auth/user");
 	});
