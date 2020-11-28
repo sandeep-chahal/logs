@@ -3,10 +3,10 @@ import Link from "next/link";
 
 const Post = ({ post }) => {
 	return (
-		<article className="bg-white w-2/3 m-auto my-4 p-3">
+		<article className="bg-white my-4 p-3 text-black">
 			<Link href={`/post/${post._id}`}>
 				<a>
-					<h2 className="text-3xl hover:text-primary cursor-pointer">
+					<h2 className="text-3xl font-extrabold hover:text-primary cursor-pointer">
 						{post.title}
 					</h2>
 				</a>

@@ -44,9 +44,9 @@ const Profile = (props) => {
 	};
 
 	return (
-		<div className="text-black">
+		<div className="text-black mt-40">
 			{/* header */}
-			<div className="mt-16 bg-white w-4/5 m-auto  relative">
+			<div className="bg-white w-4/5 m-auto  relative">
 				<div
 					className="w-32 h-32 m-auto border-pureWhite rounded-full"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}

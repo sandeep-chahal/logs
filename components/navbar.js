@@ -6,7 +6,7 @@ const Navbar = () => {
 	const [state, dispatch] = useStore();
 	const router = useRouter();
 	return (
-		<nav className="flex justify-between h-12 items-center px-20 bg-white">
+		<nav className="flex justify-between h-12 items-center px-20 bg-white shadow-md fixed top-0 left-0 w-full z-50">
 			<h2 className="text-2xl cursor-pointer" onClick={() => router.push("/")}>
 				<span className="font-light">Dev|</span>
 				<span className="font-bold">Logs</span>
