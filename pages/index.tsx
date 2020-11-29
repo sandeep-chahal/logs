@@ -1,14 +1,14 @@
-import {GetServerSideProps} from "next"
+import { GetServerSideProps } from "next";
 
 import { getLatest } from "../services/redis";
-import Post,{IPost} from "../components/post";
+import Post, { IPost } from "../components/post";
 import Tags from "../components/tags";
 
 interface IProps {
-	posts:null|IPost[]
+	posts: null | IPost[];
 }
 
-const Home = ({ posts }:IProps) => {
+const Home = ({ posts }: IProps) => {
 	return (
 		<div className="w-4/5 m-auto flex mt-5 items-baseline">
 			<div className="w-1/5 relative">
@@ -28,7 +28,7 @@ const Home = ({ posts }:IProps) => {
 	);
 };
 
-export const getServerSideProps:GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	const posts = await getLatest();
 	return {
 		props: {

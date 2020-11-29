@@ -1,3 +1,5 @@
+import React from "react";
+import { NextApiRequest, NextApiResponse } from "next";
 import getPost from "../../services/getPost";
 import {
 	withMiddlewares,
@@ -18,7 +20,7 @@ const renderers = {
 	code: ({ language = "js", value = "" }) => {
 		return <SyntaxHighlighter language={language} children={value} />;
 	},
-	link: ({ href, children }) => {
+	link: ({ href, children }: { href: string; children: React.ReactNode }) => {
 		return (
 			<a className="text-blue-600" href={href} target="_blank">
 				{children}
@@ -27,7 +29,39 @@ const renderers = {
 	},
 };
 
-const Post = (props) => {
+export interface IPost {
+	_id: string;
+	title: string;
+	markdown: string;
+	header_img: string | null;
+	tags: string[];
+	updatedOn: string;
+	createdOn: string;
+	likes_counter: string;
+	comments_counter: string;
+	author: IAuthor;
+}
+
+export interface IComment {
+	on_post: string;
+	by_user: string;
+	content: string;
+	date: number;
+}
+
+interface IAuthor {
+	_id: string;
+	name: string;
+	email: string;
+}
+
+interface IProps {
+	post: IPost;
+	comments: IComment[];
+	liked: boolean;
+}
+
+const Post: React.FC<IProps> = (props) => {
 	const [liked, setLiked] = useState(props.liked || 0);
 	const [comments, setComments] = useState(props.comments);
 	const [post, setPost] = useState(props.post);
@@ -110,20 +144,42 @@ const Post = (props) => {
 	);
 };
 
-export const getServerSideProps = async (ctx) => {
-	ctx.req.body = ctx.params;
-	const result = await withMiddlewares(ctx.req, ctx.res, [
+interface CREQ extends NextApiRequest {
+	user: {
+		_id: string;
+		name: string;
+		photo: string;
+		email: string;
+		expiresOn: string;
+	};
+}
+interface CGSSP {
+	req: CREQ;
+	res: NextApiResponse;
+	params: { _id: string };
+}
+
+export const getServerSideProps = async ({
+	params,
+	req,
+	res,
+}: CGSSP): Promise<{ props: IProps } | null> => {
+	req.body = params;
+	const result = await withMiddlewares(req, res, [
 		withPassport,
 		withValidation("valid-id"),
 	]);
 	if (result.error) {
-		return res.redirect("/error?error_code=105");
+		res.redirect("/error?error_code=105");
+	} else {
+		const data = await getPost(params?._id, req.user);
+		if (data.error) res.redirect("/error?error_code=" + data.code);
+		else
+			return {
+				props: JSON.parse(JSON.stringify(data)),
+			};
 	}
-	const data = await getPost(ctx.params.id, ctx.req.user);
-	if (data.error) return ctx.res.redirect("/error?error_code=" + data.code);
-	return {
-		props: JSON.parse(JSON.stringify(data)),
-	};
+	return null;
 };
 
 export default Post;
