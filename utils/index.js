@@ -23,3 +23,12 @@ export const formatNumber = (num) =>
 		: num < 1000000
 		? num / 1000 + "K"
 		: num / 1000000 + "M";
+
+export const formatErrors = (errors) => {
+	const temp = {};
+	errors.forEach((err) => {
+		if (err.field) temp[err.field.toLowerCase()] = err.msg;
+		else temp["other"] = err.msg;
+	});
+	return temp;
+};

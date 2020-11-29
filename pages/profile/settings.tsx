@@ -15,16 +15,28 @@ import Input from "../../components/Input";
 import { useRouter } from "next/router";
 import uploadFile from "../../utils/fetch/uploadFile";
 
-const Settings = ({ user }) => {
+import React from "react";
+import { NextApiRequest, NextApiResponse } from "next";
+import { IUser } from "../../models/user";
+
+interface IProps {
+	user: IUser;
+}
+
+type IError = {
+	[k: string]: string;
+};
+
+const Settings = ({ user }: IProps) => {
 	const [state, dispatch] = useStore();
+	const router = useRouter();
 
 	if (!state.isClient) return <div>Loading</div>;
 	if (!user) {
 		return router.push("/error?error_code=101");
 	}
-	const router = useRouter();
 
-	const [error, setError] = useState({});
+	const [error, setError] = useState<IError>({});
 	const [loading, setLoading] = useState(false);
 	const [photo, setPhoto] = useState(user.photo);
 	const [title, setTitle] = useState(user.title);
@@ -38,6 +50,7 @@ const Settings = ({ user }) => {
 	const handleSave = () => {
 		setLoading(true);
 		setError({});
+		// @ts-ignore
 		updateProfile({
 			photo,
 			title,
@@ -51,7 +64,7 @@ const Settings = ({ user }) => {
 			.then((data) => {
 				console.log("-user-".repeat(50));
 				console.log(data);
-				if (data.error) {
+				if (data && data.error) {
 					setError(data.errors || {});
 					setLoading(false);
 				} else {
@@ -67,16 +80,16 @@ const Settings = ({ user }) => {
 			});
 	};
 
-	const handlePhotoChange = (e) => {
-		if (loading) return;
+	const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (loading || !e || !e.target || !e.target.files) return;
 		setLoading(true);
-		setError([]);
+		setError({});
 		const file = e.target.files[0];
-		e.target.value = null;
+		e.target.value = "";
 		uploadFile(file).then((res) => {
-			if (res.error) {
+			if (res.errors) {
 				setError(res.errors);
-			} else {
+			} else if (res.data) {
 				setPhoto(res.data);
 			}
 			setLoading(false);
@@ -92,12 +105,14 @@ const Settings = ({ user }) => {
 					type="email"
 					name="Email"
 					value={state.user.email}
+					setState={() => {}}
 				/>
 				<Input
 					disabled={true}
 					type="text"
 					name="Name"
 					value={state.user.name}
+					setState={() => {}}
 				/>
 				<Input
 					err={error["photo"]}
@@ -195,7 +210,17 @@ const Settings = ({ user }) => {
 	);
 };
 
-export const getServerSideProps = async ({ req, res }) => {
+interface CREQ extends NextApiRequest {
+	user: IUser;
+	isAuthenticated: () => boolean;
+}
+interface CGSSP {
+	req: CREQ;
+	res: NextApiResponse;
+	params: { id: string };
+}
+
+export const getServerSideProps = async ({ req, res }: CGSSP) => {
 	await dbConnect();
 
 	const result = await withMiddlewares(req, res, [

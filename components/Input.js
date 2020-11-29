@@ -5,7 +5,7 @@ const Input = ({
 	name,
 	setState,
 	value,
-	err = false,
+	err = "",
 	disabled = false,
 	placeholder = "",
 }) => {

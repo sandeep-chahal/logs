@@ -1,14 +1,25 @@
 import axios from "axios";
 
-export default async (file) => {
+interface IData {
+	error: boolean;
+	code?: number;
+	errors?: {
+		[k: string]: string;
+	};
+	data?: string;
+}
+
+export default async (file: File): Promise<IData> => {
 	try {
 		const data = new FormData();
 		data.append("img", file);
+		// @ts-ignore
+		const boundary = data._boundary as string;
 		const headers = new Headers({
-			"Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+			"Content-Type": `multipart/form-data; boundary=${boundary}`,
 		});
 		const results = await axios.post(
-			process.env.NEXT_PUBLIC_STORAGE_ENGINE_URL,
+			process.env.NEXT_PUBLIC_STORAGE_ENGINE_URL as string,
 			data,
 			{
 				headers,
@@ -18,7 +29,9 @@ export default async (file) => {
 			return {
 				error: true,
 				code: 102,
-				errors: [{ filed: "photo", msg: results.data.msg }],
+				errors: {
+					photo: results.data.msg,
+				},
 			};
 		} else {
 			return {
@@ -31,7 +44,7 @@ export default async (file) => {
 		return {
 			error: true,
 			code: 106,
-			errors: [{ filed: "other", msg: "Something went wrong" }],
+			errors: { other: "Something went wrong" },
 		};
 	}
 };
