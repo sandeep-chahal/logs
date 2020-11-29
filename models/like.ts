@@ -17,13 +17,13 @@ const likeSchema = new mongoose.Schema({
 
 likeSchema.index({ on_post: 1, by_user: 1 }, { unique: true });
 
-export interface ILike extends Document {
+export interface ILike {
+	_id: string;
 	on_post: string;
 	by_user: string;
 	date: string;
 }
 
-const like: Model<ILike> =
-	mongoose.models.like || mongoose.model("like", likeSchema);
+const like = mongoose.models.like || mongoose.model("like", likeSchema);
 
 export default like;

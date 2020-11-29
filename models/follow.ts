@@ -16,11 +16,11 @@ const followSchema = new mongoose.Schema({
 });
 
 followSchema.index({ from: 1, to: 1 }, { unique: true });
-export interface IFollow extends Document {
+export interface IFollow {
+	_id: string;
 	from: string;
 	to: string;
 	date: string;
 }
-const follow: Model<IFollow> =
-	mongoose.models.follow || mongoose.model("follow", followSchema);
+const follow = mongoose.models.follow || mongoose.model("follow", followSchema);
 export default follow;

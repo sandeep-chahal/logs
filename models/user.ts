@@ -27,23 +27,24 @@ const userSchema = new mongoose.Schema({
 	web: String,
 });
 
-export interface IUser extends Document {
-	name: String;
+export interface IUser {
+	_id: string;
+	name: string;
 	email: string;
 	follower_counter: number;
 	following_counter: number;
-	provider: String;
-	photo: String;
-	title?: String;
-	summary?: String;
-	location?: String;
-	linkedin?: String;
-	github?: String;
-	twitter?: String;
-	web?: String;
+	provider: string;
+	photo: string;
+	title?: string;
+	summary?: string;
+	location?: string;
+	linkedin?: string;
+	github?: string;
+	twitter?: string;
+	web?: string;
+	expiresOn?: string;
 }
 
-const user: Model<IUser> =
-	mongoose.models.user || mongoose.model("user", userSchema);
+const user = mongoose.models.user || mongoose.model("user", userSchema);
 
 export default user;

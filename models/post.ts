@@ -40,7 +40,7 @@ const postSchema = new mongoose.Schema({
 	tags: [String],
 });
 
-export interface IShortPost extends Document {
+export interface IShortPost {
 	_id: string;
 	title: string;
 	header_img?: string;
@@ -51,7 +51,7 @@ export interface IShortPost extends Document {
 	comments_counter: string;
 	author: IUser;
 }
-export interface IPost extends Document {
+export interface IPost {
 	_id: string;
 	title: string;
 	markdown: string;
@@ -64,7 +64,6 @@ export interface IPost extends Document {
 	author: IUser;
 }
 
-const post: Model<IPost> =
-	mongoose.models.post || mongoose.model("post", postSchema);
+const post = mongoose.models.post || mongoose.model("post", postSchema);
 
 export default post;

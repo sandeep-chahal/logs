@@ -123,18 +123,12 @@ const Post: React.FC<IProps> = (props) => {
 };
 
 interface CREQ extends NextApiRequest {
-	user: {
-		_id: string;
-		name: string;
-		photo: string;
-		email: string;
-		expiresOn: string;
-	};
+	user: IUser;
 }
 interface CGSSP {
 	req: CREQ;
 	res: NextApiResponse;
-	params: { _id: string };
+	params: { id: string };
 }
 
 export const getServerSideProps = async ({
@@ -150,7 +144,7 @@ export const getServerSideProps = async ({
 	if (result.error) {
 		res.redirect("/error?error_code=105");
 	} else {
-		const data = await getPost(params?._id, req.user);
+		const data = await getPost(params.id, req.user);
 		if (data.error) res.redirect("/error?error_code=" + data.code);
 		else
 			return {

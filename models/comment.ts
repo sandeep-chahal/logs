@@ -23,14 +23,15 @@ const commentSchema = new mongoose.Schema({
 
 commentSchema.index({ on_post: 1, by_user: 1 }, { unique: false });
 
-export interface IComment extends Document {
+export interface IComment {
+	_id: string;
 	on_post: string;
 	by_user: string;
 	content: string;
 	date: string;
 }
 
-const follow: Model<IComment> =
+const follow =
 	mongoose.models.comment || mongoose.model("comment", commentSchema);
 
 export default follow;
