@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
 
 import { getLatest } from "../services/redis";
-import Post, { IPost } from "../components/post";
+import Post from "../components/post";
 import Tags from "../components/tags";
+import { IShortPost } from "../models/post";
 
 interface IProps {
-	posts: null | IPost[];
+	posts: null | IShortPost[];
 }
 
 const Home = ({ posts }: IProps) => {

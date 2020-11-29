@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^3.0.0",
+    "@types/mongoose": "^5.10.1",
     "@types/nprogress": "^0.2.0",
     "@types/react-syntax-highlighter": "^13.5.0",
     "autoprefixer": "^10.0.1",

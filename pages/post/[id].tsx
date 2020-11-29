@@ -16,6 +16,10 @@ import { useState } from "react";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
+import { IUser } from "../../models/user";
+import { IPost } from "../../models/post";
+import { IComment } from "../../models/comment";
+
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
 		return <SyntaxHighlighter language={language} children={value} />;
@@ -28,32 +32,6 @@ const renderers = {
 		);
 	},
 };
-
-export interface IPost {
-	_id: string;
-	title: string;
-	markdown: string;
-	header_img: string | null;
-	tags: string[];
-	updatedOn: string;
-	createdOn: string;
-	likes_counter: string;
-	comments_counter: string;
-	author: IAuthor;
-}
-
-export interface IComment {
-	on_post: string;
-	by_user: string;
-	content: string;
-	date: number;
-}
-
-interface IAuthor {
-	_id: string;
-	name: string;
-	email: string;
-}
 
 interface IProps {
 	post: IPost;

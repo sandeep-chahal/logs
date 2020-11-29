@@ -1,24 +1,12 @@
 import dayjs from "dayjs";
 import Link from "next/link";
+import { IShortPost } from "../models/post";
 
-type Author = {
-	name:string;
-	_id:string;
-}
-
-export interface IPost {
-	_id:string;
-	title:string;
-	header_img:string|null;
-	author:string|Author;
-	updatedOn:string;
-	tags:string[]
-}
 interface IProps {
-	post:IPost
+	post: IShortPost;
 }
 
-const Post = ({ post }:IProps) => {
+const Post = ({ post }: IProps) => {
 	return (
 		<article className="bg-white my-4 p-3 text-black">
 			<Link href={`/post/${post._id}`}>

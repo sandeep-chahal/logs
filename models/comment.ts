@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 const commentSchema = new mongoose.Schema({
 	on_post: {
@@ -23,5 +23,14 @@ const commentSchema = new mongoose.Schema({
 
 commentSchema.index({ on_post: 1, by_user: 1 }, { unique: false });
 
-export default mongoose.models.comment ||
-	mongoose.model("comment", commentSchema);
+export interface IComment extends Document {
+	on_post: string;
+	by_user: string;
+	content: string;
+	date: string;
+}
+
+const follow: Model<IComment> =
+	mongoose.models.comment || mongoose.model("comment", commentSchema);
+
+export default follow;
