@@ -1,7 +1,17 @@
 import dayjs from "dayjs";
 import Link from "next/link";
+import { IShortPost } from "../models/post";
+import { IUser } from "../models/user";
 
-const UserPost = ({ post, author, me, deleting, handleDeletePost }) => {
+interface IProps {
+	post: IShortPost;
+	author: IUser;
+	me: boolean;
+	deleting: boolean;
+	handleDeletePost: (id: string) => void;
+}
+
+const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 	return (
 		<div
 			className={`bg-pureWhite p-4 mb-4 cursor-pointer flex justify-between ${

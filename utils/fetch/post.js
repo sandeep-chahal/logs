@@ -175,7 +175,7 @@ export const modifyPost = async (
 	try {
 		const data = {};
 		if (edit) data._id = postId;
-		if (headerImg) data.headerImg = headerImg;
+		if (headerImg) data.header_img = headerImg;
 		if (title) data.title = title;
 		if (tags) data.tags = tags;
 		if (markdown) data.markdown = markdown;

@@ -1,4 +1,12 @@
-import { useState } from "react";
+interface IProps {
+	type: "email" | "password" | "textarea" | "file";
+	name: string;
+	setState: (s: string | React.ChangeEvent<HTMLInputElement>) => void;
+	value: string;
+	err: string;
+	disabled: boolean;
+	placeholder: string;
+}
 
 const Input = ({
 	type,
@@ -8,8 +16,12 @@ const Input = ({
 	err = "",
 	disabled = false,
 	placeholder = "",
-}) => {
-	const handleValueChange = (e) => {
+}: IProps) => {
+	const handleValueChange = (
+		e: React.ChangeEvent<
+			HTMLTextAreaElement | HTMLFormElement | HTMLInputElement
+		>
+	) => {
 		if (setState) setState(e.target.value);
 	};
 
@@ -20,7 +32,6 @@ const Input = ({
 					disabled={disabled}
 					value={value}
 					className="p-2 border-2"
-					value={value}
 					onChange={handleValueChange}
 					placeholder={placeholder}
 				/>

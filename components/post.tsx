@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import { IShortPost } from "../models/post";
+import Image from "next/image";
 
 interface IProps {
 	post: IShortPost;
@@ -9,6 +10,13 @@ interface IProps {
 const Post = ({ post }: IProps) => {
 	return (
 		<article className="bg-white my-4 p-3 text-black">
+			{post.header_img ? (
+				<img
+					src={post.header_img}
+					className="object-cover object-center w-full  h-40 block m-auto mb-4"
+					alt={"header image for " + post.title}
+				/>
+			) : null}
 			<Link href={`/post/${post._id}`}>
 				<a>
 					<h2 className="text-3xl font-extrabold hover:text-primary cursor-pointer">

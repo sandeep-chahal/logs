@@ -11,7 +11,7 @@ import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 import { setUser as setUserToLS } from "../../utils";
 import { updateProfile } from "../../utils/fetch/user";
-import Input from "../../components/Input";
+import Input from "../../components/input";
 import { useRouter } from "next/router";
 import uploadFile from "../../utils/fetch/uploadFile";
 

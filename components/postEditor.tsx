@@ -8,12 +8,13 @@ import uploadFile from "../utils/fetch/uploadFile";
 
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { IPost } from "../models/post";
 
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
 		return <SyntaxHighlighter language={language} children={value} />;
 	},
-	link: ({ href, children }) => {
+	link: ({ href, children }: { href: string; children: React.ReactNode }) => {
 		return (
 			<a className="text-blue-600" href={href} target="_blank">
 				{children}
@@ -22,24 +23,32 @@ const renderers = {
 	},
 };
 
-const PostEditor = (props) => {
+type IError = {
+	[k: string]: string;
+};
+
+interface IProps extends IPost {
+	edit: boolean;
+}
+
+const PostEditor: React.FC<IProps> = (props) => {
 	const [uploading, setUploading] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState([]);
+	const [error, setError] = useState<IError>({});
 	const [title, setTitle] = useState(props.title);
 	const [markdown, setMarkdown] = useState(props.markdown || "");
-	const [headerImg, setHeaderImg] = useState(props.header_img || null);
+	const [headerImg, setHeaderImg] = useState(props.header_img);
 	const [tags, setTags] = useState(props.tags || []);
 	const router = useRouter();
 
-	const handleFileChange = (e) => {
-		if (uploading) return;
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (uploading || !e?.target?.files) return;
 		setUploading(true);
-		setError([]);
+		setError({});
 		const file = e.target.files[0];
-		e.target.value = null;
+		e.target.value = "";
 		uploadFile(file).then((res) => {
-			if (res.error) {
+			if (res.errors) {
 				setError(res.errors);
 			} else {
 				setHeaderImg(res.data);
@@ -52,15 +61,20 @@ const PostEditor = (props) => {
 		if (loading) return;
 		NProgress.start();
 		setLoading(true);
-		setError([]);
+		setError({});
 		modifyPost(props.edit, props._id, headerImg, title, tags, markdown).then(
 			(res) => {
 				NProgress.done();
+				// @ts-ignore
 				if (res.error) {
+					// @ts-ignore
+					// @ts-ignore
 					if (res.msg) setError(res.msg);
+					// @ts-ignore
 					else setError(res.errors);
 					setLoading(false);
 				} else {
+					// @ts-ignore
 					router.push("/post/" + res.data._id);
 				}
 			}
@@ -127,6 +141,7 @@ const PostEditor = (props) => {
 					<ReactMarkdown
 						renderers={renderers}
 						plugins={[gfm]}
+						// @ts-ignore
 						style={{ minHeight: "16rem" }}
 						className="bg-pureWhite w-full ml-4 p-4 markdown"
 						children={markdown}

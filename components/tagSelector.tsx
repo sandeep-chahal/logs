@@ -1,18 +1,27 @@
 import { useState } from "react";
 
+interface IProps {
+	tags: string[];
+	setTags: (k: (prev: string[]) => string[]) => void;
+	availTags: string[];
+	max?: number;
+	className: string;
+	disabled: boolean;
+}
+
 const TagSelector = ({
 	tags,
 	setTags,
 	availTags = [],
-	max,
+	max = Infinity,
 	className,
 	disabled,
-}) => {
-	const handleRemoveTag = (tag) => {
+}: IProps) => {
+	const handleRemoveTag = (tag: string) => {
 		if (disabled) return;
 		setTags((prev) => prev.filter((t) => t !== tag));
 	};
-	const handleTagSelected = (e) => {
+	const handleTagSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const tag = e.target.value;
 		console.log(tag);
 		if (!tag.trim() || tag === "select") return;
