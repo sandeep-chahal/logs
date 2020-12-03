@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import { IShortPost } from "../models/post";
-import Image from "next/image";
 
 interface IProps {
 	post: IShortPost;

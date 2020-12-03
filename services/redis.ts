@@ -1,4 +1,4 @@
-import { IPost } from "../components/post";
+import { IPost } from "../models/post";
 import redis from "../config/redis";
 
 const promisify = async <T>(fn: any, ...args: string[]): Promise<T | null> => {
