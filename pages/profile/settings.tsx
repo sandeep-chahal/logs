@@ -80,12 +80,10 @@ const Settings = ({ user }: IProps) => {
 			});
 	};
 
-	const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (loading || !e || !e.target || !e.target.files) return;
+	const handlePhotoChange = (file: File) => {
+		if (loading) return;
 		setLoading(true);
 		setError({});
-		const file = e.target.files[0];
-		e.target.value = "";
 		uploadFile(file).then((res) => {
 			if (res.errors) {
 				setError(res.errors);
@@ -106,6 +104,7 @@ const Settings = ({ user }: IProps) => {
 					name="Email"
 					value={state.user.email}
 					setState={() => {}}
+					placeholder="Email"
 				/>
 				<Input
 					disabled={true}
@@ -113,6 +112,7 @@ const Settings = ({ user }: IProps) => {
 					name="Name"
 					value={state.user.name}
 					setState={() => {}}
+					placeholder="Name"
 				/>
 				<Input
 					err={error["photo"]}
@@ -120,7 +120,8 @@ const Settings = ({ user }: IProps) => {
 					type="file"
 					name="Photo"
 					value={photo}
-					setState={handlePhotoChange}
+					setFile={handlePhotoChange}
+					placeholder="Image"
 				/>
 			</div>
 
@@ -131,7 +132,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Title"
-					value={title}
+					value={title || ""}
 					setState={setTitle}
 					placeholder="Web developer, Data science, etc"
 				/>
@@ -140,7 +141,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="textarea"
 					name="Summary"
-					value={summary}
+					value={summary || ""}
 					setState={setSummary}
 					placeholder={"A short summary about you..."}
 				/>
@@ -149,7 +150,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Location"
-					value={location}
+					value={location || ""}
 					setState={setLocation}
 					placeholder="City, State, Country"
 				/>
@@ -161,7 +162,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Website"
-					value={web}
+					value={web || ""}
 					setState={setWeb}
 					placeholder={state.user.name.replaceAll(" ", "") + ".com"}
 				/>
@@ -170,7 +171,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Linkedin"
-					value={linkedin}
+					value={linkedin || ""}
 					setState={setLinkedin}
 					placeholder="Linkedin url"
 				/>
@@ -179,7 +180,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Github"
-					value={github}
+					value={github || ""}
 					setState={setGithub}
 					placeholder="Github url"
 				/>
@@ -188,7 +189,7 @@ const Settings = ({ user }: IProps) => {
 					disabled={loading}
 					type="text"
 					name="Twitter"
-					value={twitter}
+					value={twitter || ""}
 					setState={setTwitter}
 					placeholder="Twitter url"
 				/>

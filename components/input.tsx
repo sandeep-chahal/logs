@@ -1,9 +1,10 @@
 interface IProps {
-	type: "email" | "password" | "textarea" | "file";
+	type: "text" | "email" | "password" | "textarea" | "file";
 	name: string;
-	setState: (s: string | React.ChangeEvent<HTMLInputElement>) => void;
+	setState?: (s: string) => void;
+	setFile?: (s: File) => void;
 	value: string;
-	err: string;
+	err?: string;
 	disabled: boolean;
 	placeholder: string;
 }
@@ -16,6 +17,7 @@ const Input = ({
 	err = "",
 	disabled = false,
 	placeholder = "",
+	setFile,
 }: IProps) => {
 	const handleValueChange = (
 		e: React.ChangeEvent<
@@ -47,7 +49,9 @@ const Input = ({
 						type="file"
 						id={name}
 						disabled={disabled}
-						onChange={setState}
+						onChange={(e) =>
+							e.target?.files && setFile ? setFile(e.target?.files[0]) : null
+						}
 					/>
 				</div>
 			);
