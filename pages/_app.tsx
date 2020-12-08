@@ -1,12 +1,11 @@
-import type { AppProps } from 'next/app'
-
+import type { AppProps } from "next/app";
 
 import { Provider } from "../store";
 import Layout from "../components/layout";
 
 import Router from "next/router";
-import NProgress from "nprogress"; //nprogress module
-import "nprogress/nprogress.css"; //styles of nprogress
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 import "../styles/tailwind.css";
 
@@ -18,7 +17,7 @@ Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-function MyApp({ Component, pageProps }:AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<Provider>
 			<Layout>

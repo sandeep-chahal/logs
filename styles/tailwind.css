@@ -9,6 +9,13 @@
 		font-family: Overpass Mono;
 		scroll-behavior: smooth;
 	}
+	#nprogress .bar {
+		background: #fb8585;
+	}
+	#nprogress .peg {
+		box-shadow: 0 0 20px #fb8585, 0 0 20px #fb8585;
+	}
+
 	.markdown h1 {
 		font-size: 2rem;
 	}

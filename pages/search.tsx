@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { IShortPost } from "../models/post";
 import Post from "../components/post";
+import NProgress from "nprogress";
+import PostEditor from "../components/postEditor";
 
 type SResult = {
 	error: boolean;
@@ -20,6 +22,7 @@ const Search = () => {
 		if (!query || query.length < 3)
 			return alert("Query must be greater then 3");
 		setLoading(true);
+		NProgress.start();
 		fetch(
 			`/api/post/search?q=${query}&skip=${posts && more ? posts.length : 0}`
 		)
@@ -42,6 +45,7 @@ const Search = () => {
 			})
 			.finally(() => {
 				setLoading(false);
+				// NProgress.done();
 			});
 	};
 	return (
@@ -63,9 +67,24 @@ const Search = () => {
 					Search
 				</button>
 			</form>
+			{/* {loading ? (
+				<div className="w-4/5 m-auto mt-10 text-center">
+					Searching in Database...
+				</div>
+			) : null} */}
+			<div className="w-4/5 m-auto mt-10 text-center">
+				{Array.isArray(posts) && !posts.length
+					? "I guess we don't have it 🙀"
+					: null}
+				{!Array.isArray(posts) ? "Searching something cool 😺" : null}
+			</div>
 			{Array.isArray(posts) && posts.length ? (
 				<>
 					<div className="w-4/5 m-auto mt-10">
+						<div>
+							{posts.length}
+							{moreAvail ? "+" : ""} result(s) found 😽
+						</div>
 						{posts.map((post) => (
 							<Post post={post} key={post._id} />
 						))}

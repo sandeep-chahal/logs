@@ -26,7 +26,7 @@ const Navbar = () => {
 					</a>
 				</Link>
 				<Link href="/post/add">
-					<a className=" rounded cursor-pointer mx-4 bg-primary px-4 py-1 pt-2">
+					<a className=" rounded cursor-pointer mx-4 bg-primary px-4 py-1 pt-2 text-pureWhite">
 						Write Post
 					</a>
 				</Link>
