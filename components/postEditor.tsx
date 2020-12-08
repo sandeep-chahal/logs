@@ -83,12 +83,12 @@ const PostEditor: React.FC<IProps> = (props) => {
 
 	return (
 		<section className="p-6 px-20">
-			<div className="bg-white p-4">
+			<div className="bg-grey p-4">
 				{/* header image */}
 				<div className="flex items-start">
 					<label
 						htmlFor="header-img"
-						className="bg-pureWhite py-1 px-2 cursor-pointer"
+						className="bg-white py-1 px-2 cursor-pointer"
 					>
 						{uploading ? "Uploading" : "Upload Header Image"}
 					</label>
@@ -143,7 +143,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 						plugins={[gfm]}
 						// @ts-ignore
 						style={{ minHeight: "16rem" }}
-						className="bg-pureWhite w-full ml-4 p-4 markdown"
+						className="bg-white w-full ml-4 p-4 markdown"
 						children={markdown}
 					/>
 				</div>

@@ -96,7 +96,7 @@ const Settings = ({ user }: IProps) => {
 
 	return (
 		<section className="w-2/4 m-auto mt-8 mb-8 text-black">
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">User</h2>
 				<Input
 					disabled={true}
@@ -125,7 +125,7 @@ const Settings = ({ user }: IProps) => {
 				/>
 			</div>
 
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">Bio</h2>
 				<Input
 					err={error["title"]}
@@ -155,7 +155,7 @@ const Settings = ({ user }: IProps) => {
 					placeholder="City, State, Country"
 				/>
 			</div>
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">Socials</h2>
 				<Input
 					err={error["web"]}

@@ -57,9 +57,9 @@ const Profile: React.FC<IProps> = (props) => {
 	return (
 		<div className="text-black mt-40">
 			{/* header */}
-			<div className="bg-white w-4/5 m-auto  relative">
+			<div className="bg-grey w-4/5 m-auto  relative">
 				<div
-					className="w-32 h-32 m-auto border-pureWhite rounded-full"
+					className="w-32 h-32 m-auto border-white rounded-full"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 				>
 					<Image
@@ -135,7 +135,7 @@ const Profile: React.FC<IProps> = (props) => {
 			</div>
 			{/* posts and some stats */}
 
-			<div className="bg-white m-auto w-4/5 mt-20 p-6 mb-12">
+			<div className="bg-grey m-auto w-4/5 mt-20 p-6 mb-12">
 				<div className="mb-6 text-2xl font-extrabold border-b-2 border-black border-opacity-50 inline-block">
 					Posts
 				</div>

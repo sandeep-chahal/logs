@@ -22,7 +22,7 @@ const Home = ({ posts }: IProps) => {
 	return (
 		<div className="w-4/5 m-auto flex mt-5 items-baseline">
 			<div className="w-1/5 relative">
-				<div className="bg-white p-4 text-black fixed w-64">
+				<div className="bg-grey p-4 text-black fixed w-64">
 					<h3 className="text-2xl font-bold mb-3">Tags</h3>
 					<ul>
 						{tags.map((tag) => (
@@ -40,7 +40,7 @@ const Home = ({ posts }: IProps) => {
 				</div>
 			</div>
 			<div className="w-2/3 m-auto">
-				<h1 className="text-3xl bg-white p-2 font-bold text-black ">
+				<h1 className="text-3xl bg-grey p-2 font-bold text-black ">
 					Latest Posts
 				</h1>
 				{Array.isArray(posts) && posts.length > 0 ? (
@@ -48,7 +48,7 @@ const Home = ({ posts }: IProps) => {
 						.filter((post) => !selectedTag || post.tags.includes(selectedTag))
 						.map((post) => <Post key={post._id} post={post} />)
 				) : (
-					<div className="bg-white p-2 mt-3">No Posts Available!</div>
+					<div className="bg-grey p-2 mt-3">No Posts Available!</div>
 				)}
 			</div>
 		</div>

@@ -9,7 +9,7 @@ export default ({ userId, comment, deleteComment }) => {
 	};
 
 	return (
-		<div className="bg-pureWhite p-3 mb-6">
+		<div className="bg-white p-3 mb-6">
 			<div className="flex justify-between">
 				<div className="text-xl">{comment.by_user.name}</div>
 				{userId === comment.by_user._id ? (

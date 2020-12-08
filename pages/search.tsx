@@ -59,11 +59,11 @@ const Search = () => {
 			>
 				<input
 					ref={inputRef}
-					className="bg-white p-2 w-full"
+					className="bg-grey p-2 w-full"
 					type="text"
 					placeholder="Search something..."
 				/>
-				<button type="submit" className="bg-white p-3">
+				<button type="submit" className="bg-grey p-3">
 					Search
 				</button>
 			</form>
@@ -92,7 +92,7 @@ const Search = () => {
 					{moreAvail ? (
 						<button
 							onClick={() => handleSearch(true)}
-							className="p-2 px-10 m-auto block bg-white hover:shadow-md"
+							className="p-2 px-10 m-auto block bg-grey hover:shadow-md"
 						>
 							More
 						</button>
