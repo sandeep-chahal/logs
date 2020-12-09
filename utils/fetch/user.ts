@@ -35,3 +35,10 @@ export const updateProfile = async (data: IUser): Promise<IData> => {
 	if (res.error) res.errors = formatErrors(res.errors);
 	return res;
 };
+
+export const getNotification = async () => {
+	const res = await fetch("/api/user/get-notf");
+	const data = await res.json();
+	if (data.error) throw data.errors[0];
+	return data.data;
+};

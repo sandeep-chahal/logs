@@ -76,12 +76,12 @@ const Profile: React.FC<IProps> = (props) => {
 
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="block bg-primary text-center cursor-pointer py-1 px-2 pt-2">
+							<a className="block bg-primary text-white text-center cursor-pointer py-1 px-2 pt-2">
 								Edit
 							</a>
 						</Link>
 					) : (
-						<button className={`bg-primary py-1 px-2 pt-2`}>
+						<button className={`bg-primary text-white py-1 px-2 pt-2`}>
 							{me
 								? "Edit"
 								: (isFollowing ? `UnFollow` : `Follow`) +

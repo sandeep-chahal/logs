@@ -1,11 +1,20 @@
+import React, { useState } from "react";
 import Image from "next/image";
 import { useStore } from "../store";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import NotificationViewer from "../components/notficationViewer";
+import { setHasNotf } from "../store/actions";
 
 const Navbar = () => {
 	const [state, dispatch] = useStore();
+	const [notfOpen, setNotfOpen] = useState(false);
 	const router = useRouter();
+
+	const handleNotfOpen = () => {
+		setNotfOpen((prev) => !prev);
+		dispatch(setHasNotf(false));
+	};
 	return (
 		<nav className="flex justify-between h-12 items-center px-20 bg-grey shadow-md fixed top-0 left-0 w-full z-50">
 			<Link href="/">
@@ -30,10 +39,21 @@ const Navbar = () => {
 						Write Post
 					</a>
 				</Link>
-				<img
-					className="cursor-pointer mx-4 w-6"
-					src="/icons/notification-1.svg"
-				/>
+				<div
+					onClick={handleNotfOpen}
+					className="relative cursor-pointer w-6 mx-4"
+					title={
+						state.hasNotf
+							? "You have some notifications"
+							: "No new notification"
+					}
+				>
+					<img className="w-full" src="/icons/notification-1.svg" />
+					{state.hasNotf ? (
+						<div className="absolute w-2 h-2 bg-primary right-0 top-0 rounded-full"></div>
+					) : null}
+					{notfOpen ? <NotificationViewer /> : null}
+				</div>
 				{state.userloading ? (
 					<svg
 						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-black border-t-2"

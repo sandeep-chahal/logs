@@ -4,6 +4,7 @@ export const initialState = {
 	user: null,
 	post: null,
 	isClient: false,
+	hasNotf: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload.user,
+			};
+		case TYPES.SET_HAS_NOTF:
+			return {
+				...state,
+				hasNotf: action.payload.has,
 			};
 		default:
 			return state;

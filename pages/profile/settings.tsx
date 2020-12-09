@@ -201,7 +201,7 @@ const Settings = ({ user }: IProps) => {
 			<button
 				onClick={handleSave}
 				disabled={loading}
-				className={`py-1 px-4 ${
+				className={`py-1 px-4 text-white ${
 					loading ? "bg-gray-300 cursor-wait" : "bg-primary"
 				} m-auto block`}
 			>
