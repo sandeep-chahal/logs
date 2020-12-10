@@ -20,6 +20,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { IUser } from "../../models/user";
 import { IPost } from "../../models/post";
 import { IComment } from "../../models/comment";
+import Head from "next/head";
 
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
@@ -47,6 +48,25 @@ const Post: React.FC<IProps> = (props) => {
 
 	return (
 		<section className="p-6 px-20 min-h-screen">
+			<Head>
+				<title>{post.title}</title>
+				<meta
+					name="description"
+					content={post.markdown.substr(0, 20) + "..."}
+				/>
+				<meta
+					name="tags"
+					content={post.tags.join(", ") + ` ${post.author.name}`}
+				/>
+				<meta property="og:title" content={post.title} />
+				<meta
+					property="og:description"
+					content={post.markdown.substr(0, 20) + "..."}
+				/>
+				{post.header_img ? (
+					<meta property="og:image" content={post.header_img} />
+				) : null}
+			</Head>
 			{/* post */}
 			<article className="p-4 text-darkBlue">
 				{/* title */}

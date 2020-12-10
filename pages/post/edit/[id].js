@@ -7,9 +7,17 @@ import {
 } from "../../../middlewares";
 import getEditPostData from "../../../services/getEditPostData";
 import PostEditor from "../../../components/postEditor";
+import Head from "next/head";
 
 const Edit = (props) => {
-	return <PostEditor edit={true} {...props} />;
+	return (
+		<>
+			<Head>
+				<title>Edit Post</title>
+			</Head>
+			<PostEditor edit={true} {...props} />
+		</>
+	);
 };
 
 export const getServerSideProps = async (ctx) => {

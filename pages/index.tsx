@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import { getLatest } from "../utils/fetch/post";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
@@ -24,6 +25,18 @@ const Home = () => {
 	};
 	return (
 		<div className="w-4/5 m-auto flex mt-1 items-baseline min-h-screen">
+			<Head>
+				<title>DevLog</title>
+				<meta
+					name="description"
+					content="Explore and write interesting web articles. Cutting edge and new blogs everyday."
+				/>
+				<meta property="og:title" content="DevLogs" />
+				<meta
+					property="og:description"
+					content="Explore and write interesting web articles. Cutting edge and new blogs everyday."
+				/>
+			</Head>
 			<div className="w-1/5 relative">
 				<div className="p-4 text-darkBlue fixed w-64">
 					<h3 className="text-2xl font-bold mb-3">Tags</h3>

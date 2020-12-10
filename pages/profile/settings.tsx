@@ -18,6 +18,7 @@ import uploadFile from "../../utils/fetch/uploadFile";
 import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import { IUser } from "../../models/user";
+import Head from "next/head";
 
 interface IProps {
 	user: IUser;
@@ -96,6 +97,9 @@ const Settings = ({ user }: IProps) => {
 
 	return (
 		<section className="w-2/4 m-auto mt-8 mb-8 text-darkBlue">
+			<Head>
+				<title>{user.name} | Edit Profile</title>
+			</Head>
 			<div className="bg-white p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">User</h2>
 				<Input

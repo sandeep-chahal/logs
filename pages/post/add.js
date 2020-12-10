@@ -4,9 +4,17 @@ import {
 	withPassport,
 } from "../../middlewares";
 import PostEditor from "../../components/postEditor";
+import Head from "next/head";
 
 const Add = () => {
-	return <PostEditor edit={false} />;
+	return (
+		<>
+			<Head>
+				<title>DevLogs | Create new post</title>
+			</Head>
+			<PostEditor edit={false} />
+		</>
+	);
 };
 
 export const getServerSideProps = async ({ req, res }) => {

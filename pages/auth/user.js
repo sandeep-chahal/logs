@@ -3,6 +3,7 @@ import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 import { withMiddlewares, withPassport } from "../../middlewares";
 import { useEffect } from "react";
+import Head from "next/head";
 const User = ({ user }) => {
 	const router = useRouter();
 	const [_, dispatch] = useStore();
@@ -13,7 +14,14 @@ const User = ({ user }) => {
 		router.push("/");
 	}, []);
 
-	return <div>Wait</div>;
+	return (
+		<>
+			<Head>
+				<title>Signing In</title>
+			</Head>
+			<div className="min-h-screen">Wait</div>
+		</>
+	);
 };
 
 export const getServerSideProps = async ({ req, res }) => {

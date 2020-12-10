@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { IShortPost } from "../models/post";
 import Post from "../components/post";
 import NProgress from "nprogress";
+import Head from "next/head";
 
 type SResult = {
 	error: boolean;
@@ -49,6 +50,10 @@ const Search = () => {
 	};
 	return (
 		<div className="min-h-screen font-medium">
+			<Head>
+				<title>DevLogs | Search</title>
+				<meta name="description" content="search from thousands of posts." />
+			</Head>
 			<form
 				className="m-auto w-4/5 flex shadow-md"
 				onSubmit={(e) => {

@@ -16,6 +16,7 @@ import Image from "next/image";
 
 import { IUser } from "../../models/user";
 import { IShortPost } from "../../models/post";
+import Head from "next/head";
 
 interface IProps {
 	user: IUser;
@@ -56,6 +57,28 @@ const Profile: React.FC<IProps> = (props) => {
 
 	return (
 		<div className="text-darkBlue mt-40 font-semibold">
+			<Head>
+				<title>{user.name}</title>
+				<meta
+					name="description"
+					content={
+						user?.summary ||
+						user?.title ||
+						`Check out cool posts by ${user.name}`
+					}
+				/>
+				<meta name="tags" content={`${user?.title || ""}, ${user.name}`} />
+				<meta property="og:title" content={user.name + " profile"} />
+				<meta
+					property="og:description"
+					content={
+						user?.summary ||
+						user?.title ||
+						`Check out cool posts by ${user.name}`
+					}
+				/>
+				<meta property="og:image" content={user.photo} />
+			</Head>
 			{/* header */}
 			<div className="bg-white w-4/5 m-auto  relative">
 				<div
