@@ -56,7 +56,7 @@ const Navbar = () => {
 				</div>
 				{state.userloading ? (
 					<svg
-						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-black border-t-2"
+						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-darkBlue border-t-2"
 						viewBox="0 0 24 24"
 					></svg>
 				) : state.user ? (

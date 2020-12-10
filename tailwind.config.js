@@ -11,6 +11,8 @@ module.exports = {
 				white: "#fff",
 				grey: "#F8F8F8",
 				primary: "#ff006e",
+				secondary: "#8338ec",
+				darkBlue: "#1c0044",
 			},
 			font: {
 				overpass: "Overpass Mono",

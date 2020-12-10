@@ -45,16 +45,18 @@ const Post: React.FC<IProps> = (props) => {
 	const [post, setPost] = useState(props.post);
 
 	return (
-		<section className="p-6 px-20">
+		<section className="p-6 px-20 min-h-screen">
 			{/* post */}
-			<article className="bg-white p-4 text-black">
+			<article className="p-4 text-darkBlue">
 				{/* title */}
-				<h2 className="text-3xl font-extrabold">{post.title}</h2>
+				<h2 className="text-3xl font-extrabold text-gradient-1">
+					{post.title}
+				</h2>
 				{/* author name , date published */}
-				<div className="flex items-center text-sm font-light">
-					<span className="w-1 h-1 bg-black rounded block mx-3" />
+				<div className="flex items-center text-base font-medium">
+					<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
 					<span>{post.author.name}</span>
-					<span className="w-1 h-1 bg-black rounded block mx-3" />
+					<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
 					<span>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</span>
 				</div>
 				{/* tags */}
@@ -106,7 +108,7 @@ const Post: React.FC<IProps> = (props) => {
 				<ReactMarkdown
 					renderers={renderers}
 					plugins={[gfm]}
-					className="mt-6 markdown"
+					className="mt-6 markdown font-medium"
 					children={post.markdown}
 				/>
 			</article>

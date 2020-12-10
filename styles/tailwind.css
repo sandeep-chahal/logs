@@ -40,6 +40,34 @@
 			var(--color-four)
 		);
 	}
+	.bg-gradient-2 {
+		background: linear-gradient(
+			90deg,
+			rgba(131, 56, 236, 0.01) 0%,
+			rgba(131, 56, 236, 0) 50%
+		);
+		transition: all 0.1s ease-out;
+	}
+	.bg-gradient-3 {
+	}
+	.underline-gradient-1 {
+		background: linear-gradient(
+				90deg,
+				transparent 0,
+				transparent 50%,
+				#fff 50%,
+				#fff 100%
+			),
+			linear-gradient(
+				90deg,
+				var(--color-one),
+				var(--color-two),
+				var(--color-three),
+				var(--color-four),
+				var(--color-five)
+			);
+		background-size: 15px 20px, 100% 100%;
+	}
 }
 /* colors from https://fettblog.eu/ */
 :root {
@@ -52,6 +80,7 @@
 html {
 	font-family: Montserrat;
 	scroll-behavior: smooth;
+	color: #002b38;
 }
 
 body {

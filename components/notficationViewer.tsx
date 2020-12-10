@@ -3,7 +3,6 @@ import useSWR from "swr";
 import { getNotification } from "../utils/fetch/user";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useEffect } from "react";
 
 const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 	const showNotf = () => {
@@ -27,11 +26,11 @@ const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 		<Link
 			href={
 				notification.type === "follow"
-					? "user/" + notification.from.id
-					: "post/" + notification.post?.id
+					? "/user/" + notification.from.id
+					: "/post/" + notification.post?.id
 			}
 		>
-			<a className="p-2 block bg-white mb-4">
+			<a className="p-2 block bg-white mb-4 ml-2">
 				{showNotf()}
 				<div className="text-sm font-light">
 					{dayjs(notification.date).format("dddd, MMMM D YYYY")}
@@ -50,7 +49,7 @@ const NotificationViewer = () => {
 				width: "25rem",
 				minHeight: "10rem",
 			}}
-			className="absolute top-auto right-0 bg-white shadow-md"
+			className="absolute top-auto right-0 rounded bg-white shadow-md"
 		>
 			<h3 className="bg-white p-2 shadow-sm">Notifications</h3>
 			<div className="h-1"></div>

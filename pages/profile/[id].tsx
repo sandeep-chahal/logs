@@ -55,16 +55,16 @@ const Profile: React.FC<IProps> = (props) => {
 	};
 
 	return (
-		<div className="text-black mt-40">
+		<div className="text-darkBlue mt-40">
 			{/* header */}
 			<div className="bg-white w-4/5 m-auto  relative">
 				<div
-					className="w-32 h-32 m-auto border-white rounded-full"
+					className="w-32 h-32 m-auto border-white rounded-full bg-gradient-1"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 				>
 					<Image
-						width="120px"
-						height="120px"
+						width="100px"
+						height="100px"
 						alt={user.name}
 						src={user.photo}
 						className="object-cover object-center rounded-full"
@@ -76,12 +76,12 @@ const Profile: React.FC<IProps> = (props) => {
 
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="block bg-primary text-white text-center cursor-pointer py-1 px-2 pt-2">
+							<a className="block bg-secondary text-white text-center cursor-pointer p-1">
 								Edit
 							</a>
 						</Link>
 					) : (
-						<button className={`bg-primary text-white py-1 px-2 pt-2`}>
+						<button className={`bg-gradient-3 text-white py-1 px-2 pt-2`}>
 							{me
 								? "Edit"
 								: (isFollowing ? `UnFollow` : `Follow`) +
@@ -90,9 +90,9 @@ const Profile: React.FC<IProps> = (props) => {
 					)}
 				</div>
 				<div style={{ transform: "translateY(-50px)" }} className="text-center">
-					<h1 className="text-4xl font-extrabold">{user.name}</h1>
+					<h1 className="text-4xl font-extrabold capitalize">{user.name}</h1>
 					<h3>{user.title ? user.title : "no title found"}</h3>
-					<div className="m-auto inline-flex mt-3">
+					<div className="m-auto inline-flex mt-3 font-medium">
 						<div className="mx-2">{user.email}</div>
 						{user.web ? (
 							<a href={user.web} target="_blank">
@@ -136,7 +136,7 @@ const Profile: React.FC<IProps> = (props) => {
 			{/* posts and some stats */}
 
 			<div className="bg-white m-auto w-4/5 mt-20 p-6 mb-12">
-				<div className="mb-6 text-2xl font-extrabold border-b-2 border-black border-opacity-50 inline-block">
+				<div className="mb-6 text-2xl font-extrabold border-b-2 border-darkBlue border-opacity-50 inline-block">
 					Posts
 				</div>
 				{posts && posts.length ? (
@@ -151,7 +151,7 @@ const Profile: React.FC<IProps> = (props) => {
 							/>
 						))}
 						<button
-							className="bg-primary py-1 px-2 m-auto block"
+							className="bg-secondary text-white py-1 px-2 m-auto block"
 							disabled={loadingMore}
 							onClick={handleLoadMore}
 						>

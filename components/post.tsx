@@ -24,12 +24,12 @@ const Post = ({ post }: IProps) => {
 				</a>
 			</Link>
 
-			<div className="flex items-center text-base font-medium text-black">
-				<span className="w-1 h-1 bg-black rounded block mx-3" />
+			<div className="flex items-center text-base font-medium text-darkBlue">
+				<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
 				{typeof post.author !== "string" ? (
 					<Link href={`profile/${post.author._id}`}>
 						<a>
-							<span className="cursor-pointer hover:underline">
+							<span className="cursor-pointer hover:underline capitalize">
 								{post.author.name}
 							</span>
 						</a>
@@ -37,12 +37,12 @@ const Post = ({ post }: IProps) => {
 				) : (
 					<span>{post.author}</span>
 				)}
-				<span className="w-1 h-1 bg-black rounded block mx-3" />
+				<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
 				<span>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</span>
 			</div>
 			<div className="flex my-2">
 				{post.tags.map((tag, i) => (
-					<div className="text-primary mx-3" key={tag + i}>
+					<div className="text-primary mx-3 font-medium" key={tag + i}>
 						#{tag}
 					</div>
 				))}

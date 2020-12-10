@@ -83,12 +83,12 @@ const PostEditor: React.FC<IProps> = (props) => {
 
 	return (
 		<section className="p-6 px-20">
-			<div className="bg-white p-4">
+			<div className="p-4">
 				{/* header image */}
 				<div className="flex items-start">
 					<label
 						htmlFor="header-img"
-						className="bg-white py-1 px-2 cursor-pointer"
+						className="bg-white py-1 px-2 cursor-pointer border-2  rounded p-2"
 					>
 						{uploading ? "Uploading" : "Upload Header Image"}
 					</label>
@@ -106,7 +106,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 				<input
 					type="text"
 					placeholder="Title"
-					className="mt-6 p-2 w-full"
+					className="mt-6 p-2 w-full border-2  rounded"
 					onChange={(e) => setTitle(e.target.value)}
 					value={title}
 					disabled={loading}
@@ -131,7 +131,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 					<textarea
 						disabled={loading}
 						style={{ minHeight: "16rem" }}
-						className="w-full mr-4 p-4"
+						className="w-2/4 mr-4 p-4 border-2  rounded"
 						onChange={(e) =>
 							setMarkdown(e.target.value.replaceAll("\n", "\n\n"))
 						}
@@ -143,7 +143,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 						plugins={[gfm]}
 						// @ts-ignore
 						style={{ minHeight: "16rem" }}
-						className="bg-white w-full ml-4 p-4 markdown"
+						className="w-2/4 ml-4 p-4 markdown border-2  rounded"
 						children={markdown}
 					/>
 				</div>
@@ -151,7 +151,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 				<button
 					onClick={handleSubmit}
 					disabled={loading || uploading}
-					className="bg-primary py-1 px-4 mt-8 m-auto block"
+					className="bg-gradient-1 text-white py-1 px-4 mt-8 m-auto block"
 				>
 					{!loading ? (props.edit ? "Edit" : "Post it") : "okay, wait!"}
 				</button>

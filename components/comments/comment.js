@@ -1,7 +1,8 @@
 import { useState } from "react";
+import Link from "next/link";
 import dayjs from "dayjs";
 
-export default ({ userId, comment, deleteComment }) => {
+const Comment = ({ userId, comment, deleteComment }) => {
 	const [btnDisable, setBtnDisable] = useState(false);
 
 	const handleClick = () => {
@@ -9,9 +10,13 @@ export default ({ userId, comment, deleteComment }) => {
 	};
 
 	return (
-		<div className="bg-white p-3 mb-6">
+		<div className="bg-white p-3 mb-6 border-l-2 border-secondary bg-gradient-2">
 			<div className="flex justify-between">
-				<div className="text-xl">{comment.by_user.name}</div>
+				<Link href={`profile/${comment.by_user._id}`}>
+					<a className="text-lg capitalize hover:text-primary transition-1">
+						{comment.by_user.name}
+					</a>
+				</Link>
 				{userId === comment.by_user._id ? (
 					<img
 						title={
@@ -27,10 +32,14 @@ export default ({ userId, comment, deleteComment }) => {
 					/>
 				) : null}
 			</div>
-			<div className="text-xs font-light border-b border-black inline-block border-opacity-25">
+			<div className="text-xs font-light border-b border-darkBlue inline-block border-opacity-25">
 				{dayjs(comment.date).format("dddd, MMMM D YYYY")}
 			</div>
-			<p className="mt-2 whitespace-pre-wrap	">{comment.content}</p>
+			<p className="mt-2 whitespace-pre-wrap text-xl font-medium">
+				{comment.content}
+			</p>
 		</div>
 	);
 };
+
+export default Comment;

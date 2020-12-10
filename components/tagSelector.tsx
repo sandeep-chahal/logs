@@ -46,7 +46,7 @@ const TagSelector = ({
 				<select
 					disabled={disabled}
 					onChange={handleTagSelected}
-					className="p-2"
+					className="p-2 border-2 border-black rounded"
 					defaultValue="select"
 				>
 					<option value="select">select</option>

@@ -23,7 +23,7 @@ export default ({ id, comments, post, setPost, setComments }) => {
 		);
 	};
 	return (
-		<div className="text-black mt-6 bg-white p-4">
+		<div className="text-darkBlue mt-6 bg-white p-4">
 			<h2 className="text-xl font-medium mb-2">Comments</h2>
 			<AddComment id={id} setPost={setPost} setComments={setComments} />
 			<div>
@@ -43,7 +43,7 @@ export default ({ id, comments, post, setPost, setComments }) => {
 					<button
 						onClick={handleMoreComments}
 						disabled={loadMore}
-						className="bg-primary px-3 py-1 m-auto block"
+						className="bg-gradient-1 px-3 py-1 m-auto block"
 					>
 						{loadMore ? "Wait" : "More"}
 					</button>
