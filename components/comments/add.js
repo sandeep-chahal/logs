@@ -16,13 +16,13 @@ const AddComment = ({ id, setPost, setComments }) => {
 			<textarea
 				onChange={(e) => setComment(e.target.value)}
 				id="comment"
-				className="block w-full h-24 p-2 border-gray-300 border-2"
+				className="block w-full h-24 p-2 border-gray-300 border-2 border-dashed outline-none focus:border-secondary transition-1"
 				placeholder="What you think?"
 			></textarea>
 			<button
 				onClick={addComment}
 				disabled={!button}
-				className="outline-none border-none bg-primary text-white shadow-none px-2 py-1 my-2"
+				className="outline-none border-none bg-gradient-1 text-white shadow-none px-2 py-1 my-2"
 			>
 				Comment
 			</button>

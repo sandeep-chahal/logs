@@ -10,7 +10,9 @@ module.exports = {
 				black: "#504E4E",
 				white: "#fff",
 				grey: "#F8F8F8",
-				primary: "#FB8585",
+				primary: "#ff006e",
+				secondary: "#8338ec",
+				darkBlue: "#1c0044",
 			},
 			font: {
 				overpass: "Overpass Mono",

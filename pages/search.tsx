@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { IShortPost } from "../models/post";
 import Post from "../components/post";
 import NProgress from "nprogress";
-import PostEditor from "../components/postEditor";
 
 type SResult = {
 	error: boolean;
@@ -45,11 +44,11 @@ const Search = () => {
 			})
 			.finally(() => {
 				setLoading(false);
-				// NProgress.done();
+				NProgress.done();
 			});
 	};
 	return (
-		<div>
+		<div className="min-h-screen font-medium">
 			<form
 				className="m-auto w-4/5 flex shadow-md"
 				onSubmit={(e) => {
@@ -59,11 +58,11 @@ const Search = () => {
 			>
 				<input
 					ref={inputRef}
-					className="bg-grey p-2 w-full"
+					className="p-2 w-full"
 					type="text"
 					placeholder="Search something..."
 				/>
-				<button type="submit" className="bg-grey p-3">
+				<button type="submit" className="font-medium p-3">
 					Search
 				</button>
 			</form>
@@ -76,7 +75,7 @@ const Search = () => {
 				{Array.isArray(posts) && !posts.length
 					? "I guess we don't have it 🙀"
 					: null}
-				{!Array.isArray(posts) ? "Searching something cool 😺" : null}
+				{!Array.isArray(posts) ? "Search something cool 😺" : null}
 			</div>
 			{Array.isArray(posts) && posts.length ? (
 				<>
@@ -92,7 +91,7 @@ const Search = () => {
 					{moreAvail ? (
 						<button
 							onClick={() => handleSearch(true)}
-							className="p-2 px-10 m-auto block bg-grey hover:shadow-md"
+							className="p-2 px-10 m-auto block bg-white hover:shadow-md"
 						>
 							More
 						</button>

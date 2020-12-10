@@ -16,7 +16,7 @@ const Navbar = () => {
 		dispatch(setHasNotf(false));
 	};
 	return (
-		<nav className="flex justify-between h-12 items-center px-20 bg-grey shadow-md fixed top-0 left-0 w-full z-50">
+		<nav className="flex justify-between h-12 items-center px-20 bg-white shadow-md fixed top-0 left-0 w-full z-50">
 			<Link href="/">
 				<a>
 					<h2 className="text-2xl cursor-pointer">
@@ -35,28 +35,34 @@ const Navbar = () => {
 					</a>
 				</Link>
 				<Link href="/post/add">
-					<a className=" rounded cursor-pointer mx-4 bg-primary px-4 py-1 pt-2 text-white">
+					<a className=" rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post
 					</a>
 				</Link>
 				<div
+					id="notification"
 					onClick={handleNotfOpen}
-					className="relative cursor-pointer w-6 mx-4"
+					className="relative w-6 mx-4"
 					title={
 						state.hasNotf
 							? "You have some notifications"
 							: "No new notification"
 					}
 				>
-					<img className="w-full" src="/icons/notification-1.svg" />
+					<img
+						className="cursor-pointer w-full"
+						src="/icons/notification-1.svg"
+					/>
 					{state.hasNotf ? (
 						<div className="absolute w-2 h-2 bg-primary right-0 top-0 rounded-full"></div>
 					) : null}
-					{notfOpen ? <NotificationViewer /> : null}
+					{notfOpen ? (
+						<NotificationViewer close={() => setNotfOpen(false)} />
+					) : null}
 				</div>
 				{state.userloading ? (
 					<svg
-						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-black border-t-2"
+						className="mx-4 animate-spin h-5 w-5 mr-3 rounded-full border-darkBlue border-t-2"
 						viewBox="0 0 24 24"
 					></svg>
 				) : state.user ? (

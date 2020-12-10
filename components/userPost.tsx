@@ -27,7 +27,7 @@ const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 				<div>
 					<h2 className="text-2xl font-bold">{post.title}</h2>
 					<div>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</div>
-					<div className="font-light flex">
+					<div className="flex font-medium">
 						<div className="mr-4">{author.name}</div>
 						<div className="flex mr-4">
 							<img
