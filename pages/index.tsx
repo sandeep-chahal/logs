@@ -1,17 +1,20 @@
-import { GetServerSideProps } from "next";
 import React, { useState } from "react";
-import { getLatest } from "../services/redis";
+import { getLatest } from "../utils/fetch/post";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
+import useSWR from "swr";
 
 const tags = ["javascript", "web", "tech", "nextjs", "nodejs", "reactjs"];
 
-interface IProps {
-	posts: null | IShortPost[];
-}
-
-const Home = ({ posts }: IProps) => {
+const Home = () => {
 	const [selectedTag, setSelectedTag] = useState<string | null>(null);
+	const { data, error } = useSWR<IShortPost[]>("latest", getLatest, {
+		revalidateOnFocus: false,
+	});
+
+	const posts = data?.filter((post) =>
+		selectedTag ? post.tags.includes(selectedTag) : true
+	);
 
 	const handleTagChange = (tag: string) => {
 		setSelectedTag((prev) => {
@@ -41,25 +44,17 @@ const Home = ({ posts }: IProps) => {
 			</div>
 			<div className="w-2/3 m-auto mt-1">
 				<h1 className="text-3xl p-2 font-bold text-darkBlue ">Latest Posts</h1>
+				{error ? <div>Something went wrong!</div> : null}
 				{Array.isArray(posts) && posts.length > 0 ? (
 					posts
 						.filter((post) => !selectedTag || post.tags.includes(selectedTag))
 						.map((post) => <Post key={post._id} post={post} />)
 				) : (
-					<div className="bg-white p-2 mt-3">No Posts Available!</div>
+					<div className="bg-white p-2 mt-3">Loading ...</div>
 				)}
 			</div>
 		</div>
 	);
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-	const posts = await getLatest();
-	return {
-		props: {
-			posts: posts,
-		},
-	};
 };
 
 export default Home;

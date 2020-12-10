@@ -159,3 +159,15 @@ body::-webkit-scrollbar-thumb {
 .transition-2 {
 	transition: all 0.2s ease-out;
 }
+
+.notification::-webkit-scrollbar {
+	width: 3px;
+}
+
+.notification::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.notification::-webkit-scrollbar-thumb {
+	background: #ffe9b4;
+}

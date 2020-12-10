@@ -43,7 +43,9 @@ const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 };
 
 const NotificationViewer = ({ close }: { close: () => void }) => {
-	const { data, error } = useSWR<INotf[]>("notifications", getNotification);
+	const { data, error } = useSWR<INotf[]>("notifications", getNotification, {
+		focusThrottleInterval: 5000,
+	});
 	// const listner = useRef<MouseEvent | null>(null);
 
 	useEffect(() => {
@@ -60,24 +62,27 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 	}, []);
 
 	return (
-		<div
-			style={{
-				width: "25rem",
-				minHeight: "10rem",
-			}}
-			className="absolute top-auto right-0 rounded bg-white shadow-md font-medium"
-		>
+		<div className="absolute top-auto right-0 rounded bg-white shadow-md font-medium ">
 			<h3 className="bg-white p-2 shadow-sm">Notifications</h3>
 			<div className="h-1"></div>
-			{!data ? (
-				<div className="mt-3 text-center">loading...</div>
-			) : Array.isArray(data) && data.length ? (
-				data.map((notification, i) => (
-					<Notification notification={notification} key={i} />
-				))
-			) : (
-				<div className="mt-3 text-center">No notification</div>
-			)}
+			<div
+				style={{
+					width: "25rem",
+					maxHeight: "60vh",
+					minHeight: "10rem",
+				}}
+				className="notification overflow-scroll overflow-x-hidden"
+			>
+				{!data ? (
+					<div className="mt-3 text-center">loading...</div>
+				) : Array.isArray(data) && data.length ? (
+					data.map((notification, i) => (
+						<Notification notification={notification} key={i} />
+					))
+				) : (
+					<div className="mt-3 text-center">No notification</div>
+				)}
+			</div>
 		</div>
 	);
 };

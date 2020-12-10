@@ -1,6 +1,13 @@
 import { setUser } from "../index";
 import NProgress from "nprogress";
 
+export const getLatest = async () => {
+	const res = await fetch("/api/post/latest");
+	const data = await res.json();
+	if (data.error) throw new Error("Something went wrong");
+	return data.data;
+};
+
 export const handleLikeClick = (type, id, setLiked, setPost) => {
 	setPost((prev) => ({
 		...prev,
