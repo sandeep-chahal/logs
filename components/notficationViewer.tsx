@@ -42,10 +42,7 @@ const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 };
 
 const NotificationViewer = () => {
-	const { data, error }: { data: INotf[]; error: boolean } = useSWR(
-		"notifications",
-		getNotification
-	);
+	const { data, error } = useSWR<INotf[]>("notifications", getNotification);
 
 	return (
 		<div
