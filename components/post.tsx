@@ -8,7 +8,7 @@ interface IProps {
 
 const Post = ({ post }: IProps) => {
 	return (
-		<article className="my-10 p-3 rounded hover:bg-white hover:shadow-sm">
+		<article className="mb-10 p-3 rounded hover:bg-white hover:shadow-sm">
 			{post.header_img ? (
 				<img
 					src={post.header_img}

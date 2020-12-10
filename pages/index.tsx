@@ -43,7 +43,9 @@ const Home = () => {
 				</div>
 			</div>
 			<div className="w-2/3 m-auto mt-1">
-				<h1 className="text-3xl p-2 font-bold text-darkBlue ">Latest Posts</h1>
+				<h1 className="text-3xl p-2 font-bold text-darkBlue mb-3">
+					Latest Posts
+				</h1>
 				{error ? <div>Something went wrong!</div> : null}
 				{Array.isArray(posts) && posts.length > 0 ? (
 					posts
