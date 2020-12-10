@@ -83,7 +83,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 
 	return (
 		<section className="p-6 px-20">
-			<div className="bg-grey p-4">
+			<div className="bg-white p-4">
 				{/* header image */}
 				<div className="flex items-start">
 					<label

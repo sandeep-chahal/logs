@@ -1,34 +1,91 @@
-@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300;400;600;700&display=swap");
-
+/* @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700;800&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-	html {
-		font-family: Overpass Mono;
-		scroll-behavior: smooth;
+@layer utilities {
+	.text-gradient-1 {
+		background-color: black;
+		background-image: linear-gradient(
+			45deg,
+			var(--color-three),
+			var(--color-four)
+		);
+		background-size: 100%;
+		background-repeat: repeat;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		-moz-background-clip: text;
+		-moz-text-fill-color: transparent;
+		transition: all 0.1s ease-out;
 	}
-	#nprogress .bar {
-		background: #fb8585;
-	}
-	#nprogress .peg {
-		box-shadow: 0 0 20px #fb8585, 0 0 20px #fb8585;
+	.text-gradient-1:hover {
+		background-image: linear-gradient(
+			45deg,
+			var(--color-three),
+			var(--color-three)
+		);
 	}
 
-	.markdown h1 {
-		font-size: 2rem;
+	.bg-gradient-1 {
+		background: linear-gradient(to right, var(--color-four), var(--color-five));
+		transition: all 0.1s ease-out;
 	}
-	.markdown h2 {
-		font-size: 1.5rem;
+	.bg-gradient-1:hover {
+		background: linear-gradient(
+			to right,
+			var(--color-three),
+			var(--color-four)
+		);
 	}
-	.markdown h3 {
-		font-size: 1.3rem;
-	}
-	.markdown p {
-		margin-bottom: 1rem;
-	}
-	.markdown a {
-		color: "blue";
-	}
+}
+/* colors from https://fettblog.eu/ */
+:root {
+	--color-one: #ffbe0b;
+	--color-two: #fb5607;
+	--color-three: #ff006e;
+	--color-four: #8338ec;
+	--color-five: #3a86ff;
+}
+html {
+	font-family: Montserrat;
+	scroll-behavior: smooth;
+}
+
+body {
+	background-size: 100vw 50vh;
+	background-repeat: no-repeat;
+	background: linear-gradient(to bottom, rgba(255, 255, 255, 0.01), #fff 70%),
+		linear-gradient(to right, #fffcf5, #fff8f5, #fff5f9, #f9f5ff, #f5f9ff);
+}
+#nprogress .bar {
+	background: #fb8585;
+}
+#nprogress .peg {
+	box-shadow: 0 0 20px #fb8585, 0 0 20px #fb8585;
+}
+
+.markdown h1 {
+	font-size: 2rem;
+}
+.markdown h2 {
+	font-size: 1.5rem;
+}
+.markdown h3 {
+	font-size: 1.3rem;
+}
+.markdown p {
+	margin-bottom: 1rem;
+}
+.markdown a {
+	color: "blue";
+}
+
+.transition-1 {
+	transition: all 0.1s ease-out;
+}
+.transition-2 {
+	transition: all 0.2s ease-out;
 }

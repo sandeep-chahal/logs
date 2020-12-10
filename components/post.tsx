@@ -8,7 +8,7 @@ interface IProps {
 
 const Post = ({ post }: IProps) => {
 	return (
-		<article className="bg-grey my-4 p-3 text-black">
+		<article className="my-4 p-3 rounded hover:bg-white hover:shadow-sm">
 			{post.header_img ? (
 				<img
 					src={post.header_img}
@@ -18,13 +18,13 @@ const Post = ({ post }: IProps) => {
 			) : null}
 			<Link href={`/post/${post._id}`}>
 				<a>
-					<h2 className="text-3xl font-extrabold hover:text-primary cursor-pointer">
+					<h2 className="text-3xl font-extrabold text-gradient-1 hover:text-primary cursor-pointer">
 						{post.title}
 					</h2>
 				</a>
 			</Link>
 
-			<div className="flex items-center text-sm font-light">
+			<div className="flex items-center text-base font-medium text-black">
 				<span className="w-1 h-1 bg-black rounded block mx-3" />
 				{typeof post.author !== "string" ? (
 					<Link href={`profile/${post.author._id}`}>

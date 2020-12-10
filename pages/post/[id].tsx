@@ -47,7 +47,7 @@ const Post: React.FC<IProps> = (props) => {
 	return (
 		<section className="p-6 px-20">
 			{/* post */}
-			<article className="bg-grey p-4 text-black">
+			<article className="bg-white p-4 text-black">
 				{/* title */}
 				<h2 className="text-3xl font-extrabold">{post.title}</h2>
 				{/* author name , date published */}

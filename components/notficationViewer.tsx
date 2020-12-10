@@ -31,7 +31,7 @@ const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 					: "post/" + notification.post?.id
 			}
 		>
-			<a className="p-2 block bg-grey mb-4">
+			<a className="p-2 block bg-white mb-4">
 				{showNotf()}
 				<div className="text-sm font-light">
 					{dayjs(notification.date).format("dddd, MMMM D YYYY")}
@@ -52,7 +52,7 @@ const NotificationViewer = () => {
 			}}
 			className="absolute top-auto right-0 bg-white shadow-md"
 		>
-			<h3 className="bg-grey p-2 shadow-sm">Notifications</h3>
+			<h3 className="bg-white p-2 shadow-sm">Notifications</h3>
 			<div className="h-1"></div>
 			{!data ? (
 				<div className="mt-3 text-center">loading...</div>
