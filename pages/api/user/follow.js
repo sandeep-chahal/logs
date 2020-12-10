@@ -7,6 +7,7 @@ import {
 import dbConnect from "../../../config/mongodb";
 import User from "../../../models/user";
 import Follow from "../../../models/follow";
+import { addNotf } from "../../../services/redis";
 
 export default async (req, res) => {
 	const result = await withMiddlewares(req, res, [
@@ -53,6 +54,15 @@ export default async (req, res) => {
 
 		await Promise.all([prom1, prom2, prom3]);
 	}
+
+	await addNotf(String(req.body._id), {
+		date: Date.now(),
+		from: {
+			id: req.user._id,
+			name: req.user.name,
+		},
+		type: "follow",
+	});
 
 	return res.json({
 		error: false,

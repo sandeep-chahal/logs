@@ -7,6 +7,7 @@ import {
 import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 import Comment from "../../../models/comment";
+import { addNotf } from "../../../services/redis";
 
 export default async (req, res) => {
 	const result = await withMiddlewares(req, res, [
@@ -20,8 +21,8 @@ export default async (req, res) => {
 	await dbConnect();
 
 	// check if post exist
-	const isPostExist = await Post.exists({ _id: req.body._id });
-	if (!isPostExist) {
+	const post = await Post.findOne({ _id: req.body._id }).select("author title");
+	if (!post) {
 		return res.json({
 			error: true,
 			code: 4, //404
@@ -36,6 +37,18 @@ export default async (req, res) => {
 	await Post.findByIdAndUpdate(req.body._id, {
 		$inc: {
 			comments_counter: 1,
+		},
+	});
+	await addNotf(String(post.author), {
+		date: Date.now(),
+		from: {
+			id: post.author,
+			name: req.user.name,
+		},
+		type: "comment",
+		post: {
+			id: req.body._id,
+			title: post.title,
 		},
 	});
 	return res.json({

@@ -23,7 +23,7 @@ export default ({ id, comments, post, setPost, setComments }) => {
 		);
 	};
 	return (
-		<div className="text-black mt-6 bg-white p-4">
+		<div className="text-black mt-6 bg-grey p-4">
 			<h2 className="text-xl font-medium mb-2">Comments</h2>
 			<AddComment id={id} setPost={setPost} setComments={setComments} />
 			<div>

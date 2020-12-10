@@ -11,20 +11,32 @@ import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
 import { setUser as setUserToLS } from "../../utils";
 import { updateProfile } from "../../utils/fetch/user";
-import Input from "../../components/Input";
+import Input from "../../components/input";
 import { useRouter } from "next/router";
 import uploadFile from "../../utils/fetch/uploadFile";
 
-const Settings = ({ user }) => {
+import React from "react";
+import { NextApiRequest, NextApiResponse } from "next";
+import { IUser } from "../../models/user";
+
+interface IProps {
+	user: IUser;
+}
+
+type IError = {
+	[k: string]: string;
+};
+
+const Settings = ({ user }: IProps) => {
 	const [state, dispatch] = useStore();
+	const router = useRouter();
 
 	if (!state.isClient) return <div>Loading</div>;
 	if (!user) {
 		return router.push("/error?error_code=101");
 	}
-	const router = useRouter();
 
-	const [error, setError] = useState({});
+	const [error, setError] = useState<IError>({});
 	const [loading, setLoading] = useState(false);
 	const [photo, setPhoto] = useState(user.photo);
 	const [title, setTitle] = useState(user.title);
@@ -38,6 +50,7 @@ const Settings = ({ user }) => {
 	const handleSave = () => {
 		setLoading(true);
 		setError({});
+		// @ts-ignore
 		updateProfile({
 			photo,
 			title,
@@ -51,7 +64,7 @@ const Settings = ({ user }) => {
 			.then((data) => {
 				console.log("-user-".repeat(50));
 				console.log(data);
-				if (data.error) {
+				if (data && data.error) {
 					setError(data.errors || {});
 					setLoading(false);
 				} else {
@@ -67,16 +80,14 @@ const Settings = ({ user }) => {
 			});
 	};
 
-	const handlePhotoChange = (e) => {
+	const handlePhotoChange = (file: File) => {
 		if (loading) return;
 		setLoading(true);
-		setError([]);
-		const file = e.target.files[0];
-		e.target.value = null;
+		setError({});
 		uploadFile(file).then((res) => {
-			if (res.error) {
+			if (res.errors) {
 				setError(res.errors);
-			} else {
+			} else if (res.data) {
 				setPhoto(res.data);
 			}
 			setLoading(false);
@@ -85,19 +96,23 @@ const Settings = ({ user }) => {
 
 	return (
 		<section className="w-2/4 m-auto mt-8 mb-8 text-black">
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">User</h2>
 				<Input
 					disabled={true}
 					type="email"
 					name="Email"
 					value={state.user.email}
+					setState={() => {}}
+					placeholder="Email"
 				/>
 				<Input
 					disabled={true}
 					type="text"
 					name="Name"
 					value={state.user.name}
+					setState={() => {}}
+					placeholder="Name"
 				/>
 				<Input
 					err={error["photo"]}
@@ -105,18 +120,19 @@ const Settings = ({ user }) => {
 					type="file"
 					name="Photo"
 					value={photo}
-					setState={handlePhotoChange}
+					setFile={handlePhotoChange}
+					placeholder="Image"
 				/>
 			</div>
 
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">Bio</h2>
 				<Input
 					err={error["title"]}
 					disabled={loading}
 					type="text"
 					name="Title"
-					value={title}
+					value={title || ""}
 					setState={setTitle}
 					placeholder="Web developer, Data science, etc"
 				/>
@@ -125,7 +141,7 @@ const Settings = ({ user }) => {
 					disabled={loading}
 					type="textarea"
 					name="Summary"
-					value={summary}
+					value={summary || ""}
 					setState={setSummary}
 					placeholder={"A short summary about you..."}
 				/>
@@ -134,19 +150,19 @@ const Settings = ({ user }) => {
 					disabled={loading}
 					type="text"
 					name="Location"
-					value={location}
+					value={location || ""}
 					setState={setLocation}
 					placeholder="City, State, Country"
 				/>
 			</div>
-			<div className="bg-white p-8 mb-8">
+			<div className="bg-grey p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">Socials</h2>
 				<Input
 					err={error["web"]}
 					disabled={loading}
 					type="text"
 					name="Website"
-					value={web}
+					value={web || ""}
 					setState={setWeb}
 					placeholder={state.user.name.replaceAll(" ", "") + ".com"}
 				/>
@@ -155,7 +171,7 @@ const Settings = ({ user }) => {
 					disabled={loading}
 					type="text"
 					name="Linkedin"
-					value={linkedin}
+					value={linkedin || ""}
 					setState={setLinkedin}
 					placeholder="Linkedin url"
 				/>
@@ -164,7 +180,7 @@ const Settings = ({ user }) => {
 					disabled={loading}
 					type="text"
 					name="Github"
-					value={github}
+					value={github || ""}
 					setState={setGithub}
 					placeholder="Github url"
 				/>
@@ -173,7 +189,7 @@ const Settings = ({ user }) => {
 					disabled={loading}
 					type="text"
 					name="Twitter"
-					value={twitter}
+					value={twitter || ""}
 					setState={setTwitter}
 					placeholder="Twitter url"
 				/>
@@ -185,7 +201,7 @@ const Settings = ({ user }) => {
 			<button
 				onClick={handleSave}
 				disabled={loading}
-				className={`py-1 px-4 ${
+				className={`py-1 px-4 text-white ${
 					loading ? "bg-gray-300 cursor-wait" : "bg-primary"
 				} m-auto block`}
 			>
@@ -195,7 +211,17 @@ const Settings = ({ user }) => {
 	);
 };
 
-export const getServerSideProps = async ({ req, res }) => {
+interface CREQ extends NextApiRequest {
+	user: IUser;
+	isAuthenticated: () => boolean;
+}
+interface CGSSP {
+	req: CREQ;
+	res: NextApiResponse;
+	params: { id: string };
+}
+
+export const getServerSideProps = async ({ req, res }: CGSSP) => {
 	await dbConnect();
 
 	const result = await withMiddlewares(req, res, [

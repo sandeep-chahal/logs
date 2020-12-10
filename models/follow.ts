@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 const followSchema = new mongoose.Schema({
 	from: {
@@ -16,5 +16,11 @@ const followSchema = new mongoose.Schema({
 });
 
 followSchema.index({ from: 1, to: 1 }, { unique: true });
-
-export default mongoose.models.follow || mongoose.model("follow", followSchema);
+export interface IFollow {
+	_id: string;
+	from: string;
+	to: string;
+	date: string;
+}
+const follow = mongoose.models.follow || mongoose.model("follow", followSchema);
+export default follow;

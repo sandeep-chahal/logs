@@ -1,3 +1,5 @@
+import React from "react";
+import { NextApiRequest, NextApiResponse } from "next";
 import getPost from "../../services/getPost";
 import {
 	withMiddlewares,
@@ -14,11 +16,15 @@ import { useState } from "react";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
+import { IUser } from "../../models/user";
+import { IPost } from "../../models/post";
+import { IComment } from "../../models/comment";
+
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
 		return <SyntaxHighlighter language={language} children={value} />;
 	},
-	link: ({ href, children }) => {
+	link: ({ href, children }: { href: string; children: React.ReactNode }) => {
 		return (
 			<a className="text-blue-600" href={href} target="_blank">
 				{children}
@@ -27,7 +33,13 @@ const renderers = {
 	},
 };
 
-const Post = (props) => {
+interface IProps {
+	post: IPost;
+	comments: IComment[];
+	liked: boolean;
+}
+
+const Post: React.FC<IProps> = (props) => {
 	const [liked, setLiked] = useState(props.liked || 0);
 	const [comments, setComments] = useState(props.comments);
 	const [post, setPost] = useState(props.post);
@@ -35,7 +47,7 @@ const Post = (props) => {
 	return (
 		<section className="p-6 px-20">
 			{/* post */}
-			<article className="bg-white p-4 text-black">
+			<article className="bg-grey p-4 text-black">
 				{/* title */}
 				<h2 className="text-3xl font-extrabold">{post.title}</h2>
 				{/* author name , date published */}
@@ -110,20 +122,36 @@ const Post = (props) => {
 	);
 };
 
-export const getServerSideProps = async (ctx) => {
-	ctx.req.body = ctx.params;
-	const result = await withMiddlewares(ctx.req, ctx.res, [
+interface CREQ extends NextApiRequest {
+	user: IUser;
+}
+interface CGSSP {
+	req: CREQ;
+	res: NextApiResponse;
+	params: { id: string };
+}
+
+export const getServerSideProps = async ({
+	params,
+	req,
+	res,
+}: CGSSP): Promise<{ props: IProps } | null> => {
+	req.body = params;
+	const result = await withMiddlewares(req, res, [
 		withPassport,
 		withValidation("valid-id"),
 	]);
 	if (result.error) {
-		return res.redirect("/error?error_code=105");
+		res.redirect("/error?error_code=105");
+	} else {
+		const data = await getPost(params.id, req.user);
+		if (data.error) res.redirect("/error?error_code=" + data.code);
+		else
+			return {
+				props: JSON.parse(JSON.stringify(data)),
+			};
 	}
-	const data = await getPost(ctx.params.id, ctx.req.user);
-	if (data.error) return ctx.res.redirect("/error?error_code=" + data.code);
-	return {
-		props: JSON.parse(JSON.stringify(data)),
-	};
+	return null;
 };
 
 export default Post;

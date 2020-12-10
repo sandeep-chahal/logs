@@ -1,4 +1,5 @@
 import { setUser } from "../index";
+import NProgress from "nprogress";
 
 export const handleLikeClick = (type, id, setLiked, setPost) => {
 	setPost((prev) => ({
@@ -30,6 +31,7 @@ export const handleLikeClick = (type, id, setLiked, setPost) => {
 
 export const handleComment = (id, comment, setComments, setPost, setButton) => {
 	setButton(false);
+	NProgress.start();
 	fetch(`/api/post/comment`, {
 		method: "POST",
 		headers: {
@@ -63,6 +65,9 @@ export const handleComment = (id, comment, setComments, setPost, setButton) => {
 					return [data.data, ...prev];
 				});
 			}
+		})
+		.finally(() => {
+			NProgress.done();
 		});
 };
 export const handleDeleteComment = (
@@ -175,7 +180,7 @@ export const modifyPost = async (
 	try {
 		const data = {};
 		if (edit) data._id = postId;
-		if (headerImg) data.headerImg = headerImg;
+		if (headerImg) data.header_img = headerImg;
 		if (title) data.title = title;
 		if (tags) data.tags = tags;
 		if (markdown) data.markdown = markdown;

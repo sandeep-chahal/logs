@@ -16,13 +16,14 @@ export default async (req, res) => {
 			withValidation("post-add"),
 		]);
 		if (result.error) return res.json(result);
-
+		console.log(req.body);
 		// creating post
 		const post = await Post.create({
 			title: req.body.title,
 			markdown: req.body.markdown,
 			tags: req.body.tags || [],
 			author: req.user._id,
+			header_img: req.body.header_img || "",
 		});
 		// add to redis
 		await addLatest({

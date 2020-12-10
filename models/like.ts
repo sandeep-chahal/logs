@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 const likeSchema = new mongoose.Schema({
 	on_post: {
@@ -17,4 +17,13 @@ const likeSchema = new mongoose.Schema({
 
 likeSchema.index({ on_post: 1, by_user: 1 }, { unique: true });
 
-export default mongoose.models.like || mongoose.model("like", likeSchema);
+export interface ILike {
+	_id: string;
+	on_post: string;
+	by_user: string;
+	date: string;
+}
+
+const like = mongoose.models.like || mongoose.model("like", likeSchema);
+
+export default like;

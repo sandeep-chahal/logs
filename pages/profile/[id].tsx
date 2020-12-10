@@ -1,3 +1,5 @@
+import React from "react";
+import { NextApiRequest, NextApiResponse } from "next";
 import {
 	withMiddlewares,
 	withPassport,
@@ -9,18 +11,27 @@ import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
 import { useState } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
-import { data } from "autoprefixer";
 import NProgress from "nprogress";
 import Image from "next/image";
 
-const Profile = (props) => {
+import { IUser } from "../../models/user";
+import { IShortPost } from "../../models/post";
+
+interface IProps {
+	user: IUser;
+	posts: IShortPost[];
+	me: boolean;
+}
+
+const Profile: React.FC<IProps> = (props) => {
 	const { user, me } = props;
-	const [isFollowing, setFollowing] = useState(props.isFollowing || false);
+	// const [isFollowing, setFollowing] = useState(props.isFollowing || false);
+	const [isFollowing, setFollowing] = useState(false);
 	const [posts, setPosts] = useState(props.posts || []);
-	const [deleting, setDeleting] = useState(null);
+	const [deleting, setDeleting] = useState<string | null>(null);
 	const [loadingMore, setLoadingMore] = useState(false);
 
-	const handleDeletePost = (id) => {
+	const handleDeletePost = (id: string) => {
 		if (deleting) return alert("wait!");
 		setDeleting(id);
 		deletePost(id).then((data) => {
@@ -37,7 +48,7 @@ const Profile = (props) => {
 		if (loadingMore) return alert("wait");
 		NProgress.start();
 		loadMorePostsByUser(user._id, posts.length).then((res) => {
-			if (!data.error) setPosts((prev) => [...prev, ...res.data]);
+			if (!res.error) setPosts((prev) => [...prev, ...res.data]);
 			setLoadingMore(false);
 			NProgress.done();
 		});
@@ -46,9 +57,9 @@ const Profile = (props) => {
 	return (
 		<div className="text-black mt-40">
 			{/* header */}
-			<div className="bg-white w-4/5 m-auto  relative">
+			<div className="bg-grey w-4/5 m-auto  relative">
 				<div
-					className="w-32 h-32 m-auto border-pureWhite rounded-full"
+					className="w-32 h-32 m-auto border-white rounded-full"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 				>
 					<Image
@@ -65,12 +76,12 @@ const Profile = (props) => {
 
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="block bg-primary text-center cursor-pointer py-1 px-2 pt-2">
+							<a className="block bg-primary text-white text-center cursor-pointer py-1 px-2 pt-2">
 								Edit
 							</a>
 						</Link>
 					) : (
-						<button className={`bg-primary py-1 px-2 pt-2`}>
+						<button className={`bg-primary text-white py-1 px-2 pt-2`}>
 							{me
 								? "Edit"
 								: (isFollowing ? `UnFollow` : `Follow`) +
@@ -87,34 +98,34 @@ const Profile = (props) => {
 							<a href={user.web} target="_blank">
 								<img
 									className="mx-2 w-6"
-									at="Perosnal Website"
+									alt="Perosnal Website"
 									src="/icons/web.svg"
 								/>
 							</a>
 						) : null}
 						{user.github ? (
-							<a href={user.web} target="_blank">
+							<a href={user.github} target="_blank">
 								<img
 									className="mx-2 w-6"
-									at="Github Link"
+									alt="Github Link"
 									src="/icons/github.svg"
 								/>
 							</a>
 						) : null}
 						{user.linkedin ? (
-							<a href={user.web} target="_blank">
+							<a href={user.linkedin} target="_blank">
 								<img
 									className="mx-2 w-6"
-									at="Linkedin  Link"
+									alt="Linkedin  Link"
 									src="/icons/linkedin.svg"
 								/>
 							</a>
 						) : null}
 						{user.twitter ? (
-							<a href={user.web} target="_blank">
+							<a href={user.twitter} target="_blank">
 								<img
 									className="mx-2 w-6"
-									at="Twitter  Link"
+									alt="Twitter  Link"
 									src="/icons/twitter.svg"
 								/>
 							</a>
@@ -124,7 +135,7 @@ const Profile = (props) => {
 			</div>
 			{/* posts and some stats */}
 
-			<div className="bg-white m-auto w-4/5 mt-20 p-6 mb-12">
+			<div className="bg-grey m-auto w-4/5 mt-20 p-6 mb-12">
 				<div className="mb-6 text-2xl font-extrabold border-b-2 border-black border-opacity-50 inline-block">
 					Posts
 				</div>
@@ -157,40 +168,48 @@ const Profile = (props) => {
 	);
 };
 
-export const getServerSideProps = async (ctx) => {
+interface CREQ extends NextApiRequest {
+	user: IUser;
+	isAuthenticated: () => boolean;
+}
+interface CGSSP {
+	req: CREQ;
+	res: NextApiResponse;
+	params: { id: string };
+}
+
+export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 	try {
 		// connect to db
 		await dbConnect();
 
 		// check if user opens his own profile
-		let me = ctx.params.id === "me";
+		let me = params.id === "me";
 
 		// map id from url to body [for validation]
-		ctx.req.body = ctx.params;
+		req.body = params;
 
 		// run middleware's
-		const result = await withMiddlewares(ctx.req, ctx.res, [
+		const result = await withMiddlewares(req, res, [
 			me ? withValidation("valid-id") : () => {},
 			withPassport,
 		]);
 
 		// if any error during validation
-		if (result.error)
-			return ctx.res.redirect("/error?error_code=" + result.code);
+		if (result.error) return res.redirect("/error?error_code=" + result.code);
 
 		// if not logged in
-		if (me && !ctx.req.isAuthenticated())
-			return ctx.res.redirect("/error?error_code=101");
-		if (!me && ctx.req.isAuthenticated())
-			me = ctx.req.user._id === ctx.params.id;
+		if (me && !req.isAuthenticated())
+			return res.redirect("/error?error_code=101");
+		if (!me && req.isAuthenticated()) me = req.user._id === params.id;
 
 		// get user personal data
 		const data = JSON.parse(
-			JSON.stringify(await getUserData(me ? ctx.req.user._id : ctx.params.id))
+			JSON.stringify(await getUserData(me ? req.user._id : params.id))
 		);
 
 		// if error when fetching user data from db
-		if (data.error) return ctx.res.redirect("/error?error_code=" + data.code);
+		if (data.error) return res.redirect("/error?error_code=" + data.code);
 
 		return {
 			props: {
@@ -201,7 +220,7 @@ export const getServerSideProps = async (ctx) => {
 		};
 	} catch (err) {
 		console.error(err);
-		return ctx.res.redirect("/error?error_code=106");
+		return res.redirect("/error?error_code=106");
 	}
 };
 
