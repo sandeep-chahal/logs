@@ -35,24 +35,30 @@ const Navbar = () => {
 					</a>
 				</Link>
 				<Link href="/post/add">
-					<a className=" rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white">
+					<a className=" rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post
 					</a>
 				</Link>
 				<div
+					id="notification"
 					onClick={handleNotfOpen}
-					className="relative cursor-pointer w-6 mx-4"
+					className="relative w-6 mx-4"
 					title={
 						state.hasNotf
 							? "You have some notifications"
 							: "No new notification"
 					}
 				>
-					<img className="w-full" src="/icons/notification-1.svg" />
+					<img
+						className="cursor-pointer w-full"
+						src="/icons/notification-1.svg"
+					/>
 					{state.hasNotf ? (
 						<div className="absolute w-2 h-2 bg-primary right-0 top-0 rounded-full"></div>
 					) : null}
-					{notfOpen ? <NotificationViewer /> : null}
+					{notfOpen ? (
+						<NotificationViewer close={() => setNotfOpen(false)} />
+					) : null}
 				</div>
 				{state.userloading ? (
 					<svg

@@ -29,7 +29,7 @@ const Home = ({ posts }: IProps) => {
 							<li
 								onClick={() => handleTagChange(tag)}
 								key={tag}
-								className={`mb-2 cursor-pointer text-lg font-medium tracking-wider hover:text-primary ${
+								className={`mb-2 cursor-pointer text-lg font-semibold tracking-wider hover:text-primary ${
 									tag === selectedTag && "text-primary"
 								}`}
 							>

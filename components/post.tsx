@@ -24,7 +24,7 @@ const Post = ({ post }: IProps) => {
 				</a>
 			</Link>
 
-			<div className="flex items-center text-base font-medium text-darkBlue">
+			<div className="flex items-center text-base font-semibold text-darkBlue">
 				<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
 				{typeof post.author !== "string" ? (
 					<Link href={`profile/${post.author._id}`}>

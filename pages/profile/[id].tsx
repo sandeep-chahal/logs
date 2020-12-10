@@ -55,7 +55,7 @@ const Profile: React.FC<IProps> = (props) => {
 	};
 
 	return (
-		<div className="text-darkBlue mt-40">
+		<div className="text-darkBlue mt-40 font-semibold">
 			{/* header */}
 			<div className="bg-white w-4/5 m-auto  relative">
 				<div
@@ -151,7 +151,7 @@ const Profile: React.FC<IProps> = (props) => {
 							/>
 						))}
 						<button
-							className="bg-secondary text-white py-1 px-2 m-auto block"
+							className="bg-secondary text-white py-1 px-2 m-auto block font-semibold"
 							disabled={loadingMore}
 							onClick={handleLoadMore}
 						>
