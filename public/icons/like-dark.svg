@@ -1,8 +1,8 @@
 <svg fill="#504E4E" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px">
     <defs>
         <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="30%" style="stop-color:#ff006e;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#8338ec;stop-opacity:1" />
+        <stop offset="30%" style="stop-color:#ffbe0b;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#ff006e;stop-opacity:1" />
         </linearGradient>
     </defs>
     <path fill="url(#grad3)" d="M15 19H3c-.287 0-.56.123-.75.338-.19.215-.278.501-.243.786l3 24C5.07 44.624 5.496 45 6 45h9c.552 0 1-.447 1-1V20C16 19.448 15.552 19 15 19zM11.5 41c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5S12.328 41 11.5 41zM47 29c0-.979-.354-1.877-.939-2.572C47.222 25.727 48 24.453 48 23c0-2.206-1.794-4-4-4H29.377C29.986 17.07 31 13.616 31 12c0-3.764-2.752-9-5.462-9H23c-.552 0-1 .448-1 1v7.764L18 22v21c.413 1.164 1.696 2 3 2h19c2.206 0 4-1.794 4-4 0-.823-.25-1.588-.677-2.225C44.88 38.228 46 36.742 46 35c0-.979-.354-1.877-.939-2.572C46.222 31.727 47 30.452 47 29z"/>

@@ -48,7 +48,7 @@ const Search = () => {
 			});
 	};
 	return (
-		<div className="min-h-screen">
+		<div className="min-h-screen font-medium">
 			<form
 				className="m-auto w-4/5 flex shadow-md"
 				onSubmit={(e) => {
@@ -62,7 +62,7 @@ const Search = () => {
 					type="text"
 					placeholder="Search something..."
 				/>
-				<button type="submit" className=" p-3">
+				<button type="submit" className="font-medium p-3">
 					Search
 				</button>
 			</form>
@@ -75,7 +75,7 @@ const Search = () => {
 				{Array.isArray(posts) && !posts.length
 					? "I guess we don't have it 🙀"
 					: null}
-				{!Array.isArray(posts) ? "Searching something cool 😺" : null}
+				{!Array.isArray(posts) ? "Search something cool 😺" : null}
 			</div>
 			{Array.isArray(posts) && posts.length ? (
 				<>

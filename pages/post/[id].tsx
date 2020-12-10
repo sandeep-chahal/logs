@@ -49,7 +49,7 @@ const Post: React.FC<IProps> = (props) => {
 			{/* post */}
 			<article className="p-4 text-darkBlue">
 				{/* title */}
-				<h2 className="text-3xl font-extrabold text-gradient-1">
+				<h2 className="text-3xl font-extrabold text-gradient-3">
 					{post.title}
 				</h2>
 				{/* author name , date published */}
