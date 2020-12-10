@@ -52,7 +52,7 @@ const Home = () => {
 						.filter((post) => !selectedTag || post.tags.includes(selectedTag))
 						.map((post) => <Post key={post._id} post={post} />)
 				) : (
-					<div className="bg-white p-2 mt-3">Loading ...</div>
+					<div className="p-2 mt-3">Loading ...</div>
 				)}
 			</div>
 		</div>

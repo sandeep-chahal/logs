@@ -4,7 +4,7 @@ import { getNotification } from "../utils/fetch/user";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { log } from "console";
+import { motion } from "framer-motion";
 
 const Notification: React.FC<{ notification: INotf }> = ({ notification }) => {
 	const showNotf = () => {
@@ -62,7 +62,25 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 	}, []);
 
 	return (
-		<div className="absolute top-auto right-0 rounded bg-white shadow-md font-medium ">
+		<motion.div
+			style={{ originY: 0 }}
+			initial={{
+				scaleY: 0,
+				opacity: 0,
+			}}
+			animate={{
+				scaleY: 1,
+				opacity: 1,
+			}}
+			exit={{
+				scaleY: 0,
+				opacity: 0.5,
+				transition: {
+					duration: 0.15,
+				},
+			}}
+			className="absolute top-auto right-0 rounded bg-white shadow-md font-medium "
+		>
 			<h3 className="bg-white p-2 shadow-sm">Notifications</h3>
 			<div className="h-1"></div>
 			<div
@@ -83,7 +101,7 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 					<div className="mt-3 text-center">No notification</div>
 				)}
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 

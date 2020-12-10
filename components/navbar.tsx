@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import NotificationViewer from "../components/notficationViewer";
 import { setHasNotf } from "../store/actions";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
 	const [state, dispatch] = useStore();
@@ -56,9 +57,11 @@ const Navbar = () => {
 					{state.hasNotf ? (
 						<div className="absolute w-2 h-2 bg-primary right-0 top-0 rounded-full"></div>
 					) : null}
-					{notfOpen ? (
-						<NotificationViewer close={() => setNotfOpen(false)} />
-					) : null}
+					<AnimatePresence>
+						{notfOpen ? (
+							<NotificationViewer close={() => setNotfOpen(false)} />
+						) : null}
+					</AnimatePresence>
 				</div>
 				{state.userloading ? (
 					<svg
@@ -83,7 +86,7 @@ const Navbar = () => {
 					</Link>
 				) : (
 					<div
-						className="mx-4 cursor-pointer"
+						className="mx-4 cursor-pointer font-medium"
 						onClick={() => router.push("/api/auth/github")}
 					>
 						Login with Github

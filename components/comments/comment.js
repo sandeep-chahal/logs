@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { motion } from "framer-motion";
 
 const Comment = ({ userId, comment, deleteComment }) => {
 	const [btnDisable, setBtnDisable] = useState(false);
@@ -10,7 +11,11 @@ const Comment = ({ userId, comment, deleteComment }) => {
 	};
 
 	return (
-		<div className="bg-white p-3 mb-6 border-l-2 border-secondary bg-gradient-2">
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			className="bg-white p-3 mb-6 border-l-2 border-secondary bg-gradient-2"
+		>
 			<div className="flex justify-between">
 				<Link href={`profile/${comment.by_user._id}`}>
 					<a className="text-lg capitalize hover:text-primary transition-1">
@@ -38,7 +43,7 @@ const Comment = ({ userId, comment, deleteComment }) => {
 			<p className="mt-2 whitespace-pre-wrap text-xl font-medium">
 				{comment.content}
 			</p>
-		</div>
+		</motion.div>
 	);
 };
 

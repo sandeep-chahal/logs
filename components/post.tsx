@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import { IShortPost } from "../models/post";
+import { motion } from "framer-motion";
 
 interface IProps {
 	post: IShortPost;
@@ -8,11 +9,20 @@ interface IProps {
 
 const Post = ({ post }: IProps) => {
 	return (
-		<article className="mb-10 p-3 rounded hover:bg-white hover:shadow-sm">
+		<motion.article
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			whileHover={{
+				scale: 1.025,
+				transition: { duration: 0.1 },
+			}}
+			whileTap={{ scale: 0.95 }}
+			className="mb-10 p-3 rounded"
+		>
 			{post.header_img ? (
 				<img
 					src={post.header_img}
-					className="object-cover object-center w-full  h-40 block m-auto mb-4"
+					className="object-cover object-center w-full rounded h-40 block m-auto mb-4"
 					alt={"header image for " + post.title}
 				/>
 			) : null}
@@ -47,7 +57,7 @@ const Post = ({ post }: IProps) => {
 					</div>
 				))}
 			</div>
-		</article>
+		</motion.article>
 	);
 };
 

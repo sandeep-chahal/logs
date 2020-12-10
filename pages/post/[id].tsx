@@ -12,6 +12,7 @@ import { formatNumber } from "../../utils";
 import { handleLikeClick } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -69,7 +70,12 @@ const Post: React.FC<IProps> = (props) => {
 				</div>
 				{/* likes and comments */}
 				<div className="flex items-center font-light">
-					<div
+					<motion.div
+						whileHover={{
+							scale: 1.2,
+							transition: { duration: 0.1 },
+						}}
+						whileTap={{ scale: 0.8 }}
 						className="flex items-center mx-3 cursor-pointer"
 						onClick={() =>
 							handleLikeClick(
@@ -81,11 +87,12 @@ const Post: React.FC<IProps> = (props) => {
 						}
 					>
 						<div>{formatNumber(parseInt(post.likes_counter))}</div>
+
 						<img
 							className="w-6 mx-1 pb-2"
 							src={`/icons/like-${liked ? "dark" : "light"}.svg`}
 						/>
-					</div>
+					</motion.div>
 					<label
 						className="flex items-center mx-3 cursor-pointer"
 						htmlFor="comment"
@@ -97,7 +104,9 @@ const Post: React.FC<IProps> = (props) => {
 
 				{/* header image */}
 				{post.header_img ? (
-					<img
+					<motion.img
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
 						alt="post header image"
 						src={post.header_img}
 						className="block m-auto my-4"
