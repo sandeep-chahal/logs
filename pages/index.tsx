@@ -1,19 +1,20 @@
+import { GetStaticProps } from "next";
 import React, { useState } from "react";
 import Head from "next/head";
-import { getLatest } from "../utils/fetch/post";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
-import useSWR from "swr";
+import { getLatest } from "../services/redis";
 
 const tags = ["javascript", "web", "tech", "nextjs", "nodejs", "reactjs"];
 
-const Home = () => {
-	const [selectedTag, setSelectedTag] = useState<string | null>(null);
-	const { data, error } = useSWR<IShortPost[]>("latest", getLatest, {
-		revalidateOnFocus: false,
-	});
+interface IProps {
+	posts: IShortPost[] | null;
+}
 
-	const posts = data?.filter((post) =>
+const Home = (props: IProps) => {
+	const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+	const posts = props.posts?.filter((post) =>
 		selectedTag ? post.tags.includes(selectedTag) : true
 	);
 
@@ -59,17 +60,31 @@ const Home = () => {
 				<h1 className="text-3xl p-2 font-bold text-darkBlue mb-3">
 					Latest Posts
 				</h1>
-				{error ? <div>Something went wrong!</div> : null}
+
 				{Array.isArray(posts) && posts.length > 0 ? (
 					posts
 						.filter((post) => !selectedTag || post.tags.includes(selectedTag))
 						.map((post) => <Post key={post._id} post={post} />)
 				) : (
-					<div className="p-2 mt-3">Loading ...</div>
+					<div className="p-2 mt-3 text-center font-medium">
+						couldn't find latest posts 🙀
+					</div>
 				)}
 			</div>
 		</div>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+	const posts = await getLatest();
+	console.log("revalidated");
+
+	return {
+		props: {
+			posts,
+		},
+		revalidate: 1000 * 60 * 10, //10 min
+	};
 };
 
 export default Home;

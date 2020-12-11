@@ -28,15 +28,21 @@ export const getLatest = async (
 	start = 0,
 	last = 31
 ): Promise<IPost[] | null> => {
-	const client = await redis();
-	const posts = await promisify<string[] | null>(
-		client.lrange.bind(client, "latest", start, last)
-	);
-	if (posts)
-		return posts
-			.filter((post) => post.length > 10)
-			.map((post) => JSON.parse(post));
-	else return null;
+	try {
+		const client = await redis();
+		const posts = await promisify<string[] | null>(
+			client.lrange.bind(client, "latest", start, last)
+		);
+		if (posts)
+			return posts
+				.filter((post) => post.length > 10)
+				.map((post) => JSON.parse(post));
+		else return null;
+	} catch (err) {
+		console.log("Error:");
+		console.log(err);
+		return null;
+	}
 };
 
 export const addNotf = async (id: string, data: INotf) => {
