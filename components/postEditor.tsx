@@ -16,7 +16,7 @@ const renderers = {
 	},
 	link: ({ href, children }: { href: string; children: React.ReactNode }) => {
 		return (
-			<a className="text-blue-600" href={href} target="_blank">
+			<a className="text-blue-600 font-bold" href={href} target="_blank">
 				{children}
 			</a>
 		);
@@ -38,6 +38,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 	const [title, setTitle] = useState(props.title);
 	const [markdown, setMarkdown] = useState(props.markdown || "");
 	const [headerImg, setHeaderImg] = useState(props.header_img);
+	const [uploadedImg, setUploadedImg] = useState("");
 	const [tags, setTags] = useState(props.tags || []);
 	const router = useRouter();
 
@@ -50,8 +51,8 @@ const PostEditor: React.FC<IProps> = (props) => {
 		uploadFile(file).then((res) => {
 			if (res.errors) {
 				setError(res.errors);
-			} else {
-				setHeaderImg(res.data);
+			} else if (res.data) {
+				setUploadedImg(res.data);
 			}
 			setUploading(false);
 		});
@@ -82,26 +83,37 @@ const PostEditor: React.FC<IProps> = (props) => {
 	};
 
 	return (
-		<section className="p-6 px-20">
+		<section className="px-20 min-h-screen">
 			<div className="p-4">
-				{/* header image */}
-				<div className="flex items-start">
+				{/* upload image */}
+				<div className="flex items-center">
 					<label
-						htmlFor="header-img"
+						htmlFor="upload_img"
 						className="bg-white py-1 px-2 cursor-pointer border-2  rounded p-2"
 					>
-						{uploading ? "Uploading" : "Upload Header Image"}
+						{uploading ? "Uploading" : "Upload an image"}
 					</label>
 					<input
 						onChange={handleFileChange}
-						id="header-img"
+						id="upload_img"
 						type="file"
 						disabled={loading || uploading}
 						accept="image/png,image/jpeg"
 						hidden
 					/>
-					{headerImg ? <img src={headerImg} className="mt-6 h-64" /> : null}
+					{uploadedImg ? (
+						<span className="ml-5 font-normal">{uploadedImg}</span>
+					) : null}
 				</div>
+				{/* header image url */}
+				<input
+					type="text"
+					placeholder="Enter url here..."
+					className="mt-6 p-2 w-full border-2  rounded"
+					onChange={(e) => setHeaderImg(e.target.value)}
+					value={headerImg}
+					disabled={loading}
+				/>
 				{/* title */}
 				<input
 					type="text"
