@@ -17,7 +17,7 @@ const Navbar = () => {
 		dispatch(setHasNotf(false));
 	};
 	return (
-		<nav className="flex justify-between h-12 items-center px-20 bg-white shadow-md fixed top-0 left-0 w-full z-40">
+		<nav className="flex justify-between h-12 items-center pl-5 md:px-20 bg-white shadow-md fixed top-0 left-0 w-full z-40">
 			<Link href="/">
 				<a>
 					<h2 className="text-2xl cursor-pointer">
@@ -26,7 +26,7 @@ const Navbar = () => {
 					</h2>
 				</a>
 			</Link>
-			<div className="flex items-center">
+			<div className="items-center hidden md:flex">
 				<Link href="/search">
 					<a>
 						<img
