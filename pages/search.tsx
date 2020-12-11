@@ -3,6 +3,8 @@ import { IShortPost } from "../models/post";
 import Post from "../components/post";
 import NProgress from "nprogress";
 import Head from "next/head";
+import { useStore } from "../store";
+import { showModal } from "../store/actions";
 
 type SResult = {
 	error: boolean;
@@ -11,6 +13,7 @@ type SResult = {
 };
 
 const Search = () => {
+	const [_, dispatch] = useStore();
 	const [moreAvail, setMoreAvail] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [posts, setPosts] = useState<IShortPost[] | null>(null);
@@ -20,7 +23,12 @@ const Search = () => {
 		if (!inputRef || loading) return;
 		const query = inputRef.current?.value;
 		if (!query || query.length < 3)
-			return alert("Query must be greater then 3");
+			return dispatch(
+				showModal(true, {
+					msg: "Search query length must be greater then 3 char.",
+					type: "ERROR",
+				})
+			);
 		setLoading(true);
 		NProgress.start();
 		fetch(
@@ -29,7 +37,12 @@ const Search = () => {
 			.then((res) => res.json())
 			.then((data: SResult) => {
 				if (data.error) {
-					alert(data.errors ? data.errors[0] : "something went wrong");
+					dispatch(
+						showModal(true, {
+							msg: data.errors ? data.errors[0] : "something went wrong",
+							type: "ERROR",
+						})
+					);
 					setMoreAvail(false);
 				} else if (data.data) {
 					const newPosts = [...(posts && more ? posts : []), ...data.data];
@@ -40,7 +53,12 @@ const Search = () => {
 				}
 			})
 			.catch((err) => {
-				alert("something went wrong");
+				dispatch(
+					showModal(true, {
+						msg: "something went wrong",
+						type: "ERROR",
+					})
+				);
 				setMoreAvail(false);
 			})
 			.finally(() => {
@@ -62,6 +80,7 @@ const Search = () => {
 				}}
 			>
 				<input
+					autoFocus
 					ref={inputRef}
 					className="p-2 w-full"
 					type="text"

@@ -52,7 +52,7 @@ const Post: React.FC<IProps> = (props) => {
 				<title>{post.title}</title>
 				<meta
 					name="description"
-					content={post.markdown.substr(0, 20) + "..."}
+					content={post.markdown.substr(0, 200) + "..."}
 				/>
 				<meta
 					name="tags"
@@ -61,7 +61,7 @@ const Post: React.FC<IProps> = (props) => {
 				<meta property="og:title" content={post.title} />
 				<meta
 					property="og:description"
-					content={post.markdown.substr(0, 20) + "..."}
+					content={post.markdown.substr(0, 200) + "..."}
 				/>
 				{post.header_img ? (
 					<meta property="og:image" content={post.header_img} />

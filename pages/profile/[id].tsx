@@ -17,6 +17,8 @@ import Image from "next/image";
 import { IUser } from "../../models/user";
 import { IShortPost } from "../../models/post";
 import Head from "next/head";
+import { useStore } from "../../store";
+import { showModal } from "../../store/actions";
 
 interface IProps {
 	user: IUser;
@@ -32,12 +34,23 @@ const Profile: React.FC<IProps> = (props) => {
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const [loadingMore, setLoadingMore] = useState(false);
 
+	const [_, dispatch] = useStore();
+
+	const showError = (msg: string) => {
+		dispatch(
+			showModal(true, {
+				msg,
+				type: "ERROR",
+			})
+		);
+	};
+
 	const handleDeletePost = (id: string) => {
-		if (deleting) return alert("wait!");
+		if (deleting) return showError("wait!");
 		setDeleting(id);
 		deletePost(id).then((data) => {
 			if (data.error) {
-				alert(`ERROR:(${data.code})` + data.msg);
+				showError(`ERROR:(${data.code})` + data.msg);
 			} else {
 				setPosts((posts) => posts.filter((post) => post._id !== id));
 			}
@@ -46,7 +59,7 @@ const Profile: React.FC<IProps> = (props) => {
 	};
 
 	const handleLoadMore = () => {
-		if (loadingMore) return alert("wait");
+		if (loadingMore) return showError("wait");
 		NProgress.start();
 		loadMorePostsByUser(user._id, posts.length).then((res) => {
 			if (!res.error) setPosts((prev) => [...prev, ...res.data]);

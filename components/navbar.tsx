@@ -17,7 +17,7 @@ const Navbar = () => {
 		dispatch(setHasNotf(false));
 	};
 	return (
-		<nav className="flex justify-between h-12 items-center px-20 bg-white shadow-md fixed top-0 left-0 w-full z-50">
+		<nav className="flex justify-between h-12 items-center px-20 bg-white shadow-md fixed top-0 left-0 w-full z-40">
 			<Link href="/">
 				<a>
 					<h2 className="text-2xl cursor-pointer">
@@ -36,7 +36,7 @@ const Navbar = () => {
 					</a>
 				</Link>
 				<Link href="/post/add">
-					<a className=" rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
+					<a className="rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post
 					</a>
 				</Link>

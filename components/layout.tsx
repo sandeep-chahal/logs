@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import Navbar from "./navbar";
 import { useStore } from "../store/";
-import { setHasNotf } from "../store/actions";
-import { motion } from "framer-motion";
+import { setHasNotf, showModal } from "../store/actions";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
+import Modal from "./modal";
 
 type IData = {
 	error: boolean;
@@ -12,7 +13,7 @@ type IData = {
 
 const Layout: React.FC = ({ children }) => {
 	const router = useRouter();
-	const [_, dispatch] = useStore();
+	const [state, dispatch] = useStore();
 	useEffect(() => {
 		fetch("/api/user/has-notf")
 			.then((res) => res.json())
@@ -22,6 +23,11 @@ const Layout: React.FC = ({ children }) => {
 				}
 			});
 	}, []);
+
+	const closeModal = () => {
+		dispatch(showModal(false, null));
+	};
+
 	return (
 		<div className="relative">
 			<div className="mb-20">
@@ -42,6 +48,11 @@ const Layout: React.FC = ({ children }) => {
 			>
 				{children}
 			</motion.main>
+			<AnimatePresence>
+				{state.modal ? (
+					<Modal data={state.modalData} close={closeModal} />
+				) : null}
+			</AnimatePresence>
 		</div>
 	);
 };

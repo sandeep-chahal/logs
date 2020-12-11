@@ -5,6 +5,8 @@ export const initialState = {
 	post: null,
 	isClient: false,
 	hasNotf: false,
+	modal: false,
+	modalData: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -18,6 +20,12 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				hasNotf: action.payload.has,
+			};
+		case TYPES.SHOW_MODAL:
+			return {
+				...state,
+				modal: action.payload.open,
+				modalData: action.payload.data,
 			};
 		default:
 			return state;
