@@ -32,6 +32,7 @@ interface IProps extends IPost {
 }
 
 const PostEditor: React.FC<IProps> = (props) => {
+	const [livePreview, setLivePreview] = useState(false);
 	const [uploading, setUploading] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<IError>({});
@@ -82,8 +83,12 @@ const PostEditor: React.FC<IProps> = (props) => {
 		);
 	};
 
+	const handleCheckBox = () => {
+		setLivePreview((prev) => !prev);
+	};
+
 	return (
-		<section className="px-20 min-h-screen">
+		<section className="px-20 min-h-screen w-4/5 m-auto">
 			<div className="p-4">
 				{/* upload image */}
 				<div className="flex items-center">
@@ -126,7 +131,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 				{/* tags */}
 				<TagSelector
 					disabled={loading}
-					className="my-8 flex items-center"
+					className="my-8 flex items-center font-normal"
 					setTags={setTags}
 					tags={tags}
 					availTags={[
@@ -139,24 +144,37 @@ const PostEditor: React.FC<IProps> = (props) => {
 					]}
 				/>
 				{/* markdown */}
-				<div className="flex justify-evenly">
+				<div className="w-full">
 					<textarea
 						disabled={loading}
 						style={{ minHeight: "16rem" }}
-						className="w-2/4 mr-4 p-4 border-2  rounded"
+						className="mr-4 p-4 border-2 w-full rounded"
+						placeholder="Write your markdown here . . . "
 						onChange={(e) =>
 							setMarkdown(e.target.value.replaceAll("\n", "\n\n"))
 						}
 					>
 						{props.markdown}
 					</textarea>
+					<div
+						className="my-2 font-normal inline-flex items-center cursor-pointer"
+						onClick={handleCheckBox}
+						title="Click to enable/disable live preview"
+					>
+						<input
+							type="checkbox"
+							className="form-checkbox mr-3 h-4 w-4 text-green-500"
+							checked={livePreview}
+						/>
+						<span>Live Preview</span>
+					</div>
 					<ReactMarkdown
 						renderers={renderers}
 						plugins={[gfm]}
 						// @ts-ignore
 						style={{ minHeight: "16rem" }}
-						className="w-2/4 ml-4 p-4 markdown border-2  rounded"
-						children={markdown}
+						className="w-full p-4 markdown border-2 rounded"
+						children={livePreview ? markdown : "Live preview is disabled"}
 					/>
 				</div>
 
