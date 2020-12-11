@@ -25,7 +25,7 @@ const Home = (props: IProps) => {
 		});
 	};
 	return (
-		<div className="w-4/5 m-auto flex mt-1 items-baseline min-h-screen">
+		<div className="sm:w-2/3 md:w-4/5 m-auto flex mt-1 items-baseline min-h-screen">
 			<Head>
 				<title>DevLog</title>
 				<meta
@@ -38,7 +38,7 @@ const Home = (props: IProps) => {
 					content="Explore and write interesting web articles. Cutting edge and new blogs everyday."
 				/>
 			</Head>
-			<div className="w-1/5 relative">
+			<div className="w-1/5 relative hidden lg:block">
 				<div className="p-4 text-darkBlue fixed w-64">
 					<h3 className="text-2xl font-bold mb-3">Tags</h3>
 					<ul>
@@ -56,8 +56,8 @@ const Home = (props: IProps) => {
 					</ul>
 				</div>
 			</div>
-			<div className="w-2/3 m-auto mt-1">
-				<h1 className="text-3xl p-2 font-bold text-darkBlue mb-3">
+			<div className="px-2 m-auto mt-1 lg:w-2/3">
+				<h1 className="text-2xl md:text-3xl p-2 font-bold text-darkBlue mb-3">
 					Latest Posts
 				</h1>
 
