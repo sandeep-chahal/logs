@@ -171,3 +171,7 @@ body::-webkit-scrollbar-thumb {
 .notification::-webkit-scrollbar-thumb {
 	background: #ffe9b4;
 }
+
+.top-50 {
+	top: 50px;
+}

@@ -79,17 +79,16 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 					duration: 0.15,
 				},
 			}}
-			className="absolute top-auto right-0 rounded bg-white shadow-md font-medium "
+			className="absolute top-50 md:top-auto right-0 rounded bg-white shadow-md font-medium z-50 w-full md:w-auto"
 		>
 			<h3 className="bg-white p-2 shadow-sm">Notifications</h3>
 			<div className="h-1"></div>
 			<div
 				style={{
 					width: "25rem",
-					maxHeight: "60vh",
-					minHeight: "10rem",
+					height: "60vh",
 				}}
-				className="notification overflow-scroll overflow-x-hidden"
+				className="notification overflow-scroll overflow-x-hidden  min-h-screen md:min-h-full "
 			>
 				{!data ? (
 					<div className="mt-3 text-center">loading...</div>

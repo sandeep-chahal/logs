@@ -16,7 +16,11 @@ const Post = ({ post }: IProps) => {
 				scale: 1.025,
 				transition: { duration: 0.1 },
 			}}
-			whileTap={{ scale: 0.95 }}
+			whileTap={
+				typeof window !== "undefined" && window.innerWidth < 600
+					? {}
+					: { scale: 0.95 }
+			}
 			className="mb-8 p-3 rounded"
 		>
 			{post.header_img ? (

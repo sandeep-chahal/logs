@@ -30,7 +30,7 @@ const Layout: React.FC = ({ children }) => {
 
 	return (
 		<div className="relative">
-			<div className="mb-20">
+			<div className="mb-16 md:mb-20">
 				<Navbar />
 			</div>
 			<motion.main

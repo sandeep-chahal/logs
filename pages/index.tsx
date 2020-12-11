@@ -24,6 +24,7 @@ const Home = (props: IProps) => {
 			return tag;
 		});
 	};
+
 	return (
 		<div className="sm:w-2/3 md:w-4/5 m-auto flex mt-1 items-baseline min-h-screen">
 			<Head>
@@ -57,7 +58,7 @@ const Home = (props: IProps) => {
 				</div>
 			</div>
 			<div className="px-2 m-auto mt-1 lg:w-2/3">
-				<h1 className="text-2xl md:text-3xl p-2 font-bold text-darkBlue mb-3">
+				<h1 className="text-2xl md:text-3xl p-2 font-bold text-darkBlue mb-2 md:mb-3">
 					Latest Posts
 				</h1>
 
