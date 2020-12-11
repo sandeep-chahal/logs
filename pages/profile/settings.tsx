@@ -1,8 +1,4 @@
-import {
-	withAuthentication,
-	withMiddlewares,
-	withPassport,
-} from "../../middlewares";
+import withMiddlewares from "../../middlewares";
 import dbConnect from "../../config/mongodb";
 import getUserProfile from "../../services/getUserProfile";
 
@@ -228,10 +224,7 @@ interface CGSSP {
 export const getServerSideProps = async ({ req, res }: CGSSP) => {
 	await dbConnect();
 
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-	]);
+	const result = await withMiddlewares(req, res, "1 2");
 
 	// if any error during validation
 	if (result.error) return res.redirect("/error?error_code=" + result.code);

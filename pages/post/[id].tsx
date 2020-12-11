@@ -1,11 +1,7 @@
 import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import getPost from "../../services/getPost";
-import {
-	withMiddlewares,
-	withPassport,
-	withValidation,
-} from "../../middlewares";
+import withMiddlewares from "../../middlewares";
 import dayjs from "dayjs";
 import ReactMarkdown from "react-markdown";
 import { formatNumber } from "../../utils";
@@ -168,10 +164,7 @@ export const getServerSideProps = async ({
 	res,
 }: CGSSP): Promise<{ props: IProps } | null> => {
 	req.body = params;
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withValidation("valid-id"),
-	]);
+	const result = await withMiddlewares(req, res, "1 3", "valid-id");
 	if (result.error) {
 		res.redirect("/error?error_code=105");
 	} else {

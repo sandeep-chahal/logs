@@ -1,20 +1,11 @@
 import Post from "../../../models/post";
 import { addLatest } from "../../../services/redis";
 
-import {
-	withAuthentication,
-	withPassport,
-	withMiddlewares,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 
 export default async (req, res) => {
 	try {
-		const result = await withMiddlewares(req, res, [
-			withPassport,
-			withAuthentication,
-			withValidation("post-add"),
-		]);
+		const result = await withMiddlewares(req, res, res, "1 2 3", "post-add");
 		if (result.error) return res.json(result);
 		console.log(req.body);
 		// creating post

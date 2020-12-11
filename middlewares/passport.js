@@ -24,7 +24,7 @@ passport.deserializeUser(async (serializedUser, done) => {
 	done(null, serializedUser);
 });
 
-export default (req, res) => {
+const passportMiddleware = (req, res) => {
 	return new Promise((resolve) => {
 		cookieSession({
 			name: "ps",
@@ -38,3 +38,5 @@ export default (req, res) => {
 		);
 	});
 };
+
+export default passportMiddleware;

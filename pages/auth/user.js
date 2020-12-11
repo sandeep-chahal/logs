@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useStore } from "../../store";
 import { setUser } from "../../store/actions";
-import { withMiddlewares, withPassport } from "../../middlewares";
+import withMiddlewares from "../../middlewares";
 import { useEffect } from "react";
 import Head from "next/head";
 const User = ({ user }) => {
@@ -25,7 +25,7 @@ const User = ({ user }) => {
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-	await withMiddlewares(req, res, [withPassport]);
+	await withMiddlewares(req, res, "1");
 
 	return {
 		props: {

@@ -1,8 +1,4 @@
-import {
-	withMiddlewares,
-	withAuthentication,
-	withPassport,
-} from "../../middlewares";
+import withMiddlewares from "../../middlewares";
 import PostEditor from "../../components/postEditor";
 import Head from "next/head";
 
@@ -18,10 +14,7 @@ const Add = () => {
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-	]);
+	const result = await withMiddlewares(req, res, "1 2");
 	if (result.error) {
 		return res.redirect("/error?error_code=" + result.code);
 	}

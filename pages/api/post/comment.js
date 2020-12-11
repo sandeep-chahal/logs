@@ -1,20 +1,11 @@
-import {
-	withMiddlewares,
-	withAuthentication,
-	withPassport,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 import Comment from "../../../models/comment";
 import { addNotf } from "../../../services/redis";
 
 export default async (req, res) => {
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-		withValidation("post-comment"),
-	]);
+	const result = await withMiddlewares(req, res, "1 2 3", "post-comment");
 	if (result.error) {
 		return res.json(result);
 	}

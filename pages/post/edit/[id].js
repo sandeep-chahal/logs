@@ -1,10 +1,4 @@
-import { useState } from "react";
-import {
-	withAuthentication,
-	withMiddlewares,
-	withPassport,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 import getEditPostData from "../../../services/getEditPostData";
 import PostEditor from "../../../components/postEditor";
 import Head from "next/head";
@@ -22,11 +16,7 @@ const Edit = (props) => {
 
 export const getServerSideProps = async (ctx) => {
 	ctx.req.body = { _id: ctx.params.id };
-	const result = await withMiddlewares(ctx.req, ctx.res, [
-		withPassport,
-		withAuthentication,
-		withValidation("valid-id"),
-	]);
+	const result = await withMiddlewares(ctx.req, ctx.res, "1 2 3", "valid-id");
 	if (result.error) return ctx.res.redirect("/error?error_code=" + result.code);
 	const data = await getEditPostData(ctx.params.id, ctx.req.user);
 	if (data.error) return ctx.res.redirect("/error?code=" + data.code);

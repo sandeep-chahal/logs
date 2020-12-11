@@ -1,24 +1,24 @@
-import {
-	withMiddlewares,
-	withAuthentication,
-	withPassport,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 import { hasNotf } from "../../../services/redis";
 
 export default async (req, res) => {
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-		withValidation("valid-id"),
-	]);
-	if (result.error) {
-		return res.json(result);
-	}
-	const has = await hasNotf(req.user._id);
+	try {
+		const result = await withMiddlewares(req, res, "1 2 3", "valid-id");
+		if (result.error) {
+			return res.json(result);
+		}
+		const has = await hasNotf(req.user._id);
 
-	res.json({
-		error: false,
-		data: has,
-	});
+		res.json({
+			error: false,
+			data: has,
+		});
+	} catch (err) {
+		console.log("ERROR:");
+		console.log(err);
+		res.json({
+			error: false,
+			data: false,
+		});
+	}
 };

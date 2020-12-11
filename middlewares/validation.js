@@ -1,17 +1,17 @@
 import validator from "../utils/validation";
 
-export default (type) => (req, res) => {
+const validation = (type) => (req) => {
 	switch (type) {
 		case "valid-id":
-			return checkValidId(req, res);
+			return checkValidId(req);
 		case "post-add":
-			return addPostValidation(req, res);
+			return addPostValidation(req);
 		case "post-edit":
-			return editPostValidation(req, res);
+			return editPostValidation(req);
 		case "post-comment":
-			return commentPostValidation(req, res);
+			return commentPostValidation(req);
 		case "get-post":
-			return getPostValidation(req, res);
+			return getPostValidation(req);
 		case "user-update":
 			return validateUserUpdate(req.body);
 		default:
@@ -19,7 +19,9 @@ export default (type) => (req, res) => {
 	}
 };
 
-function addPostValidation(req, res) {
+export default validation;
+
+function addPostValidation(req) {
 	const titleErrors = validator("Title", req.body.title)
 		.notEmpty()
 		.isString()
@@ -39,7 +41,7 @@ function addPostValidation(req, res) {
 	return false;
 }
 
-function editPostValidation(req, res) {
+function editPostValidation(req) {
 	const idError = validator("Id", req.body._id).isMongoDbId().errors;
 
 	const titleErrors = validator("Title", req.body.title)
@@ -62,7 +64,7 @@ function editPostValidation(req, res) {
 	return false;
 }
 
-function commentPostValidation(req, res) {
+function commentPostValidation(req) {
 	const idError = validator("Comment Id", req.body._id).isMongoDbId().errors;
 	const contentErrors = validator("Comment", req.body.content)
 		.notEmpty()
@@ -78,7 +80,7 @@ function commentPostValidation(req, res) {
 	return false;
 }
 
-function checkValidId(req, res) {
+function checkValidId(req) {
 	const idError = validator("Id", req.body._id).isMongoDbId().errors;
 	if (idError.hasError)
 		return {

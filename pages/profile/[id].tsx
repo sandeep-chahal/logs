@@ -1,10 +1,6 @@
 import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-	withMiddlewares,
-	withPassport,
-	withValidation,
-} from "../../middlewares";
+import withMiddlewares from "../../middlewares";
 import Link from "next/link";
 import getUserData from "../../services/getUserData";
 import dbConnect from "../../config/mongodb";
@@ -226,10 +222,12 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 		req.body = params;
 
 		// run middleware's
-		const result = await withMiddlewares(req, res, [
-			me ? withValidation("valid-id") : () => {},
-			withPassport,
-		]);
+		const result = await withMiddlewares(
+			req,
+			res,
+			"1 3",
+			me ? "valid-id" : false
+		);
 
 		// if any error during validation
 		if (result.error) return res.redirect("/error?error_code=" + result.code);

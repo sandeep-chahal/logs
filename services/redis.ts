@@ -40,10 +40,6 @@ export const getLatest = async (
 };
 
 export const addNotf = async (id: string, data: INotf) => {
-	console.log("-".repeat(50));
-	console.log("-".repeat(50));
-	console.log(id, data);
-
 	const client = await redis();
 	await promisify(client.set.bind(client, "notf-" + id, "true"));
 	const len = await promisify<number>(client.llen.bind(client, id));

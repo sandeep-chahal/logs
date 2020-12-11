@@ -6,7 +6,6 @@ import Comment from "../models/comment";
 import Follow from "../models/follow";
 
 export default async (postId, user) => {
-	console.log(postId, user);
 	await dbConnect();
 
 	let proms = [];

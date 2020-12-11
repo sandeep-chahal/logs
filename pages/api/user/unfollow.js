@@ -1,19 +1,10 @@
-import {
-	withMiddlewares,
-	withAuthentication,
-	withPassport,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import User from "../../../models/user";
 import Follow from "../../../models/follow";
 
 export default async (req, res) => {
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-		withValidation("valid-id"),
-	]);
+	const result = await withMiddlewares(req, res, "1 2 3", "valid-id");
 	if (result.error) {
 		return res.json(result);
 	}

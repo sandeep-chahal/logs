@@ -1,18 +1,9 @@
-import {
-	withMiddlewares,
-	withAuthentication,
-	withPassport,
-	withValidation,
-} from "../../../middlewares";
+import withMiddlewares from "../../../middlewares";
 import dbConnect from "../../../config/mongodb";
 import Post from "../../../models/post";
 
 export default async (req, res) => {
-	const result = await withMiddlewares(req, res, [
-		withPassport,
-		withAuthentication,
-		withValidation("post-edit"),
-	]);
+	const result = await withMiddlewares(req, res, "1 2 3", "post-edit");
 	if (result.error) {
 		return res.json(result);
 	}
