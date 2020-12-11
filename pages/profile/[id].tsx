@@ -89,7 +89,7 @@ const Profile: React.FC<IProps> = (props) => {
 				<meta property="og:image" content={user.photo} />
 			</Head>
 			{/* header */}
-			<div className="bg-white w-4/5 m-auto  relative">
+			<div className="bg-white w-11/12 md:w-4/5 m-auto  relative">
 				<div
 					className="w-32 h-32 m-auto border-white rounded-full bg-gradient-1"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
@@ -103,12 +103,60 @@ const Profile: React.FC<IProps> = (props) => {
 					/>
 				</div>
 				{/* follow , counts ,edit */}
-				<div className="absolute top-0 right-0 p-8 flex flex-col">
-					<div className="mb-2">Following: {user.following_counter}</div>
+
+				<div style={{ transform: "translateY(-50px)" }} className="text-center">
+					<h1 className="text-4xl font-extrabold capitalize">{user.name}</h1>
+					<h3>{user.title ? user.title : "no title found"}</h3>
+					<div className="m-auto md:inline-flex md:items-center mt-3 font-medium">
+						<div className="mx-2">{user.email}</div>
+						<div className="flex justify-center mt-3 md:mt-0">
+							{user.web ? (
+								<a href={user.web} target="_blank">
+									<img
+										className="mx-8 w-8 md:w-6"
+										alt="Personal Website"
+										src="/icons/web.svg"
+									/>
+								</a>
+							) : null}
+							{user.github ? (
+								<a href={user.github} target="_blank">
+									<img
+										className="mx-8 w-8 md:w-6"
+										alt="Github Link"
+										src="/icons/github.svg"
+									/>
+								</a>
+							) : null}
+							{user.linkedin ? (
+								<a href={user.linkedin} target="_blank">
+									<img
+										className="mx-8 w-8 md:w-6"
+										alt="Linkedin  Link"
+										src="/icons/linkedin.svg"
+									/>
+								</a>
+							) : null}
+							{user.twitter ? (
+								<a href={user.twitter} target="_blank">
+									<img
+										className="mx-8 w-8 md:w-6"
+										alt="Twitter  Link"
+										src="/icons/twitter.svg"
+									/>
+								</a>
+							) : null}
+						</div>
+					</div>
+				</div>
+				<div className="md:absolute top-0 right-0 md:p-8 flex flex-col">
+					<div className="mb-2 text-lg md:text-base">
+						Following: {user.following_counter}
+					</div>
 
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="block bg-secondary text-white text-center cursor-pointer p-1">
+							<a className="inline-block bg-secondary text-white text-center cursor-pointer p-1">
 								Edit
 							</a>
 						</Link>
@@ -121,53 +169,10 @@ const Profile: React.FC<IProps> = (props) => {
 						</button>
 					)}
 				</div>
-				<div style={{ transform: "translateY(-50px)" }} className="text-center">
-					<h1 className="text-4xl font-extrabold capitalize">{user.name}</h1>
-					<h3>{user.title ? user.title : "no title found"}</h3>
-					<div className="m-auto inline-flex mt-3 font-medium">
-						<div className="mx-2">{user.email}</div>
-						{user.web ? (
-							<a href={user.web} target="_blank">
-								<img
-									className="mx-2 w-6"
-									alt="Perosnal Website"
-									src="/icons/web.svg"
-								/>
-							</a>
-						) : null}
-						{user.github ? (
-							<a href={user.github} target="_blank">
-								<img
-									className="mx-2 w-6"
-									alt="Github Link"
-									src="/icons/github.svg"
-								/>
-							</a>
-						) : null}
-						{user.linkedin ? (
-							<a href={user.linkedin} target="_blank">
-								<img
-									className="mx-2 w-6"
-									alt="Linkedin  Link"
-									src="/icons/linkedin.svg"
-								/>
-							</a>
-						) : null}
-						{user.twitter ? (
-							<a href={user.twitter} target="_blank">
-								<img
-									className="mx-2 w-6"
-									alt="Twitter  Link"
-									src="/icons/twitter.svg"
-								/>
-							</a>
-						) : null}
-					</div>
-				</div>
 			</div>
 			{/* posts and some stats */}
 
-			<div className="bg-white m-auto w-4/5 mt-20 p-6 mb-12">
+			<div className="bg-white m-auto w-11/12 md:w-4/5 mt-20 p-3 md:p-6 mb-12">
 				<div className="mb-6 text-2xl font-extrabold border-b-2 border-darkBlue border-opacity-50 inline-block">
 					Posts
 				</div>
@@ -175,6 +180,7 @@ const Profile: React.FC<IProps> = (props) => {
 					<div>
 						{posts.map((post) => (
 							<UserPost
+								key={post._id}
 								me={me}
 								post={post}
 								author={user}

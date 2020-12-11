@@ -88,10 +88,10 @@ const PostEditor: React.FC<IProps> = (props) => {
 	};
 
 	return (
-		<section className="px-20 min-h-screen w-4/5 m-auto">
+		<section className="md:px-20 md:w-4/5 w-11/12 min-h-screen m-auto">
 			<div className="p-4">
 				{/* upload image */}
-				<div className="flex items-center">
+				<div className="flex flex-col md:flex-row md:items-center">
 					<label
 						htmlFor="upload_img"
 						className="bg-white py-1 px-2 cursor-pointer border-2  rounded p-2"
@@ -107,7 +107,9 @@ const PostEditor: React.FC<IProps> = (props) => {
 						hidden
 					/>
 					{uploadedImg ? (
-						<span className="ml-5 font-normal">{uploadedImg}</span>
+						<span className="ml-5 font-normal mt-3 md:mt-0 break-words">
+							{uploadedImg}
+						</span>
 					) : null}
 				</div>
 				{/* header image url */}

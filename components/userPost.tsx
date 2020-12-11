@@ -25,7 +25,7 @@ const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 		>
 			<Link href={deleting ? "#" : `/post/${post._id}`}>
 				<div>
-					<h2 className="text-2xl font-bold">{post.title}</h2>
+					<h2 className="text-xl md:text-2xl font-bold">{post.title}</h2>
 					<div>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</div>
 					<div className="flex font-medium">
 						<div className="mr-4">{author.name}</div>
