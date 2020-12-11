@@ -73,7 +73,7 @@ const Search = () => {
 				<meta name="description" content="search from thousands of posts." />
 			</Head>
 			<form
-				className="m-auto w-4/5 flex shadow-md"
+				className="m-auto w-11/12 lg:w-4/5 flex shadow-md"
 				onSubmit={(e) => {
 					e.preventDefault();
 					handleSearch(false);
@@ -103,8 +103,8 @@ const Search = () => {
 			</div>
 			{Array.isArray(posts) && posts.length ? (
 				<>
-					<div className="w-4/5 m-auto mt-10">
-						<div>
+					<div className="w-11/12 md:w-4/5 m-auto mt-10">
+						<div className="ml-3">
 							{posts.length}
 							{moreAvail ? "+" : ""} result(s) found 😽
 						</div>

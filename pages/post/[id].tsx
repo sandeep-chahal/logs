@@ -9,10 +9,8 @@ import { handleLikeClick } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
 import { useState } from "react";
 import { motion } from "framer-motion";
-
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-
 import { IUser } from "../../models/user";
 import { IPost } from "../../models/post";
 import { IComment } from "../../models/comment";
@@ -43,7 +41,7 @@ const Post: React.FC<IProps> = (props) => {
 	const [post, setPost] = useState(props.post);
 
 	return (
-		<section className="p-6 px-20 min-h-screen">
+		<section className="p-2 md:px-10 lg:px-20 min-h-screen">
 			<Head>
 				<title>{post.title}</title>
 				<meta
@@ -66,15 +64,19 @@ const Post: React.FC<IProps> = (props) => {
 			{/* post */}
 			<article className="p-4 text-darkBlue">
 				{/* title */}
-				<h2 className="text-3xl font-extrabold text-gradient-3">
+				<h2 className="text-2xl md:text-3xl font-extrabold text-gradient-3">
 					{post.title}
 				</h2>
 				{/* author name , date published */}
-				<div className="flex items-center text-base font-medium">
-					<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
-					<span>{post.author.name}</span>
-					<span className="w-1 h-1 bg-darkBlue rounded block mx-3" />
-					<span>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</span>
+				<div className="flex flex-col md:flex-row lg:items-center text-base font-medium">
+					<div className="flex items-center">
+						<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
+						<span>{post.author.name}</span>
+					</div>
+					<div className="flex items-center md:ml-3">
+						<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
+						<span>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</span>
+					</div>
 				</div>
 				{/* tags */}
 				<div className="flex my-2">
