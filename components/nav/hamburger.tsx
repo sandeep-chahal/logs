@@ -7,7 +7,11 @@ interface IProps {
 
 const Hamburger = ({ dropDown, toggleDropDown }: IProps) => {
 	return (
-		<section id="hamburger" className="mr-3 relative" onClick={toggleDropDown}>
+		<section
+			id="hamburger"
+			className="mr-3 relative flex flex-col items-end"
+			onClick={toggleDropDown}
+		>
 			<motion.div
 				key="line-1"
 				animate={{
@@ -23,8 +27,9 @@ const Hamburger = ({ dropDown, toggleDropDown }: IProps) => {
 					transform: `rotate(${dropDown ? -45 : 0}deg) translateY(${
 						dropDown ? "-135%" : "0%"
 					})`,
+					width: `${dropDown ? "1.5rem" : "1rem"}`,
 				}}
-				className="w-6 h-1 bg-black rounded-full"
+				className="w-4 h-1 bg-black rounded-full"
 			></motion.div>
 		</section>
 	);
