@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import useWindowSize from "../../utils/hooks/useWindowSize";
 
 interface IProps {
 	dropDown: boolean;
@@ -7,8 +6,6 @@ interface IProps {
 }
 
 const Hamburger = ({ dropDown, toggleDropDown }: IProps) => {
-	const { width } = useWindowSize();
-	if (width > 768) return null;
 	return (
 		<section id="hamburger" className="mr-3 relative" onClick={toggleDropDown}>
 			<motion.div

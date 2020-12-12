@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import NotificationViewer from "../notificationViewer";
 import { IUser } from "../../models/user";
-import useWindowSize from "../../utils/hooks/useWindowSize";
 
 interface IProps {
 	toggleDropDown: () => void;
@@ -17,8 +16,6 @@ const MobileNav = ({
 	notifOpen,
 	user,
 }: IProps) => {
-	const { width } = useWindowSize();
-	if (width > 768 || width === 0) return null;
 	return (
 		<motion.div
 			key="mobile-nav"

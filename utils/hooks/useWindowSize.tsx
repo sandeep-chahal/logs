@@ -2,8 +2,8 @@ import React from "react";
 export default function useWindowSize() {
 	const isSSR = typeof window === "undefined";
 	const [windowSize, setWindowSize] = React.useState({
-		width: isSSR ? 0 : window.innerWidth,
-		height: isSSR ? 0 : window.innerHeight,
+		width: isSSR ? null : window.innerWidth,
+		height: isSSR ? null : window.innerHeight,
 	});
 
 	function changeWindowSize() {

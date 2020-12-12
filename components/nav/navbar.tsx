@@ -40,14 +40,18 @@ const Navbar = () => {
 						</h2>
 					</a>
 				</Link>
-				<Hamburger dropDown={dropDown} toggleDropDown={toggleDropDown} />
-				<DesktopNav
-					handleNotifOpen={handleNotifOpen}
-					hasNotif={state.hasNotif}
-					notifOpen={notifOpen}
-					setNotifOpen={setNotifOpen}
-					user={state.user}
-				/>
+				{width && width > 768 ? (
+					<DesktopNav
+						handleNotifOpen={handleNotifOpen}
+						hasNotif={state.hasNotif}
+						notifOpen={notifOpen}
+						setNotifOpen={setNotifOpen}
+						user={state.user}
+					/>
+				) : null}
+				{width && width < 768 ? (
+					<Hamburger dropDown={dropDown} toggleDropDown={toggleDropDown} />
+				) : null}
 			</nav>
 			<AnimatePresence>
 				{dropDown ? (
