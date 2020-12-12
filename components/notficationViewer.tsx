@@ -46,19 +46,21 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 	const { data, error } = useSWR<INotf[]>("notifications", getNotification, {
 		focusThrottleInterval: 5000,
 	});
-	// const listner = useRef<MouseEvent | null>(null);
 
 	useEffect(() => {
-		const handleListner = (e: MouseEvent) => {
-			// @ts-ignore
-			if (!e.path.some((el) => el.id == "notification")) {
-				close();
-			}
-		};
-		document.body.addEventListener("click", handleListner);
-		return function cleanup() {
-			document.body.removeEventListener("click", handleListner);
-		};
+		// only if mot on mobile
+		if (typeof window !== "undefined" && window.innerWidth > 768) {
+			const handleListner = (e: MouseEvent) => {
+				// @ts-ignore
+				if (!e.path.some((el) => el.id == "notification")) {
+					close();
+				}
+			};
+			document.body.addEventListener("click", handleListner);
+			return function cleanup() {
+				document.body.removeEventListener("click", handleListner);
+			};
+		}
 	}, []);
 
 	return (
@@ -90,9 +92,15 @@ const NotificationViewer = ({ close }: { close: () => void }) => {
 				}}
 				className="notification overflow-scroll overflow-x-hidden  min-h-screen md:min-h-full "
 			>
-				{!data ? (
+				{!data && !error ? (
 					<div className="mt-3 text-center">loading...</div>
-				) : Array.isArray(data) && data.length ? (
+				) : null}
+				{error ? (
+					<div className="mt-3 text-center">
+						{typeof error === "string" ? error : "Something went wrong!"}
+					</div>
+				) : null}
+				{!data ? null : Array.isArray(data) && data.length ? (
 					data.map((notification, i) => (
 						<Notification notification={notification} key={i} />
 					))
