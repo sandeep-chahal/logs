@@ -18,7 +18,7 @@ const MobileNav = ({
 	user,
 }: IProps) => {
 	const { width } = useWindowSize();
-	if (width > 768) return null;
+	if (width > 768 || width === 0) return null;
 	return (
 		<motion.div
 			key="mobile-nav"

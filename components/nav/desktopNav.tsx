@@ -24,7 +24,7 @@ const DesktopNav = ({
 	const router = useRouter();
 
 	const { width } = useWindowSize();
-	if (width < 768) return null;
+	if (width < 768 || width === 0) return null;
 	return (
 		<div key="desktop-nav-wrapper hidden md:block">
 			<div key="desktop-nav" className="desktop-nav items-center flex">
