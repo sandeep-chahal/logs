@@ -26,7 +26,7 @@ const DesktopNav = ({
 	const { width } = useWindowSize();
 	if (width < 768) return null;
 	return (
-		<div key="desktop-nav-wrapper">
+		<div key="desktop-nav-wrapper hidden md:block">
 			<div key="desktop-nav" className="desktop-nav items-center flex">
 				<Link href="/search">
 					<a>
