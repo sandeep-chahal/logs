@@ -56,11 +56,17 @@ function getErrorData(code: string) {
 				info:
 					"The Id you were provided is not valid. Please go ask for the valid Id.",
 			};
+		default:
+			return {
+				img: "fatal-error-5.svg",
+				text: "Wait, What?",
+				info: "Something unknown happened, we don't know what it is.",
+			};
 	}
 	return {
-		img: "fatal-error-5.svg",
-		text: "Wait, What?",
-		info: "Something unknown happened, we don't know what it is.",
+		img: "",
+		text: "",
+		info: "",
 	};
 }
 
