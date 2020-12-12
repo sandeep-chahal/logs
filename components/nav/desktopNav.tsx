@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import NotificationViewer from "../notificationViewer";
 import { IUser } from "../../models/user";
-import useWindowSize from "../../utils/hooks/useWindowSize";
 
 interface IProps {
 	setNotifOpen: (a: boolean) => void;
@@ -23,8 +22,6 @@ const DesktopNav = ({
 }: IProps) => {
 	const router = useRouter();
 
-	const { width } = useWindowSize();
-	if (width < 768) return null;
 	return (
 		<div key="desktop-nav-wrapper hidden md:block">
 			<div key="desktop-nav" className="desktop-nav items-center flex">
