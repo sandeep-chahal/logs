@@ -19,7 +19,7 @@ const Layout: React.FC = ({ children }) => {
 			.then((res) => res.json())
 			.then((res: IData) => {
 				if (!res.error && res.data) {
-					dispatch(setHasNotf(true));
+					dispatch(setHasNotif(true));
 				}
 			});
 	}, []);
