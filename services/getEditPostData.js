@@ -2,24 +2,31 @@ import dbConnect from "../config/mongodb";
 import Post from "../models/post";
 
 export default async (postId, user) => {
-	await dbConnect();
+	try {
+		await dbConnect();
 
-	const post = await Post.findById(postId);
+		const post = await Post.findById(postId);
 
-	if (!post)
+		if (!post)
+			return {
+				error: true,
+				code: 104, //not found
+			};
+
+		if (String(post.author) !== String(user._id)) {
+			return {
+				error: true,
+				code: 103, //permissions error
+			};
+		}
 		return {
-			error: true,
-			code: 104, //not found
+			error: false,
+			post,
 		};
-
-	if (String(post.author) !== String(user._id)) {
+	} catch (err) {
 		return {
 			error: true,
-			code: 103, //permissions error
+			coed: 106,
 		};
 	}
-	return {
-		error: false,
-		post,
-	};
 };
