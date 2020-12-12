@@ -236,11 +236,22 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 		);
 
 		// if any error during validation
-		if (result.error) return res.redirect("/error?error_code=" + result.code);
+		if (result.error)
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/error?error_code=${result.code}`,
+				},
+			};
 
 		// if not logged in
 		if (me && !req.isAuthenticated())
-			return res.redirect("/error?error_code=101");
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/error?error_code=101`,
+				},
+			};
 		if (!me && req.isAuthenticated()) me = req.user._id === params.id;
 
 		// get user personal data
@@ -249,7 +260,13 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 		);
 
 		// if error when fetching user data from db
-		if (data.error) return res.redirect("/error?error_code=" + data.code);
+		if (data.error)
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/error?error_code=${data.code}`,
+				},
+			};
 
 		return {
 			props: {
@@ -260,7 +277,12 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 		};
 	} catch (err) {
 		console.error(err);
-		return res.redirect("/error?error_code=106");
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/error?error_code=106`,
+			},
+		};
 	}
 };
 

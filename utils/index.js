@@ -1,7 +1,7 @@
 export const getUser = () => {
 	try {
 		const user = JSON.parse(localStorage.getItem("user"));
-		if (!user._id) return null;
+		if (!user) return null;
 		// check if it's expired
 		if (user.expiresOn - Date.now() < 0) {
 			setUser(null);

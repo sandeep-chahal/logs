@@ -175,3 +175,8 @@ body::-webkit-scrollbar-thumb {
 .top-50 {
 	top: 50px;
 }
+@media (min-width: 768px) {
+	.notification {
+		width: 25rem;
+	}
+}

@@ -164,14 +164,25 @@ export const getServerSideProps = async ({
 	params,
 	req,
 	res,
-}: CGSSP): Promise<{ props: IProps } | null> => {
+}: CGSSP): Promise<{ props?: IProps; redirect?: any } | null> => {
 	req.body = params;
 	const result = await withMiddlewares(req, res, "1 3", "valid-id");
 	if (result.error) {
-		res.redirect("/error?error_code=105");
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/error?error_code=105`,
+			},
+		};
 	} else {
 		const data = await getPost(params.id, req.user);
-		if (data.error) res.redirect("/error?error_code=" + data.code);
+		if (data.error)
+			return {
+				redirect: {
+					permanent: false,
+					destination: `/error?error_code=${data.code}`,
+				},
+			};
 		else
 			return {
 				props: JSON.parse(JSON.stringify(data)),

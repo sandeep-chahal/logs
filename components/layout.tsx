@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import Navbar from "./navbar";
+import Navbar from "./nav/navbar";
 import { useStore } from "../store/";
-import { setHasNotf, showModal } from "../store/actions";
+import { setHasNotif, showModal } from "../store/actions";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 import Modal from "./modal";

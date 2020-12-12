@@ -4,7 +4,7 @@ export const initialState = {
 	user: null,
 	post: null,
 	isClient: false,
-	hasNotf: false,
+	hasNotif: false,
 	modal: false,
 	modalData: null,
 };
@@ -16,10 +16,10 @@ const reducer = (state = initialState, action) => {
 				...state,
 				user: action.payload.user,
 			};
-		case TYPES.SET_HAS_NOTF:
+		case TYPES.SET_HAS_NOTIF:
 			return {
 				...state,
-				hasNotf: action.payload.has,
+				hasNotif: action.payload.has,
 			};
 		case TYPES.SHOW_MODAL:
 			return {

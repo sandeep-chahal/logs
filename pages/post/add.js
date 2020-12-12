@@ -16,7 +16,12 @@ const Add = () => {
 export const getServerSideProps = async ({ req, res }) => {
 	const result = await withMiddlewares(req, res, "1 2");
 	if (result.error) {
-		return res.redirect("/error?error_code=" + result.code);
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/error?error_code=${result.code}`,
+			},
+		};
 	}
 	return {
 		props: {},

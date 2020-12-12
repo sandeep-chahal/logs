@@ -6,13 +6,13 @@ const ErrorPage = () => {
 	const code = (router.query.error_code as string) || "106";
 	const error = getErrorData(code);
 	return (
-		<div className="min-h-screen min-w-full">
+		<div className="min-h-screen min-w-full text-center md:text-left">
 			<Head>
 				<title>DevLogs | Error</title>
 				<meta name="description" content={error.info} />
 			</Head>
-			<div className="flex items-center w-1/2 m-auto">
-				<div className="w-4/5">
+			<div className="flex flex-col-reverse md:flex-row items-center md:w-1/2 m-auto">
+				<div className="nd:w-4/5">
 					<h2 className="text-4xl font-bold">{error.text}</h2>
 					<p className="text-lg font-medium">{error.info}</p>
 				</div>

@@ -1,6 +1,6 @@
 export const TYPES = {
 	SET_USER: "SET_USER",
-	SET_HAS_NOTF: "SET_HAS_NOTF",
+	SET_HAS_NOTIF: "SET_HAS_NOTIF",
 	SHOW_MODAL: "SHOW_MODAL",
 };
 
@@ -12,9 +12,9 @@ export const setUser = (user) => {
 		},
 	};
 };
-export const setHasNotf = (has) => {
+export const setHasNotif = (has) => {
 	return {
-		type: TYPES.SET_HAS_NOTF,
+		type: TYPES.SET_HAS_NOTIF,
 		payload: {
 			has,
 		},

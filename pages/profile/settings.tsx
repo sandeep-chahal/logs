@@ -227,12 +227,23 @@ export const getServerSideProps = async ({ req, res }: CGSSP) => {
 	const result = await withMiddlewares(req, res, "1 2");
 
 	// if any error during validation
-	if (result.error) return res.redirect("/error?error_code=" + result.code);
+	if (result.error)
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/error?error_code=${result.code}`,
+			},
+		};
 
 	// get user profile
 	const data = await getUserProfile(req.user._id);
-	if (data.error) return res.redirect("/error?error_code=" + data.code);
-
+	if (data.error)
+		return {
+			redirect: {
+				permanent: false,
+				destination: `/error?error_code=${data.code}`,
+			},
+		};
 	return {
 		props: {
 			user: JSON.parse(JSON.stringify(data.user)),
