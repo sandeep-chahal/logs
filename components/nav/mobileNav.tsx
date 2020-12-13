@@ -19,7 +19,7 @@ const MobileNav = ({
 	return (
 		<motion.div
 			key="mobile-nav"
-			className="bg-white h-64 p-4 border-t-2 font-medium text-xl flex flex-col md:hidden"
+			className="bg-white h-64 p-4 border-t-2 font-medium text-xl flex flex-col md:hidden shadow-md"
 			style={{ originY: 0 }}
 			initial={{ opacity: 0, height: 0 }}
 			animate={{ opacity: 1, height: "auto" }}

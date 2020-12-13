@@ -24,7 +24,6 @@ interface IProps {
 
 const Profile: React.FC<IProps> = (props) => {
 	const { user, me } = props;
-	// const [isFollowing, setFollowing] = useState(props.isFollowing || false);
 	const [isFollowing, setFollowing] = useState(false);
 	const [posts, setPosts] = useState(props.posts || []);
 	const [deleting, setDeleting] = useState<string | null>(null);
@@ -102,7 +101,6 @@ const Profile: React.FC<IProps> = (props) => {
 						className="object-cover object-center rounded-full"
 					/>
 				</div>
-				{/* follow , counts ,edit */}
 
 				<div style={{ transform: "translateY(-50px)" }} className="text-center">
 					<h1 className="text-4xl font-extrabold capitalize">{user.name}</h1>
@@ -149,23 +147,23 @@ const Profile: React.FC<IProps> = (props) => {
 						</div>
 					</div>
 				</div>
-				<div className="md:absolute top-0 right-0 md:p-8 flex flex-col">
+
+				{/* followers */}
+				<div className="md:absolute top-0 right-0 md:p-8 flex flex-col items-start pl-4 pb-4">
 					<div className="mb-2 text-lg md:text-base">
 						Following: {user.following_counter}
 					</div>
-
+					{/* follow/edit */}
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="inline-block bg-secondary text-white text-center cursor-pointer p-1">
+							<a className="inline-block bg-secondary text-white text-center cursor-pointer p-1 px-12">
 								Edit
 							</a>
 						</Link>
 					) : (
-						<button className={`bg-gradient-3 text-white py-1 px-2 pt-2`}>
-							{me
-								? "Edit"
-								: (isFollowing ? `UnFollow` : `Follow`) +
-								  ` ${user.follower_counter}`}
+						<button className={`bg-secondary text-white py-1 px-2 pt-2`}>
+							{(isFollowing ? `UnFollow` : `Follow`) +
+								` ${user.follower_counter}`}
 						</button>
 					)}
 				</div>

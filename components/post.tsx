@@ -26,7 +26,7 @@ const Post = ({ post }: IProps) => {
 			{post.header_img ? (
 				<img
 					src={post.header_img}
-					className="object-cover object-center w-full rounded h-40 block m-auto mb-4"
+					className="object-cover object-center w-full rounded h-40 block m-auto mb-2 md:mb-3"
 					alt={"header image for " + post.title}
 				/>
 			) : null}

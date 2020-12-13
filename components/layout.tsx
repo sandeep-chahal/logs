@@ -5,6 +5,7 @@ import { setHasNotif, showModal } from "../store/actions";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 import Modal from "./modal";
+import Head from "next/head";
 
 type IData = {
 	error: boolean;
@@ -30,6 +31,9 @@ const Layout: React.FC = ({ children }) => {
 
 	return (
 		<div className="relative">
+			<Head>
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+			</Head>
 			<div className="mb-16 md:mb-20">
 				<Navbar />
 			</div>
@@ -46,7 +50,7 @@ const Layout: React.FC = ({ children }) => {
 					},
 				}}
 			>
-				{children}
+				<div>{children}</div>
 			</motion.main>
 			<AnimatePresence>
 				{state.modal ? (

@@ -92,7 +92,7 @@ const Settings = ({ user }: IProps) => {
 	};
 
 	return (
-		<section className="w-2/4 m-auto mt-8 mb-8 text-darkBlue">
+		<div className="w-11/12 md:w-2/4 m-auto my-8 text-darkBlue">
 			<Head>
 				<title>{user.name} | Edit Profile</title>
 			</Head>
@@ -207,7 +207,7 @@ const Settings = ({ user }: IProps) => {
 			>
 				{loading ? "Wait" : "Save"}
 			</button>
-		</section>
+		</div>
 	);
 };
 

@@ -14,7 +14,7 @@ interface IProps {
 const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 	return (
 		<div
-			className={`bg-white p-4 mb-4 cursor-pointer flex justify-between ${
+			className={`bg-white p-1 md:p-4 mb-4 cursor-pointer flex md:flex-row flex-col justify-between ${
 				deleting && "opacity-50"
 			}`}
 			title={
@@ -50,21 +50,28 @@ const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 			</Link>
 			{me ? (
 				<div className="flex items-start">
+					{/* edit */}
 					<Link href={deleting ? "#" : `/post/edit/${post._id}`}>
-						<img
-							alt="edit post"
-							src="/icons/edit.svg"
-							className="w-4 mr-4"
-							title="edit this post"
-						/>
+						<a>
+							<img
+								alt="edit post"
+								src="/icons/edit.svg"
+								className="w-4 mr-4 hidden md:block"
+								title="edit this post"
+							/>
+							<span className="mr-2 md:hidden">Edit</span>
+						</a>
 					</Link>
-					<img
-						alt="delete post"
-						src="/icons/delete-bin.svg"
-						className="w-4"
-						title="delete this post"
-						onClick={() => (deleting ? null : handleDeletePost(post._id))}
-					/>
+					{/* delete */}
+					<div onClick={() => (deleting ? null : handleDeletePost(post._id))}>
+						<img
+							alt="delete post"
+							src="/icons/delete-bin.svg"
+							className="w-4 hidden md:block"
+							title="delete this post"
+						/>
+						<span className="mr-2 md:hidden">Delete</span>
+					</div>
 				</div>
 			) : null}
 		</div>
