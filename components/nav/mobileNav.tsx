@@ -18,38 +18,55 @@ const MobileNav = ({
 }: IProps) => {
 	return (
 		<motion.div
-			key="mobile-nav"
-			className="bg-white h-64 p-4 border-t-2 font-medium text-xl flex flex-col md:hidden shadow-md"
-			style={{ originY: 0 }}
-			initial={{ opacity: 0, height: 0 }}
-			animate={{ opacity: 1, height: "auto" }}
-			exit={{ opacity: 0, height: 0 }}
+			style={{ background: "rgba(0,0,0,0.25)" }}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			className="w-screen h-screen"
 		>
-			<Link href="/search">
-				<a onClick={toggleDropDown} className="mb-4">
-					Search
-				</a>
-			</Link>
-			<Link href="/post/add">
-				<a onClick={toggleDropDown} className="mb-4">
-					Write Post
-				</a>
-			</Link>
-			<div className="mb-4">
-				<span onClick={handleNotifOpen}>Notifications</span>
-				<span id="notification">
-					{notifOpen ? (
-						<AnimatePresence>
-							<NotificationViewer close={handleNotifOpen} />
-						</AnimatePresence>
-					) : null}
-				</span>
-			</div>
-			<Link href={user ? "/profile/me" : "/api/auth/github"}>
-				<a onClick={toggleDropDown} className="mb-4">
-					{user ? user.name : "Login with Github"}
-				</a>
-			</Link>
+			<motion.div
+				className="bg-white h-64 p-4 border-t-2 font-medium text-xl flex flex-col md:hidden shadow-md z-50"
+				style={{ originY: 0 }}
+				initial={{ height: 0 }}
+				animate={{ height: "auto" }}
+				exit={{ height: 0 }}
+			>
+				<Link href="/search">
+					<a onClick={toggleDropDown} className="mb-4 flex">
+						<img src="/icons/search-1.svg" width="25px" className="mr-4" />{" "}
+						<span>Search</span>
+					</a>
+				</Link>
+				<Link href="/post/add">
+					<a onClick={toggleDropDown} className="mb-4 flex">
+						<img src="/icons/pencil.svg" width="25px" className="mr-4" />
+						<span>Write Post</span>
+					</a>
+				</Link>
+				<div className="mb-4">
+					<span onClick={handleNotifOpen} className="flex">
+						<img
+							src="/icons/notification-1.svg"
+							width="25px"
+							className="mr-4"
+						/>
+						<span>Notifications</span>
+					</span>
+					<span id="notification">
+						{notifOpen ? (
+							<AnimatePresence>
+								<NotificationViewer close={handleNotifOpen} />
+							</AnimatePresence>
+						) : null}
+					</span>
+				</div>
+				<Link href={user ? "/profile/me" : "/api/auth/github"}>
+					<a onClick={toggleDropDown} className="mb-4 flex capitalize">
+						<img src="/icons/popeye.svg" width="25px" className="mr-4" />
+						<span> {user ? user.name : "Login with Github"}</span>
+					</a>
+				</Link>
+			</motion.div>
 		</motion.div>
 	);
 };
