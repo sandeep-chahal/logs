@@ -5,7 +5,17 @@ import Post from "../components/post";
 import { IShortPost } from "../models/post";
 import { getLatest } from "../services/redis";
 
-const tags = ["javascript", "web", "tech", "nextjs", "nodejs", "reactjs"];
+const tags = [
+	"javascript",
+	"web",
+	"nextjs",
+	"nodejs",
+	"reactjs",
+	"server",
+	"frontend",
+	"backend",
+	"performance",
+];
 
 interface IProps {
 	posts: IShortPost[] | null;
@@ -26,7 +36,7 @@ const Home = (props: IProps) => {
 	};
 
 	return (
-		<div className="sm:w-2/3 md:w-4/5 m-auto flex mt-1 items-baseline min-h-screen">
+		<div className="sm:w-2/3 md:w-4/5 m-auto flex mt-1 items-start min-h-screen">
 			<Head>
 				<title>DevLog</title>
 				<meta
@@ -39,6 +49,7 @@ const Home = (props: IProps) => {
 					content="Explore and write interesting web articles. Cutting edge and new blogs everyday."
 				/>
 			</Head>
+			{/* tags filter for desktop */}
 			<div className="w-1/5 relative hidden lg:block">
 				<div className="p-4 text-darkBlue fixed w-64">
 					<h3 className="text-2xl font-bold mb-3">Tags</h3>
@@ -57,11 +68,26 @@ const Home = (props: IProps) => {
 					</ul>
 				</div>
 			</div>
-			<div className="px-2 m-auto mt-1 lg:w-2/3">
-				<h1 className="text-2xl md:text-3xl p-2 font-bold text-darkBlue mb-2 md:mb-3">
-					Latest Posts
-				</h1>
-
+			{/* tags filter for mobile */}
+			<div className="m-auto mt-1 w-11/12 lg:w-2/3">
+				<div className="flex items-center justify-between mb-5 md:mb-3">
+					<h1 className="text-2xl md:text-3xl font-bold text-darkBlue">
+						Latest Posts
+					</h1>
+					<div className="font-medium md:hidden">
+						<span>Tags</span>
+						<select
+							className="font-medium p-1 ml-2"
+							onChange={(e) => handleTagChange(e.target.value)}
+						>
+							<option value="">None</option>
+							{tags.map((tag) => (
+								<option value={tag}>{tag}</option>
+							))}
+						</select>
+					</div>
+				</div>
+				{/* posts */}
 				{Array.isArray(posts) && posts.length > 0 ? (
 					posts
 						.filter((post) => !selectedTag || post.tags.includes(selectedTag))

@@ -21,7 +21,7 @@ const Post = ({ post }: IProps) => {
 					? {}
 					: { scale: 0.95 }
 			}
-			className="mb-8 p-3 rounded"
+			className="mb-8 rounded"
 		>
 			{post.header_img ? (
 				<img

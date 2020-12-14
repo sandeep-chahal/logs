@@ -67,13 +67,14 @@ const Search = () => {
 			});
 	};
 	return (
-		<div className="min-h-screen font-medium">
+		<div className="w-11/12 lg:w-4/5 m-auto min-h-screen font-medium">
 			<Head>
 				<title>DevLogs | Search</title>
 				<meta name="description" content="search from thousands of posts." />
 			</Head>
+			{/* search input */}
 			<form
-				className="m-auto w-11/12 lg:w-4/5 flex shadow-md"
+				className="flex shadow-md"
 				onSubmit={(e) => {
 					e.preventDefault();
 					handleSearch(false);
@@ -90,21 +91,22 @@ const Search = () => {
 					Search
 				</button>
 			</form>
-			{/* {loading ? (
+
+			{Array.isArray(posts) && !posts.length ? (
 				<div className="w-4/5 m-auto mt-10 text-center">
-					Searching in Database...
+					I guess we don't have it 🙀
 				</div>
-			) : null} */}
-			<div className="w-4/5 m-auto mt-10 text-center">
-				{Array.isArray(posts) && !posts.length
-					? "I guess we don't have it 🙀"
-					: null}
-				{!Array.isArray(posts) ? "Search something cool 😺" : null}
-			</div>
+			) : null}
+			{!Array.isArray(posts) ? (
+				<div className="w-4/5 m-auto mt-10 text-center">
+					Search something cool 😺
+				</div>
+			) : null}
+
 			{Array.isArray(posts) && posts.length ? (
 				<>
-					<div className="w-11/12 md:w-4/5 m-auto mt-10">
-						<div className="ml-3">
+					<div className="mt-5 md:mt-10">
+						<div className="ml-1 mb-1 md:mb-5">
 							{posts.length}
 							{moreAvail ? "+" : ""} result(s) found 😽
 						</div>
