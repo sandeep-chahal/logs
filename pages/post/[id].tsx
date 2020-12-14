@@ -1,11 +1,10 @@
-import React from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import getPost from "../../services/getPost";
 import withMiddlewares from "../../middlewares";
 import dayjs from "dayjs";
 import ReactMarkdown from "react-markdown";
 import { formatNumber } from "../../utils";
-import { handleLikeClick } from "../../utils/fetch/post";
+import { handleLikeUnlike } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -15,6 +14,8 @@ import { IUser } from "../../models/user";
 import { IPost } from "../../models/post";
 import { IComment } from "../../models/comment";
 import Head from "next/head";
+import { useStore } from "../../store";
+import { showModal } from "../../store/actions";
 
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
@@ -36,9 +37,36 @@ interface IProps {
 }
 
 const Post: React.FC<IProps> = (props) => {
-	const [liked, setLiked] = useState(props.liked || 0);
+	const [liked, setLiked] = useState(props.liked);
 	const [comments, setComments] = useState(props.comments);
 	const [post, setPost] = useState(props.post);
+	const [wait, setWait] = useState(false);
+	const [_, dispatch] = useStore();
+
+	const handleLikeClick = () => {
+		if (wait) return;
+		setWait(true);
+		handleLikeUnlike(liked, post._id)
+			.then((data) => {
+				if (data.error) {
+					dispatch(
+						showModal(true, {
+							type: "ERROR",
+							msg: data.msg,
+						})
+					);
+				} else {
+					setPost((prev) => ({
+						...prev,
+						likes_counter: prev.likes_counter + (liked ? -1 : 1),
+					}));
+					setLiked(!liked);
+				}
+			})
+			.finally(() => {
+				setWait(false);
+			});
+	};
 
 	return (
 		<section className="p-2 md:px-10 lg:px-20 min-h-screen">
@@ -95,14 +123,7 @@ const Post: React.FC<IProps> = (props) => {
 						}}
 						whileTap={{ scale: 0.8 }}
 						className="flex items-center mx-3 cursor-pointer"
-						onClick={() =>
-							handleLikeClick(
-								liked ? "unlike" : "like",
-								post._id,
-								setLiked,
-								setPost
-							)
-						}
+						onClick={handleLikeClick}
 					>
 						<div>{formatNumber(parseInt(post.likes_counter))}</div>
 

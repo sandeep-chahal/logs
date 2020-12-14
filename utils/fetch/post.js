@@ -1,4 +1,4 @@
-import { setUser } from "../index";
+import { formatErrors, setUser } from "../index";
 import NProgress from "nprogress";
 
 export const getLatest = async () => {
@@ -8,32 +8,28 @@ export const getLatest = async () => {
 	return data.data;
 };
 
-export const handleLikeClick = (type, id, setLiked, setPost) => {
-	setPost((prev) => ({
-		...prev,
-		likes_counter: prev.likes_counter + (type === "like" ? 1 : -1),
-	}));
-	setLiked(type === "like" ? true : false);
-	fetch(`/api/post/${type}`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			_id: id,
-		}),
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.error) {
-				setPost((prev) => ({
-					...prev,
-					likes_counter: prev.likes_counter + (type === "like" ? -1 : 1),
-				}));
-				setLiked(type === "like" ? false : true);
-				alert(data.msg);
-			}
+export const handleLikeUnlike = async (like, id) => {
+	try {
+		const res = await fetch(`/api/post/${like ? "like" : "unlike"}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				_id: id,
+			}),
 		});
+		const result = await res.json(0);
+		if (result.errors) {
+			result.msg = result.errors.reduce((msg, err) => err.msg + "\n", "");
+		}
+		return result;
+	} catch (err) {
+		return {
+			error: true,
+			msg: "Something went wrong.",
+		};
+	}
 };
 
 export const handleComment = (id, comment, setComments, setPost, setButton) => {

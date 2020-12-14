@@ -37,7 +37,7 @@ export default async (postId, user) => {
 
 		return {
 			post,
-			liked: liked || 0,
+			liked: liked || false,
 			comments: Array.isArray(comments) ? comments : [],
 			following: !!following || false,
 		};

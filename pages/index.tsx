@@ -68,19 +68,20 @@ const Home = (props: IProps) => {
 					</ul>
 				</div>
 			</div>
-			{/* tags filter for mobile */}
+
 			<div className="m-auto mt-1 w-11/12 lg:w-2/3">
-				<div className="flex items-center justify-between mb-5 md:mb-3">
+				<div className="justify-between mb-5 md:mb-3">
 					<h1 className="text-2xl md:text-3xl font-bold text-darkBlue">
 						Latest Posts
 					</h1>
-					<div className="font-medium md:hidden">
+					{/* tags filter for mobile */}
+					<div className="font-medium mt-2 md:hidden">
 						<span>Tags</span>
 						<select
 							className="font-medium p-1 ml-2"
 							onChange={(e) => handleTagChange(e.target.value)}
 						>
-							<option value="">None</option>
+							<option value="">All</option>
 							{tags.map((tag) => (
 								<option value={tag}>{tag}</option>
 							))}

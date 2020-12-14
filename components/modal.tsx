@@ -28,10 +28,7 @@ const Modal: React.FC<IProps> = ({ data, close }) => {
 				initial={{ transform: "scale(0.75) translateY(100px)" }}
 				animate={{ transform: "scale(1) translateY(0px)" }}
 				exit={{ transform: "scale(0.5) translateY(120vh)" }}
-				style={{
-					maxWidth: "90%",
-				}}
-				className="p-4 bg-white w-auto rounded font-medium text-center z-50"
+				className="modal p-4 bg-white  rounded font-medium text-center z-50 w-auto"
 			>
 				<img
 					className="w-1/2 m-auto mb-5"
