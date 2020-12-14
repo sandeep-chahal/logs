@@ -12,7 +12,15 @@ import { IPost } from "../models/post";
 
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
-		return <SyntaxHighlighter language={language} children={value} />;
+		return (
+			<SyntaxHighlighter
+				language={language}
+				children={value
+					.split("\n")
+					.filter((g) => g)
+					.join("\n")}
+			/>
+		);
 	},
 	link: ({ href, children }: { href: string; children: React.ReactNode }) => {
 		return (

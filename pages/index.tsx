@@ -78,12 +78,14 @@ const Home = (props: IProps) => {
 					<div className="font-medium mt-2 md:hidden">
 						<span>Tags</span>
 						<select
-							className="font-medium p-1 ml-2"
+							className="font-medium p-1 ml-2 bg-white"
 							onChange={(e) => handleTagChange(e.target.value)}
 						>
 							<option value="">All</option>
 							{tags.map((tag) => (
-								<option value={tag}>{tag}</option>
+								<option key={tag} value={tag}>
+									{tag}
+								</option>
 							))}
 						</select>
 					</div>
