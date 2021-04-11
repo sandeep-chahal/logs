@@ -54,7 +54,7 @@ const Post = ({ post }: IProps) => {
 				</div>
 				<div className="flex items-center">
 					<span className="w-1 h-1 bg-darkBlue rounded inline-block mx-2" />
-					<span>{dayjs(post.updatedOn).format("dddd, MMMM D YYYY")}</span>
+					<span>{dayjs(post.createdOn).format("dddd, MMMM D YYYY")}</span>
 				</div>
 			</div>
 			{/* tags */}
