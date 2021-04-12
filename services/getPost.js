@@ -12,13 +12,21 @@ export default async (postId, user) => {
 		let proms = [];
 
 		proms.push(
-			Post.findById(postId).populate({
+			global.mongo.isConnected.models.post.findById(postId).populate({
 				path: "author",
 				model: User,
 			})
 		);
-		proms.push(Comment.find({ on_post: postId }).limit(5));
-		if (user) proms.push(Like.exists({ on_post: postId, by_user: user._id }));
+		proms.push(
+			global.mongo.isConnected.models.comment.find({ on_post: postId }).limit(5)
+		);
+		if (user)
+			proms.push(
+				global.mongo.isConnected.models.like.exists({
+					on_post: postId,
+					by_user: user._id,
+				})
+			);
 
 		const [post, comments, liked] = await Promise.all(proms);
 
@@ -30,7 +38,7 @@ export default async (postId, user) => {
 
 		let following;
 		if (user)
-			following = await Follow.exists({
+			following = await global.mongo.isConnected.models.follow.exists({
 				to: post.author._id,
 				from: user._id,
 			});
