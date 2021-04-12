@@ -6,20 +6,19 @@ async function dbConnect() {
 	);
 
 	/* check if we have connection to our database*/
-	if (global.mongo && global.mongo.isConnected) {
+	if (mongoose.connection.readyState >= 1) {
 		console.log("returning cached db instance");
+		await Promise.resolve(global.mongo);
 		return;
 	}
+
 	console.log("creating new db connection");
-	global.mongo = { isConnected: false };
 	/* connecting to our database */
-	const db = await mongoose.connect(process.env.MONGODB_URI, {
+	global.mongo = await mongoose.connect(process.env.MONGODB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
 	});
-
-	global.mongo = db;
 }
 
 export default dbConnect;
