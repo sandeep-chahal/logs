@@ -1,21 +1,24 @@
 import mongoose from "mongoose";
 
-const connection = {}; /* creating connection object*/
-
 async function dbConnect() {
+	console.log(
+		"-------------------------------global.mongo-------------------------------"
+	);
+
 	/* check if we have connection to our database*/
-	if (connection.isConnected) {
+	if (mongoose.connection.readyState >= 1) {
+		console.log("returning cached db instance");
+		await Promise.resolve(global.mongo);
 		return;
 	}
 
+	console.log("creating new db connection");
 	/* connecting to our database */
-	const db = await mongoose.connect(process.env.MONGODB_URI, {
+	global.mongo = await mongoose.connect(process.env.MONGODB_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
 	});
-
-	connection.isConnected = db.connections[0].readyState;
 }
 
 export default dbConnect;
