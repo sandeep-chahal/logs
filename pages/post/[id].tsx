@@ -45,10 +45,22 @@ const Post: React.FC<IProps> = (props) => {
 
 	const handleLikeClick = () => {
 		if (wait) return;
+		setPost((prev) => ({
+			...prev,
+			likes_counter: prev.likes_counter + (liked ? -1 : 1),
+		}));
+		setLiked(!liked);
 		setWait(true);
 		handleLikeUnlike(liked, post._id)
 			.then((data) => {
 				if (data.error) {
+					// undo if error
+					setPost((prev) => ({
+						...prev,
+						likes_counter: prev.likes_counter + (!liked ? -1 : 1),
+					}));
+					setLiked(liked);
+
 					dispatch(
 						showModal(true, {
 							type: "ERROR",
@@ -56,11 +68,11 @@ const Post: React.FC<IProps> = (props) => {
 						})
 					);
 				} else {
-					setPost((prev) => ({
-						...prev,
-						likes_counter: prev.likes_counter + (liked ? -1 : 1),
-					}));
-					setLiked(!liked);
+					// setPost((prev) => ({
+					// 	...prev,
+					// 	likes_counter: prev.likes_counter + (liked ? -1 : 1),
+					// }));
+					// setLiked(!liked);
 				}
 			})
 			.finally(() => {

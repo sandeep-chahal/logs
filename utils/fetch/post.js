@@ -10,7 +10,7 @@ export const getLatest = async () => {
 
 export const handleLikeUnlike = async (like, id) => {
 	try {
-		const res = await fetch(`/api/post/${like ? "like" : "unlike"}`, {
+		const res = await fetch(`/api/post/${!like ? "like" : "unlike"}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

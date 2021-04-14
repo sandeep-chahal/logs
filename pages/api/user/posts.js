@@ -12,7 +12,11 @@ export default async (req, res) => {
 
 		const { _id, skip } = req.body;
 
-		const posts = await Post.find({ author: _id })
+		const posts = await Post.find(
+			{ author: _id },
+			{},
+			{ sort: { createdOn: -1 } }
+		)
 			.select("-markdown")
 			.skip(skip)
 			.limit(5);

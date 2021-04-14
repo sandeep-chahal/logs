@@ -6,9 +6,12 @@ export default async (id) => {
 		const user = await User.findById(id);
 		if (!user) return { error: true, code: 104 };
 
-		const posts = await Post.find({ author: id })
+		const posts = await Post.find(
+			{ author: id },
+			{},
+			{ sort: { createdOn: -1 } }
+		)
 			.select("-markdown")
-			.sort("date")
 			.limit(8);
 
 		return {

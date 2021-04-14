@@ -5,7 +5,7 @@ import withMiddlewares from "../../../middlewares";
 
 export default async (req, res) => {
 	try {
-		const result = await withMiddlewares(req, res, res, "1 2 3", "post-add");
+		const result = await withMiddlewares(req, res, "1 2 3", "post-add");
 		if (result.error) return res.json(result);
 		console.log(req.body);
 		// creating post

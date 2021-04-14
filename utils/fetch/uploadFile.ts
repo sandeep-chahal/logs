@@ -11,34 +11,24 @@ interface IData {
 
 export default async (file: File): Promise<IData> => {
 	try {
+		const url = `https://api.cloudinary.com/v1_1/${"spidy"}/upload`;
+
 		const data = new FormData();
-		data.append("img", file);
+		data.append("file", file);
+		data.append("upload_preset", "d2wpin3w");
 		// @ts-ignore
 		const boundary = data._boundary as string;
 		const headers = new Headers({
 			"Content-Type": `multipart/form-data; boundary=${boundary}`,
 		});
-		const results = await axios.post(
-			process.env.NEXT_PUBLIC_STORAGE_ENGINE_URL as string,
-			data,
-			{
-				headers,
-			}
-		);
-		if (results.data.error) {
-			return {
-				error: true,
-				code: 102,
-				errors: {
-					photo: results.data.msg,
-				},
-			};
-		} else {
-			return {
-				error: false,
-				data: results.data.url2,
-			};
-		}
+		const results = await axios.post(url, data, {
+			headers,
+		});
+
+		return {
+			error: false,
+			data: results.data.url,
+		};
 	} catch (err) {
 		console.log(err);
 		return {

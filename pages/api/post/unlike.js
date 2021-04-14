@@ -4,11 +4,11 @@ import Post from "../../../models/post";
 import Like from "../../../models/like";
 
 export default async (req, res) => {
+	await dbConnect();
 	const result = await withMiddlewares(req, res, "1 2 3", "valid-id");
 	if (result.error) {
 		return res.json(result);
 	}
-	await dbConnect();
 
 	// check if the user has liked the post
 	const hasLiked = await Like.exists({

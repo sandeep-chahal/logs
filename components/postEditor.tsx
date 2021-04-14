@@ -111,7 +111,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 						id="upload_img"
 						type="file"
 						disabled={loading || uploading}
-						accept="image/png,image/jpeg"
+						accept="image/png,image/jpeg,image/webp"
 						hidden
 					/>
 					{uploadedImg ? (

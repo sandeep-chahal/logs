@@ -4,6 +4,9 @@ import Head from "next/head";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
 import { getLatest } from "../services/redis";
+import PostDB from "../models/post";
+import User from "../models/user";
+import connectDB from "../config/mongodb";
 
 const tags = [
 	"javascript",
@@ -106,14 +109,21 @@ const Home = (props: IProps) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const posts = await getLatest();
-	console.log("revalidated");
+	// const posts = await getLatest();
+	await connectDB();
+	const posts = await PostDB.find({}, {}, { sort: { createdOn: -1 } })
+		.limit(15)
+		.populate({
+			path: "author",
+			model: User,
+			select: "name",
+		});
 
 	return {
 		props: {
-			posts,
+			posts: JSON.parse(JSON.stringify(posts)),
 		},
-		revalidate: 1000 * 60 * 10, //10 min
+		revalidate: 1000 * 60 * 1, //10 min
 	};
 };
 
