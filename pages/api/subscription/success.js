@@ -9,19 +9,14 @@ export default async (req, res) => {
 
 	try {
 		// getting the details back from our font-end
-		const {
-			orderCreationId,
-			razorpayPaymentId,
-			razorpayOrderId,
-			razorpaySignature,
-		} = req.body;
-
+		const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
+		console.log(req.body);
 		// Creating our own digest
 		// The format should be like this:
 		// digest = hmac_sha256(orderCreationId + "|" + razorpayPaymentId, secret);
 		const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
 
-		shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+		shasum.update(`${razorpayOrderId}|${razorpayPaymentId}`);
 
 		const digest = shasum.digest("hex");
 
@@ -64,7 +59,7 @@ export default async (req, res) => {
 							msg: `Your transaction was successful but database error occurred. Order id: ${razorpayOrderId}, paymentId: ${razorpayPaymentId}`,
 						});
 					} else {
-						req.logout();
+						// req.logout();
 						res.json({
 							error: false,
 							redirect: true,

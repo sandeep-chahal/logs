@@ -47,7 +47,6 @@ export const displayRazorpay = async (order, pack, user, cb) => {
 		order_id: order_id,
 		handler: async function (response) {
 			const data = {
-				orderCreationId: order_id,
 				razorpayPaymentId: response.razorpay_payment_id,
 				razorpayOrderId: response.razorpay_order_id,
 				razorpaySignature: response.razorpay_signature,
