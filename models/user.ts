@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
 	},
 	subscription:{
 		expiresOn:Date,	
+		order_details:Object
 	},
 	provider: String,
 	photo: String,
@@ -48,7 +49,7 @@ export interface IUser {
 	expiresOn?: string;
 	subscription:{
 		expiresOn:Date,
-		
+		order_details:object
 	}
 }
 

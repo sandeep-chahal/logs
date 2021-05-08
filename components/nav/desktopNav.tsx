@@ -33,6 +33,19 @@ const DesktopNav = ({
 						/>
 					</a>
 				</Link>
+				{user &&
+					(new Date(user.subscription.expiresOn) < new Date() ? (
+						<Link href="/subscription">
+							<a
+								className="font-bold text-primary border-b-2 border-transparent hover:border-primary"
+								href="/subscription"
+							>
+								Buy Pro
+							</a>
+						</Link>
+					) : (
+						<div className="border-b-2 border-secondary px-2">Pro 😎</div>
+					))}
 				<Link href="/post/add">
 					<a className="rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post

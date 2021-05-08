@@ -19,7 +19,7 @@ export const handleLikeUnlike = async (like, id) => {
 				_id: id,
 			}),
 		});
-		const result = await res.json(0);
+		const result = await res.json();
 		if (result.errors) {
 			result.msg = result.errors.reduce((msg, err) => err.msg + "\n", "");
 		}

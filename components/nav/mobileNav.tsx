@@ -37,6 +37,7 @@ const MobileNav = ({
 						<span>Search</span>
 					</a>
 				</Link>
+
 				<Link href="/post/add">
 					<a onClick={toggleDropDown} className="mb-4 flex">
 						<img src="/icons/pencil.svg" width="25px" className="mr-4" />
@@ -64,8 +65,23 @@ const MobileNav = ({
 					<a onClick={toggleDropDown} className="mb-4 flex capitalize">
 						<img src="/icons/popeye.svg" width="25px" className="mr-4" />
 						<span> {user ? user.name : "Login with Github"}</span>
+						<span className="ml-2">
+							{user && new Date(user.subscription.expiresOn) > new Date()
+								? "(PRO)"
+								: ""}
+						</span>
 					</a>
 				</Link>
+				{user && new Date(user.subscription.expiresOn) < new Date() ? (
+					<Link href="/subscription">
+						<a
+							className="text-center font-bold text-primary border-b-2 border-transparent hover:border-primary"
+							href="/subscription"
+						>
+							Buy Pro
+						</a>
+					</Link>
+				) : null}
 			</motion.div>
 		</motion.div>
 	);
