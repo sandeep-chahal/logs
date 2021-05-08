@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	subscription:{
+		expiresOn:Date,	
+	},
 	provider: String,
 	photo: String,
 	title: String,
@@ -43,6 +46,10 @@ export interface IUser {
 	twitter?: string;
 	web?: string;
 	expiresOn?: string;
+	subscription:{
+		expiresOn:Date,
+		
+	}
 }
 
 const user = mongoose.models.user || mongoose.model("user", userSchema);

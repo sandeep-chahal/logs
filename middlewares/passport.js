@@ -7,12 +7,13 @@ passport.use(GithubStrategy);
 // passport.use(GoogleStrategy);
 
 passport.serializeUser((user, done) => {
-	const { _id, name, photo, email } = user;
+	const { _id, name, photo, email, subscription } = user;
 	done(null, {
 		_id,
 		name,
 		photo,
 		email,
+		subscription,
 		expiresOn: Date.now() + 24 * 60 * 60 * 1000,
 	});
 });

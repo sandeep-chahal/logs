@@ -34,6 +34,7 @@ interface IProps {
 	post: IPost;
 	comments: IComment[];
 	liked: boolean;
+	limit: boolean;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -126,66 +127,80 @@ const Post: React.FC<IProps> = (props) => {
 						</div>
 					))}
 				</div>
-				{/* likes and comments */}
-				<div className="flex items-center font-light">
-					<motion.div
-						whileHover={{
-							scale: 1.2,
-							transition: { duration: 0.1 },
-						}}
-						whileTap={{ scale: 0.8 }}
-						className="flex items-center mx-3 cursor-pointer"
-						onClick={handleLikeClick}
-					>
-						<div>{formatNumber(parseInt(post.likes_counter))}</div>
+				{!props.limit ? (
+					<>
+						{/* likes and comments */}
+						<div className="flex items-center font-light">
+							<motion.div
+								whileHover={{
+									scale: 1.2,
+									transition: { duration: 0.1 },
+								}}
+								whileTap={{ scale: 0.8 }}
+								className="flex items-center mx-3 cursor-pointer"
+								onClick={handleLikeClick}
+							>
+								<div>{formatNumber(parseInt(post.likes_counter))}</div>
 
-						<img
-							className="w-6 mx-1 pb-2"
-							src={`/icons/like-${liked ? "dark" : "light"}.svg`}
+								<img
+									className="w-6 mx-1 pb-2"
+									src={`/icons/like-${liked ? "dark" : "light"}.svg`}
+								/>
+							</motion.div>
+							<label
+								className="flex items-center mx-3 cursor-pointer"
+								htmlFor="comment"
+							>
+								<div>{formatNumber(parseInt(post.comments_counter))}</div>
+								<img className="w-6 mx-1" src={`/icons/comment.svg`} />
+							</label>
+						</div>
+
+						{/* header image */}
+						{post.header_img ? (
+							<motion.img
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								alt="post header image"
+								src={post.header_img}
+								className="block m-auto my-4"
+							/>
+						) : null}
+
+						{/* markdown */}
+						<ReactMarkdown
+							renderers={renderers}
+							plugins={[gfm]}
+							className="mt-6 markdown font-medium"
+							children={post.markdown}
 						/>
-					</motion.div>
-					<label
-						className="flex items-center mx-3 cursor-pointer"
-						htmlFor="comment"
-					>
-						<div>{formatNumber(parseInt(post.comments_counter))}</div>
-						<img className="w-6 mx-1" src={`/icons/comment.svg`} />
-					</label>
-				</div>
-
-				{/* header image */}
-				{post.header_img ? (
-					<motion.img
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						alt="post header image"
-						src={post.header_img}
-						className="block m-auto my-4"
-					/>
-				) : null}
-
-				{/* markdown */}
-				<ReactMarkdown
-					renderers={renderers}
-					plugins={[gfm]}
-					className="mt-6 markdown font-medium"
-					children={post.markdown}
-				/>
+					</>
+				) : (
+					<div className="text-red-700 text-xl">
+						You have exhausted your daily limit. Please buy a subscription to
+						continue reading...
+					</div>
+				)}
 			</article>
 			{/* comments */}
-			<Comments
-				id={post._id}
-				post={post}
-				setPost={setPost}
-				comments={comments}
-				setComments={setComments}
-			/>
+			{!props.limit && (
+				<Comments
+					id={post._id}
+					post={post}
+					setPost={setPost}
+					comments={comments}
+					setComments={setComments}
+				/>
+			)}
 		</section>
 	);
 };
 
 interface CREQ extends NextApiRequest {
 	user: IUser;
+	session: {
+		views: undefined | number;
+	};
 }
 interface CGSSP {
 	req: CREQ;
@@ -216,10 +231,26 @@ export const getServerSideProps = async ({
 					destination: `/error?error_code=${data.code}`,
 				},
 			};
-		else
+		else {
+			let views = req.session.views || 1;
+			req.session.views = views + 1;
+
+			// let props = JSON.parse(JSON.stringify(data));
+			console.log(views);
+
+			if (
+				views > 3 &&
+				(!req.user ||
+					!req.user.subscription ||
+					req.user.subscription.expiresOn > new Date())
+			) {
+				data.post.markdown = "";
+				data.limit = true;
+			}
 			return {
 				props: JSON.parse(JSON.stringify(data)),
 			};
+		}
 	}
 	return null;
 };

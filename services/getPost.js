@@ -40,6 +40,7 @@ export default async (postId, user) => {
 			liked: liked || false,
 			comments: Array.isArray(comments) ? comments : [],
 			following: !!following || false,
+			limit: false,
 		};
 	} catch (err) {
 		return {
