@@ -93,6 +93,14 @@ const Profile: React.FC<IProps> = (props) => {
 					className="w-32 h-32 m-auto border-white rounded-full bg-gradient-1"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 				>
+					{new Date(props.user.subscription.expiresOn || 0) > new Date() ? (
+						<img
+							width="70px"
+							height="70px"
+							className="z-10 absolute -mt-10 top-0 right-0 block transform rotate-45"
+							src={"/icons/crown.png"}
+						/>
+					) : null}
 					<Image
 						width="100px"
 						height="100px"
@@ -105,6 +113,7 @@ const Profile: React.FC<IProps> = (props) => {
 				<div style={{ transform: "translateY(-50px)" }} className="text-center">
 					<h1 className="text-4xl font-extrabold capitalize">{user.name}</h1>
 					<h3>{user.title ? user.title : "no title found"}</h3>
+					<h4>{user.summary}</h4>
 					<div className="m-auto md:inline-flex md:items-center mt-3 font-medium">
 						<div className="mx-2">{user.email}</div>
 						<div className="flex justify-center mt-3 md:mt-0">

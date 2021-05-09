@@ -37,7 +37,7 @@ const Subscription = () => {
 								msg: "Success. Login again!",
 							})
 						);
-						// window.location.replace("/api/auth/github");
+						window.location.replace("/api/auth/github");
 					}
 				}
 			);

@@ -235,14 +235,13 @@ export const getServerSideProps = async ({
 			let views = req.session.views || 1;
 			req.session.views = views + 1;
 
-			// let props = JSON.parse(JSON.stringify(data));
-			console.log(views);
+			console.log(req.user.email, views);
 
 			if (
 				views > 3 &&
 				(!req.user ||
 					!req.user.subscription ||
-					req.user.subscription.expiresOn > new Date())
+					new Date(req.user.subscription.expiresOn || 0) < new Date())
 			) {
 				data.post.markdown = "";
 				data.limit = true;
