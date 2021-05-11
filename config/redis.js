@@ -1,17 +1,18 @@
 import redis from "redis";
-let client = null;
 export default async () => {
-	if (client && client.connected) return client;
-	client = redis.createClient({
+	if (global.client && global.client.connected) {
+		return global.client;
+	}
+	global.client = redis.createClient({
 		host: process.env.REDIS_HOST,
 		port: process.env.REDIS_PORT,
 		password: process.env.REDIS_PASSWORD,
 	});
 	await new Promise((resolve) => {
-		client.once("connect", () => {
+		global.client.once("connect", () => {
 			console.log("redis connected");
 			resolve();
 		});
 	});
-	return client;
+	return global.client;
 };

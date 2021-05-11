@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
-import { getLatest } from "../services/redis";
 import PostDB from "../models/post";
 import User from "../models/user";
 import connectDB from "../config/mongodb";
+import { IHackerNews } from "../types/index";
+import HackerNews from "../components/hackerNews";
 
 const tags = [
 	"javascript",
@@ -22,6 +23,7 @@ const tags = [
 
 interface IProps {
 	posts: IShortPost[] | null;
+	hackerNews: IHackerNews[];
 }
 
 const Home = (props: IProps) => {
@@ -39,7 +41,7 @@ const Home = (props: IProps) => {
 	};
 
 	return (
-		<div className="sm:w-2/3 md:w-4/5 m-auto flex mt-1 items-start min-h-screen">
+		<div className="sm:w-2/3 md:w-4/5 m-auto flex flex-col-reverse md:flex-row items-center md:items-start mt-1 min-h-screen">
 			<Head>
 				<title>DevLog</title>
 				<meta
@@ -53,7 +55,7 @@ const Home = (props: IProps) => {
 				/>
 			</Head>
 			{/* tags filter for desktop */}
-			<div className="w-1/5 relative hidden lg:block">
+			{/* <div className="w-1/5 relative hidden lg:block">
 				<div className="p-4 text-darkBlue fixed w-64">
 					<h3 className="text-2xl font-bold mb-3">Tags</h3>
 					<ul>
@@ -70,11 +72,12 @@ const Home = (props: IProps) => {
 						))}
 					</ul>
 				</div>
-			</div>
+			</div> */}
+			<HackerNews news={props.hackerNews} />
 
-			<div className="m-auto mt-1 w-11/12 lg:w-2/3">
+			<div className="mt-1 w-11/12 lg:w-3/4">
 				<div className="justify-between mb-5 md:mb-3">
-					<h1 className="text-2xl md:text-3xl font-bold text-darkBlue">
+					<h1 className="text-2xl md:text-2xl font-bold text-darkBlue">
 						Latest Posts
 					</h1>
 					{/* tags filter for mobile */}
@@ -111,19 +114,40 @@ const Home = (props: IProps) => {
 export const getStaticProps: GetStaticProps = async (context) => {
 	// const posts = await getLatest();
 	await connectDB();
-	const posts = await PostDB.find({}, {}, { sort: { createdOn: -1 } })
+	const postsReq = PostDB.find({}, {}, { sort: { createdOn: -1 } })
 		.limit(15)
 		.populate({
 			path: "author",
 			model: User,
 			select: "name",
 		});
+	const hackerNewsReq = await fetch(
+		"https://hacker-news.firebaseio.com/v0/topstories.json"
+	);
+
+	const res = await Promise.all([postsReq, hackerNewsReq]);
+
+	const posts = res[0];
+	const hackerNewsIds = await res[1].json();
+
+	let hackerNews = await Promise.all(
+		Array.isArray(hackerNewsIds)
+			? hackerNewsIds
+					.filter((_, i) => i < 10)
+					.map((id) =>
+						fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+					)
+			: []
+	);
+
+	hackerNews = await Promise.all(hackerNews.map((req) => req.json()));
 
 	return {
 		props: {
 			posts: JSON.parse(JSON.stringify(posts)),
+			hackerNews,
 		},
-		revalidate: 1000 * 60 * 1, //10 min
+		revalidate: 1000 * 60 * 1, //1 min
 	};
 };
 

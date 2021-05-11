@@ -1,13 +1,8 @@
 import mongoose from "mongoose";
 
 async function dbConnect() {
-	console.log(
-		"-------------------------------global.mongo-------------------------------"
-	);
-
 	/* check if we have connection to our database*/
-	if (mongoose.connection.readyState >= 1) {
-		console.log("returning cached db instance");
+	if (global.mongo.connection.readyState >= 1) {
 		await Promise.resolve(global.mongo);
 		return;
 	}

@@ -32,7 +32,7 @@ const Post = ({ post }: IProps) => {
 			) : null}
 			<Link href={`/post/${post._id}`}>
 				<a>
-					<h2 className="text-2xl lg:text-3xl font-extrabold text-gradient-1 hover:text-primary cursor-pointer">
+					<h2 className="text-2xl lg:text-2xl font-extrabold text-gradient-1 hover:text-primary cursor-pointer">
 						{post.title}
 					</h2>
 				</a>
