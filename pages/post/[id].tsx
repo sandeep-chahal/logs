@@ -235,7 +235,7 @@ export const getServerSideProps = async ({
 			let views = req.session.views || 1;
 			req.session.views = views + 1;
 
-			console.log(req.user.email, views);
+			console.log(req.user ? req.user.email : "UnAuth", views);
 
 			if (
 				views > 3 &&
