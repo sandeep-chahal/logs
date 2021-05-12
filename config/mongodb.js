@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 async function dbConnect() {
 	/* check if we have connection to our database*/
-	if (global.mongo.connection.readyState >= 1) {
+	if (global.mongo && global.mongo.connection.readyState >= 1) {
 		await Promise.resolve(global.mongo);
 		return;
 	}
