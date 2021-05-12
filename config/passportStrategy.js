@@ -10,10 +10,12 @@ const callbackHandler = async (accessToken, refreshToken, profile, cb) => {
 		// connect to db
 		await dbConnect();
 
+		console.log(profile);
+
 		// get the user profile
 		const name = profile.displayName;
-		const email = profile.emails[0].value;
-		const photo = profile.photos[0].value;
+		const email = profile.emails ? profile.emails[0].value : profile.username;
+		const photo = profile.photos ? profile.photos[0].value : "";
 		const provider = profile.provider;
 
 		// get or create user
