@@ -31,7 +31,7 @@ const Notification: React.FC<{ notification: INotf; close: () => void }> = ({
 		<Link
 			href={
 				notification.type === "follow"
-					? "/user/" + notification.from.id
+					? "/profile/" + notification.from.id
 					: "/post/" + notification.post?.id
 			}
 		>

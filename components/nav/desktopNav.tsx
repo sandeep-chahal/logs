@@ -34,7 +34,8 @@ const DesktopNav = ({
 					</a>
 				</Link>
 				{user &&
-					(new Date(user.subscription.expiresOn || 0) < new Date() ? (
+					(new Date((user.subscription && user.subscription.expiresOn) || 0) <
+					new Date() ? (
 						<Link href="/subscription">
 							<a
 								className="font-bold text-primary border-b-2 border-transparent hover:border-primary"

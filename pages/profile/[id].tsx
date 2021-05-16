@@ -5,7 +5,7 @@ import Link from "next/link";
 import getUserData from "../../services/getUserData";
 import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
 import { handleFollow } from "../../utils/fetch/user";
 import NProgress from "nprogress";
@@ -32,6 +32,12 @@ const Profile: React.FC<IProps> = (props) => {
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const [loadingMore, setLoadingMore] = useState(false);
 	const [followbtnDisable, setFollowbtnDisable] = useState(false);
+
+	useEffect(() => {
+		setUser(props.user);
+		setFollowing(props.isFollowing);
+		setPosts(props.posts || []);
+	}, [props]);
 
 	const [state, dispatch] = useStore();
 
@@ -127,7 +133,9 @@ const Profile: React.FC<IProps> = (props) => {
 					className="w-32 h-32 m-auto border-white rounded-full bg-gradient-1"
 					style={{ transform: "translateY(-50%)", borderWidth: "10px" }}
 				>
-					{new Date(props.user.subscription.expiresOn || 0) > new Date() ? (
+					{new Date(
+						(props.user.subscription && props.user.subscription.expiresOn) || 0
+					) > new Date() ? (
 						<img
 							width="70px"
 							height="70px"
@@ -135,12 +143,17 @@ const Profile: React.FC<IProps> = (props) => {
 							src={"/icons/crown.png"}
 						/>
 					) : null}
-					<Image
-						width="100px"
-						height="100px"
-						alt={user.name}
-						src={user.photo}
-						className="object-cover object-center rounded-full"
+					<div
+						style={{
+							backgroundImage: `url(${user.photo})`,
+							width: "6.2rem",
+							height: "6.2rem",
+						}}
+						// width="100px"
+						// height="100px"
+						title={user.name}
+						// src={}
+						className="rounded-full bg-cover"
 					/>
 				</div>
 
@@ -265,6 +278,7 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 	try {
 		// connect to db
 		await dbConnect();
+		console.log(params.id);
 
 		// check if user opens his own profile
 		let me = params.id === "me";
