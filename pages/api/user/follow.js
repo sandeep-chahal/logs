@@ -29,8 +29,8 @@ export default async (req, res) => {
 	// follow if not following already
 	if (!alreadyFollowing) {
 		const prom1 = Follow.create({
-			to: req.body._id,
 			from: req.user._id,
+			to: req.body._id,
 		});
 		const prom2 = User.findByIdAndUpdate(req.user._id, {
 			$inc: {

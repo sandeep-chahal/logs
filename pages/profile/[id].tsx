@@ -7,6 +7,7 @@ import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
 import { useState } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
+import { handleFollow } from "../../utils/fetch/user";
 import NProgress from "nprogress";
 import Image from "next/image";
 
@@ -20,16 +21,19 @@ interface IProps {
 	user: IUser;
 	posts: IShortPost[];
 	me: boolean;
+	isFollowing: boolean;
 }
 
 const Profile: React.FC<IProps> = (props) => {
-	const { user, me } = props;
-	const [isFollowing, setFollowing] = useState(false);
+	const { me } = props;
+	const [user, setUser] = useState(props.user);
+	const [isFollowing, setFollowing] = useState(props.isFollowing);
 	const [posts, setPosts] = useState(props.posts || []);
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const [loadingMore, setLoadingMore] = useState(false);
+	const [followbtnDisable, setFollowbtnDisable] = useState(false);
 
-	const [_, dispatch] = useStore();
+	const [state, dispatch] = useStore();
 
 	const showError = (msg: string) => {
 		dispatch(
@@ -61,6 +65,36 @@ const Profile: React.FC<IProps> = (props) => {
 			setLoadingMore(false);
 			NProgress.done();
 		});
+	};
+
+	const handleFollowClick = async () => {
+		if (me || followbtnDisable) return;
+		if (!state.user) return showError("Login First To Follow!");
+		const isF = isFollowing;
+		setFollowing((s) => !s);
+		setFollowbtnDisable(true);
+		setUser((user) => {
+			return {
+				...user,
+				follower_counter: isF
+					? user.follower_counter - 1
+					: user.follower_counter + 1,
+			};
+		});
+		const res = await handleFollow(isF ? "unfollow" : "follow", user._id);
+		setFollowbtnDisable(false);
+		if (res.error) {
+			setFollowing((s) => !s);
+			setUser((user) => {
+				return {
+					...user,
+					follower_counter: isF
+						? user.follower_counter + 1
+						: user.follower_counter - 1,
+				};
+			});
+			return showError(res.msg || "Something went wrong!");
+		}
 	};
 
 	return (
@@ -170,7 +204,11 @@ const Profile: React.FC<IProps> = (props) => {
 							</a>
 						</Link>
 					) : (
-						<button className={`bg-secondary text-white py-1 px-2 pt-2`}>
+						<button
+							disabled={followbtnDisable}
+							onClick={handleFollowClick}
+							className={`bg-secondary text-white py-1 px-2 pt-2`}
+						>
 							{(isFollowing ? `UnFollow` : `Follow`) +
 								` ${user.follower_counter}`}
 						</button>
@@ -263,7 +301,9 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 
 		// get user personal data
 		const data = JSON.parse(
-			JSON.stringify(await getUserData(me ? req.user._id : params.id))
+			JSON.stringify(
+				await getUserData(me ? req.user._id : params.id, req.user._id)
+			)
 		);
 
 		// if error when fetching user data from db
@@ -280,6 +320,7 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 				user: data.user,
 				posts: data.posts,
 				me: me,
+				isFollowing: data.isFollowing,
 			},
 		};
 	} catch (err) {

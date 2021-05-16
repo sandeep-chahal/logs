@@ -12,7 +12,34 @@ interface IData {
 	code?: number;
 	errors?: IError;
 	data?: IUser;
+	msg?: string;
 }
+
+export const handleFollow = async (
+	action: "follow" | "unfollow",
+	userId: string
+): Promise<IData> => {
+	try {
+		let res: IData = await (
+			await fetch(`/api/user/${action}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					_id: userId,
+				}),
+			})
+		).json();
+
+		return res;
+	} catch (err) {
+		return {
+			error: true,
+			msg: "Something went wrong!",
+		};
+	}
+};
 
 export const updateProfile = async (data: IUser): Promise<IData> => {
 	let result = validateUserUpdate(data);

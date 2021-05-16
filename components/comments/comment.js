@@ -17,7 +17,7 @@ const Comment = ({ userId, comment, deleteComment }) => {
 			className="bg-white p-3 mb-6 border-l-2 border-secondary bg-gradient-2"
 		>
 			<div className="flex justify-between">
-				<Link href={`profile/${comment.by_user._id}`}>
+				<Link href={`/profile/${comment.by_user._id}`}>
 					<a className="text-lg capitalize hover:text-primary transition-1">
 						{comment.by_user.name}
 					</a>
