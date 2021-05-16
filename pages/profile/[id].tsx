@@ -302,7 +302,10 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 		// get user personal data
 		const data = JSON.parse(
 			JSON.stringify(
-				await getUserData(me ? req.user._id : params.id, req.user._id)
+				await getUserData(
+					me ? req.user._id : params.id,
+					req.user ? req.user._id : null
+				)
 			)
 		);
 
