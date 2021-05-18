@@ -143,11 +143,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	);
 
 	hackerNews = await Promise.all(hackerNews.map((req) => req.json()));
-
 	return {
 		props: {
 			posts: JSON.parse(JSON.stringify(posts)),
-			hackerNews,
+			hackerNews: hackerNews.filter((news) => news.url),
 		},
 		revalidate: 1000 * 60 * 1, //1 min
 	};

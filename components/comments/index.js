@@ -28,14 +28,16 @@ export default ({ id, comments, post, setPost, setComments }) => {
 			<AddComment id={id} setPost={setPost} setComments={setComments} />
 			<div>
 				{comments.length ? (
-					comments.map((comment) => (
-						<Comment
-							key={comment._id}
-							comment={comment}
-							userId={user ? user._id : null}
-							deleteComment={deleteComment}
-						/>
-					))
+					comments
+						.reverse()
+						.map((comment) => (
+							<Comment
+								key={comment._id}
+								comment={comment}
+								userId={user ? user._id : null}
+								deleteComment={deleteComment}
+							/>
+						))
 				) : (
 					<div className="text-center">No Comments</div>
 				)}
