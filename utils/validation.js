@@ -138,6 +138,19 @@ const validator = (name, value) => ({
 		}
 		return this;
 	},
+	isDate() {
+		if (!this.check) return this;
+
+		const date = new Date(value);
+		if (!date.getDate() || date < new Date()) {
+			this.errors.array.push({
+				field: name,
+				code: 102,
+				msg: `Invalid ${name.toLowerCase()} date.`,
+			});
+		}
+		return this;
+	},
 });
 
 export default validator;

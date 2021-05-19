@@ -14,6 +14,10 @@ const validation = (type) => (req) => {
 			return getPostValidation(req);
 		case "user-update":
 			return validateUserUpdate(req.body);
+		case "create-fund":
+			return validateCreateFund(req.body);
+		case "update-fund":
+			return validateUpdateFund(req.body);
 		default:
 			return false;
 	}
@@ -165,3 +169,85 @@ export function validateUserUpdate(data = {}) {
 		};
 	return false;
 }
+
+const validateCreateFund = (data) => {
+	let titleError = [];
+	let summaryError = [];
+	let deadlineError = [];
+	let imgError = [];
+	let totalAmountError = [];
+
+	titleError = validator("Title", data.title)
+		.isString()
+		.notEmpty()
+		.hasLength({ min: 3, max: 50 }).errors.array;
+	if (data.summary)
+		summaryError = validator("Summary", data.summary)
+			.isString()
+			.hasLength({ min: 3, max: 1000 }).errors.array;
+	deadlineError = validator("Deadline", data.deadline).isDate().errors.array;
+
+	totalAmountError = validator("Total Amount", data.total)
+		.isNumber()
+		.hasValue({ min: 10, max: 5000000 }).errors.array;
+	if (data.img)
+		imgError = validator("Image", data.img).isString().hasLength({ max: 100 })
+			.errors.array;
+
+	const errors = [
+		...titleError,
+		...summaryError,
+		...deadlineError,
+		...imgError,
+		...totalAmountError,
+	];
+	if (errors.length > 0)
+		return {
+			error: true,
+			code: 102,
+			errors,
+		};
+	return false;
+};
+const validateUpdateFund = (data) => {
+	let titleError = [];
+	let summaryError = [];
+	let deadlineError = [];
+	let imgError = [];
+	let totalAmountError = [];
+
+	if (data.title)
+		titleError = validator("Title", data.title)
+			.isString()
+			.notEmpty()
+			.hasLength({ min: 3, max: 50 }).errors.array;
+	if (data.summary)
+		summaryError = validator("Summary", data.summary)
+			.isString()
+			.hasLength({ min: 3, max: 1000 }).errors.array;
+	if (data.deadline)
+		deadlineError = validator("Deadline", data.deadline).isDate().errors.array;
+
+	if (data.total)
+		totalAmountError = validator("Total Amount", data.total)
+			.isNumber()
+			.hasValue({ min: 10, max: 5000000 }).errors.array;
+	if (data.img)
+		imgError = validator("Image", data.img).isString().hasLength({ max: 100 })
+			.errors.array;
+
+	const errors = [
+		...titleError,
+		...summaryError,
+		...deadlineError,
+		...imgError,
+		...totalAmountError,
+	];
+	if (errors.length > 0)
+		return {
+			error: true,
+			code: 102,
+			errors,
+		};
+	return false;
+};
