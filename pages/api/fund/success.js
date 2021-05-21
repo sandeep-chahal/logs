@@ -42,7 +42,7 @@ export default async (req, res) => {
 				Donation.create({
 					on_fund: activeDonation.on_fund,
 					amount: activeDonation.amount,
-					usre_id: req.user._id,
+					user_id: req.user._id,
 					user_name: req.user.name,
 					msg: activeDonation.msg,
 				})
