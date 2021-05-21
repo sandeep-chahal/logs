@@ -93,7 +93,7 @@ const FundEditor: React.FC<IProps> = (props) => {
 				setLoading(false);
 			} else {
 				// @ts-ignore
-				router.push("/fund/" + res.data._id);
+				router.push("/fund/" + res.data.id);
 			}
 		});
 	};

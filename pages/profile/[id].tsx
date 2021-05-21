@@ -1,27 +1,28 @@
 import React from "react";
+import { useState, useEffect, useRef } from "react";
 import { NextApiRequest, NextApiResponse } from "next";
 import withMiddlewares from "../../middlewares";
 import Link from "next/link";
 import getUserData from "../../services/getUserData";
 import dbConnect from "../../config/mongodb";
 import UserPost from "../../components/userPost";
-import { useState, useEffect } from "react";
 import { deletePost, loadMorePostsByUser } from "../../utils/fetch/post";
+import { deleteFund } from "../../utils/fetch/fund";
 import { handleFollow } from "../../utils/fetch/user";
 import NProgress from "nprogress";
-import Image from "next/image";
-
 import { IUser } from "../../models/user";
 import { IShortPost } from "../../models/post";
 import Head from "next/head";
 import { useStore } from "../../store";
 import { showModal } from "../../store/actions";
+import MiniFund, { IExtFund } from "../../components/miniFund";
 
 interface IProps {
 	user: IUser;
 	posts: IShortPost[];
 	me: boolean;
 	isFollowing: boolean;
+	funds: IExtFund[];
 }
 
 const Profile: React.FC<IProps> = (props) => {
@@ -29,9 +30,13 @@ const Profile: React.FC<IProps> = (props) => {
 	const [user, setUser] = useState(props.user);
 	const [isFollowing, setFollowing] = useState(props.isFollowing);
 	const [posts, setPosts] = useState(props.posts || []);
+	const [funds, setFunds] = useState(props.funds || []);
 	const [deleting, setDeleting] = useState<string | null>(null);
 	const [loadingMore, setLoadingMore] = useState(false);
 	const [followbtnDisable, setFollowbtnDisable] = useState(false);
+	const [tab, setTab] = useState("posts");
+
+	const data = useRef<React.ReactElement[] | null>(null);
 
 	useEffect(() => {
 		setUser(props.user);
@@ -102,6 +107,37 @@ const Profile: React.FC<IProps> = (props) => {
 			return showError(res.msg || "Something went wrong!");
 		}
 	};
+
+	const handleFundDelete = async (id: string) => {
+		const result = await deleteFund(id);
+		if (result.error) return showError(result.msg);
+		setFunds((funds) => funds.filter((fund) => fund._id !== id));
+	};
+
+	data.current =
+		tab === "posts"
+			? posts.map((post) => (
+					<UserPost
+						key={post._id}
+						me={me}
+						post={post}
+						author={user}
+						deleting={deleting === post._id}
+						handleDeletePost={handleDeletePost}
+					/>
+			  ))
+			: funds.map((fund) => (
+					<MiniFund
+						fund={fund}
+						className="bg-gray-100 w-full p-4"
+						deadline
+						raised
+						date
+						barClasses="bg-yellow-200"
+						admin={me}
+						fundDelete={handleFundDelete}
+					/>
+			  ));
 
 	return (
 		<div className="text-darkBlue mt-40 font-semibold">
@@ -231,33 +267,41 @@ const Profile: React.FC<IProps> = (props) => {
 			{/* posts and some stats */}
 
 			<div className="bg-white m-auto w-11/12 md:w-4/5 mt-20 p-3 md:p-6 mb-12">
-				<div className="mb-6 text-2xl font-extrabold border-b-2 border-darkBlue border-opacity-50 inline-block">
-					Posts
+				<div className="inline-flex items-center mb-6 text-2xl font-extrabold ">
+					<div
+						className={`cursor-pointer ${
+							tab === "posts"
+								? "border-b-2 border-darkBlue border-opacity-50 text-primary"
+								: ""
+						}`}
+						onClick={() => setTab("posts")}
+					>
+						Posts
+					</div>
+					<div
+						className={`cursor-pointer ml-4 ${
+							tab === "funds"
+								? "border-b-2 border-darkBlue border-opacity-50 text-primary"
+								: ""
+						}`}
+						onClick={() => setTab("funds")}
+					>
+						Funds
+					</div>
 				</div>
-				{posts && posts.length ? (
-					<div>
-						{posts.map((post) => (
-							<UserPost
-								key={post._id}
-								me={me}
-								post={post}
-								author={user}
-								deleting={deleting === post._id}
-								handleDeletePost={handleDeletePost}
-							/>
-						))}
-						<button
-							className="bg-secondary text-white py-1 px-2 m-auto block font-semibold"
-							disabled={loadingMore}
-							onClick={handleLoadMore}
-						>
-							Load More
-						</button>
-					</div>
+				{Array.isArray(data.current) && data.current.length ? (
+					<div>{data.current}</div>
 				) : (
-					<div className="text-center">
-						No posts from <span className="font-semibold">{user.name}</span>
-					</div>
+					<div className="text-center">No data found</div>
+				)}
+				{tab === "posts" && (
+					<button
+						className="bg-secondary text-white py-1 px-2 mt-6 m-auto block font-semibold"
+						disabled={loadingMore}
+						onClick={handleLoadMore}
+					>
+						Load More
+					</button>
 				)}
 			</div>
 		</div>
@@ -338,6 +382,7 @@ export const getServerSideProps = async ({ params, req, res }: CGSSP) => {
 				posts: data.posts,
 				me: me,
 				isFollowing: data.isFollowing,
+				funds: data.funds,
 			},
 		};
 	} catch (err) {

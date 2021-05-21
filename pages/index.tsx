@@ -83,9 +83,11 @@ const Home = (props: IProps) => {
 				<div className="mb-4">
 					<h2 className="font-medium text-xl mb-2">Funds</h2>
 					<div className="flex overflow-x-auto scrolling-touch">
-						{props.funds.map((fund) => (
-							<MiniFund fund={fund} />
-						))}
+						{props.funds && props.funds.length ? (
+							props.funds.map((fund) => <MiniFund fund={fund} user raised />)
+						) : (
+							<div>No funds found</div>
+						)}
 					</div>
 				</div>
 				{/* posts */}

@@ -47,8 +47,13 @@ const DesktopNav = ({
 					) : (
 						<div className="border-b-2 border-secondary px-2">Pro 😎</div>
 					))}
+				<Link href="/fund/create">
+					<a className="rounded cursor-pointer px-4 py-1 font-semibold text-gradient-1">
+						Create Fund
+					</a>
+				</Link>
 				<Link href="/post/add">
-					<a className="rounded cursor-pointer mx-4 bg-gradient-1 px-4 py-1 text-white font-semibold">
+					<a className="rounded cursor-pointer mx-2 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post
 					</a>
 				</Link>

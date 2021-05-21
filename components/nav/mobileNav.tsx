@@ -40,6 +40,17 @@ const MobileNav = ({
 
 				<Link href="/post/add">
 					<a onClick={toggleDropDown} className="mb-4 flex">
+						<img
+							src="/icons/fund.png"
+							width="25px"
+							height="25px"
+							className="mr-4"
+						/>
+						<span>Create Fund</span>
+					</a>
+				</Link>
+				<Link href="/post/add">
+					<a onClick={toggleDropDown} className="mb-4 flex">
 						<img src="/icons/pencil.svg" width="25px" className="mr-4" />
 						<span>Write Post</span>
 					</a>

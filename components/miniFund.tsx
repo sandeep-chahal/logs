@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import fund, { IFund } from "../models/fund";
 import { IUser } from "../models/user";
-import { formatNumber } from "../utils";
+import {
+	formatNumber,
+	formatDate,
+	getDatePercentage,
+	getDaysLeft,
+} from "../utils";
+import { handleComment } from "../utils/fetch/post";
 
 // @ts-ignore
 export interface IExtFund extends IFund {
@@ -11,20 +17,79 @@ export interface IExtFund extends IFund {
 
 interface IProps {
 	fund: IExtFund;
+	style?: object;
+	className?: string;
+	date?: boolean;
+	user?: boolean;
+	deadline?: boolean;
+	raised?: boolean;
+	barClasses?: string;
+	admin?: boolean;
+	fundDelete?: (id: string) => void;
 }
 
 const MiniFund = (props: IProps) => {
 	return (
-		<Link href={`/fund/${props.fund._id}`}>
-			<a
-				href={`/fund/${props.fund._id}`}
-				style={{ minWidth: "256px" }}
-				className="block bg-white rounded w-64 mr-3 px-3 py-1"
-			>
-				<h2 className="font-bold text-lg">{props.fund.title}</h2>
+		<div
+			style={{ minWidth: "256px", ...(props.style || {}) }}
+			className={`block bg-white rounded w-64 mr-3 px-3 py-1 ${props.className}`}
+		>
+			<div className="flex justify-between">
+				<Link href={`/fund/${props.fund._id}`}>
+					<a href={`/fund/${props.fund._id}`}>
+						<h2 className="font-bold text-lg hover:text-primary transition-colors">
+							{props.fund.title}
+						</h2>
+					</a>
+				</Link>
+
+				{/* buttons */}
+				{props.admin && (
+					<div className="flex items-center">
+						<img
+							src="/icons/delete-bin.svg"
+							className="w-6 cursor-pointer"
+							onClick={() =>
+								props.fundDelete ? props.fundDelete(props.fund._id) : null
+							}
+						/>
+						<Link href={`/fund/edit/${props.fund._id}`}>
+							<a href={`/fund/edit/${props.fund._id}`}>
+								<img
+									src="/icons/edit.svg"
+									className="w-6 ml-4 cursor-pointer"
+								/>
+							</a>
+						</Link>
+					</div>
+				)}
+			</div>
+			{props.user && (
 				<h4 className="font-thin capitalize text-sm">{props.fund.user.name}</h4>
-				{/* raised bar */}
-				<div className="h-5 bg-gray-100 my-3 relative">
+			)}
+			{props.date && (
+				<h4 className="font-thin capitalize text-sm">
+					{formatDate(props.fund.date)}
+				</h4>
+			)}
+			{/* deadline bar */}
+			{props.deadline && (
+				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
+					<div
+						className="h-5 bg-primary"
+						style={{
+							width: getDatePercentage(props.fund.date, props.fund.deadline),
+							maxWidth: "100%",
+						}}
+					></div>
+					<span className="abs-center font-medium">
+						{getDaysLeft(props.fund.deadline, new Date())} Days Left
+					</span>
+				</div>
+			)}
+			{/* raised bar */}
+			{props.raised && (
+				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
 					<div
 						className="h-5 bg-primary"
 						style={{
@@ -36,8 +101,8 @@ const MiniFund = (props: IProps) => {
 						{formatNumber(props.fund.raised)}/{formatNumber(props.fund.total)}
 					</span>
 				</div>
-			</a>
-		</Link>
+			)}
+		</div>
 	);
 };
 

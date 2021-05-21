@@ -1,3 +1,24 @@
+export const deleteFund = async (id) => {
+	try {
+		const res = await fetch(`/api/fund/delete`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				_id: id,
+			}),
+		});
+		const result = await res.json();
+		return result;
+	} catch (err) {
+		console.log(err);
+		return {
+			error: true,
+			msg: "Something went wrong!",
+		};
+	}
+};
 export const getFund = async (id) => {
 	try {
 		const res = await fetch(`/api/fund/get`, {
