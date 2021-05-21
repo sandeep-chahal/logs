@@ -109,8 +109,8 @@ const Fund = () => {
 		return <div className="h-screen text-center text-2xl">{error}</div>;
 	if (fund)
 		return (
-			<div className="h-screen w-4/5 m-auto flex justify-between text-black">
-				<div className="w-1/2 bg-white mr-4 p-4">
+			<div className="min-h-screen w-11/12 md:w-4/5 m-auto flex flex-col md:flex-row justify-between text-black">
+				<div className="w-full md:w-1/2 bg-white mr-4 p-4">
 					<h1 className="font-bold text-4xl">
 						{fund.title} ({formatNumber(fund.total)})
 					</h1>
@@ -135,7 +135,7 @@ const Fund = () => {
 					/>
 				</div>
 				{/* right */}
-				<div className="w-1/2 bg-white ml-4 p-4">
+				<div className="w-full md:w-1/2 bg-white md:ml-4 mt-4 md:mt-0 p-4">
 					{/* donate */}
 					<div className="flex justify-between font-medium items-center">
 						<h2 className="text-2xl">Donate</h2>
