@@ -4,10 +4,12 @@ import Head from "next/head";
 import Post from "../components/post";
 import { IShortPost } from "../models/post";
 import PostDB from "../models/post";
+import Fund from "../models/fund";
 import User from "../models/user";
 import connectDB from "../config/mongodb";
 import { IHackerNews } from "../types/index";
 import HackerNews from "../components/hackerNews";
+import MiniFund, { IExtFund } from "../components/miniFund";
 
 const tags = [
 	"javascript",
@@ -24,6 +26,7 @@ const tags = [
 interface IProps {
 	posts: IShortPost[] | null;
 	hackerNews: IHackerNews[];
+	funds: IExtFund[];
 }
 
 const Home = (props: IProps) => {
@@ -76,6 +79,16 @@ const Home = (props: IProps) => {
 			<HackerNews news={props.hackerNews} />
 
 			<div className="mt-1 w-11/12 lg:w-3/4">
+				{/* funds */}
+				<div className="mb-4">
+					<h2 className="font-medium text-xl mb-2">Funds</h2>
+					<div className="flex overflow-x-auto scrolling-touch">
+						{props.funds.map((fund) => (
+							<MiniFund fund={fund} />
+						))}
+					</div>
+				</div>
+				{/* posts */}
 				<div className="justify-between mb-5 md:mb-3">
 					<div className="flex flex-col md:flex-row md:items-center justify-between">
 						<h1 className="text-2xl md:text-2xl font-bold text-darkBlue">
@@ -123,14 +136,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			model: User,
 			select: "name",
 		});
+	const fundsReq = Fund.find({}, {}, { sort: { createdOn: -1 } })
+		.select("-summary")
+		.limit(10)
+		.populate({
+			path: "user",
+			model: User,
+			select: "name",
+		});
 	const hackerNewsReq = await fetch(
 		"https://hacker-news.firebaseio.com/v0/topstories.json"
 	);
 
-	const res = await Promise.all([postsReq, hackerNewsReq]);
+	const res = await Promise.all([postsReq, hackerNewsReq, fundsReq]);
 
 	const posts = res[0];
 	const hackerNewsIds = await res[1].json();
+	const funds = res[2];
 
 	let hackerNews = await Promise.all(
 		Array.isArray(hackerNewsIds)
@@ -147,6 +169,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		props: {
 			posts: JSON.parse(JSON.stringify(posts)),
 			hackerNews: hackerNews.filter((news) => news.url),
+			funds: JSON.parse(JSON.stringify(funds)),
 		},
 		revalidate: 1000 * 60 * 1, //1 min
 	};

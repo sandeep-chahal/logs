@@ -77,6 +77,22 @@ const calculateMin = (date, now) => {
 	return `at ${convert24to12(date)}`;
 };
 
+export const getDaysLeft = (d1, d2) => {
+	try {
+		const date1 = new Date(d1);
+		const date2 = new Date(d2);
+		return parseInt((date1 - date2) / (1000 * 60 * 60 * 24));
+	} catch (err) {
+		return 0;
+		console.log(err);
+	}
+};
+export const getDatePercentage = (s, e) => {
+	const start = new Date(s);
+	const end = new Date(e);
+	const today = new Date();
+	return 100 - Math.round(100 - ((end - start) * 100) / today) + "%";
+};
 export const formatDate = (time) => {
 	const date = new Date(time);
 	const now = new Date();

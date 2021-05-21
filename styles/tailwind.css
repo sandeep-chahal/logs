@@ -82,6 +82,13 @@
 			);
 		background-size: 15px 20px, 100% 100%;
 	}
+
+	.abs-center {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
 }
 /* colors from https://fettblog.eu/ */
 :root {

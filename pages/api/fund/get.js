@@ -11,7 +11,11 @@ export default async (req, res) => {
 	}
 	await dbConnect();
 
-	const fund = await Fund.findById(req.body._id);
+	const fund = await Fund.findById(req.body._id).populate({
+		path: "user",
+		model: User,
+		select: "name photo",
+	});
 
 	if (fund)
 		return res.json({
