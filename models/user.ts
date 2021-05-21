@@ -16,9 +16,15 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
-	subscription:{
-		expiresOn:Date,	
-		order_details:Object
+	subscription: {
+		expiresOn: Date,
+		order_details: Object,
+	},
+	activeDonation: {
+		id: String,
+		on_fund: String,
+		amount: Number,
+		msg: String,
 	},
 	provider: String,
 	photo: String,
@@ -47,10 +53,16 @@ export interface IUser {
 	twitter?: string;
 	web?: string;
 	expiresOn?: string;
-	subscription:{
-		expiresOn:Date,
-		order_details:object
-	}
+	subscription: {
+		expiresOn: Date;
+		order_details: object;
+	};
+	activeDonation?: {
+		id: string;
+		on_fund: string;
+		amount: number;
+		msg: string;
+	};
 }
 
 const user = mongoose.models.user || mongoose.model("user", userSchema);

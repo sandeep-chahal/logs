@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { getFund } from "../../utils/fetch/fund";
 import { IFund } from "../../models/fund";
+import { IDonation } from "../../models/donation";
 import { IUser } from "../../models/user";
 import { formatDate, getDaysLeft, getDatePercentage } from "../../utils";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import DonationPopup from "../../components/donatePopup";
+import { useStore } from "../../store";
+import { showModal } from "../../store/actions";
+import {
+	createDonation,
+	displayRazorpayDonation,
+} from "../../utils/fetch/payment";
+
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
 		return (
@@ -35,24 +45,62 @@ interface IExtFund extends IFund {
 
 const Fund = () => {
 	const [loading, setLoading] = useState(true);
+	const [popup, setPopup] = useState(false);
 	const [error, setError] = useState(null);
 	const [fund, setFund] = useState<IExtFund | null>(null);
+	const [donations, setDonation] = useState<IDonation[] | null>(null);
+	const [state, dispatch] = useStore();
+
 	const router = useRouter();
 
+	const showError = (msg: string) => {
+		dispatch(
+			showModal(true, {
+				msg,
+				type: "ERROR",
+			})
+		);
+	};
+
+	const loadData = async () => {
+		if (!router.query.id) return;
+		const data = await getFund(router.query.id);
+		if (!data || data.error) setError(data.msg);
+		else {
+			setFund(data.data.fund);
+			setDonation(data.data.donations);
+		}
+		setLoading(false);
+	};
+
 	useEffect(() => {
-		(async () => {
-			if (!router.query.id) return;
-			const data = await getFund(router.query.id);
-			if (!data || data.error) setError(data.msg);
-			else setFund(data.data.fund);
-			setLoading(false);
-		})();
+		loadData();
 	}, [router.query.id]);
 	const formatNumber = (num: number) => {
 		return new Intl.NumberFormat("en-IN", {
 			style: "currency",
 			currency: "INR",
 		}).format(num);
+	};
+
+	const handleDonate = async (amount: number, msg: string) => {
+		if (amount < 10) return;
+		if (!state.user) return showError("Please Login First!");
+		setPopup(false);
+		const result = await createDonation(amount, msg, fund?._id);
+		if (result.error) return showError(result.msg);
+
+		displayRazorpayDonation(
+			result.order,
+			state.user,
+			(res: { error: boolean; msg?: string }) => {
+				console.log(res);
+				if (res.error) {
+					return showError(res.msg || "Something went wrong!");
+				}
+				loadData();
+			}
+		);
 	};
 
 	if (loading)
@@ -91,8 +139,22 @@ const Fund = () => {
 					{/* donate */}
 					<div className="flex justify-between font-medium items-center">
 						<h2 className="text-2xl">Donate</h2>
-						<button className="py-2 px-4 bg-gradient-1 text-white">Give</button>
+						<button
+							className={`py-2 px-4 ${
+								!popup ? "bg-gradient-1 text-white" : "bg-gray-100"
+							}`}
+							onClick={() => setPopup(true)}
+							disabled={popup}
+						>
+							Give
+						</button>
 					</div>
+					{popup && (
+						<DonationPopup
+							onDonate={handleDonate}
+							close={() => setPopup(false)}
+						/>
+					)}
 					{/* bars */}
 					<div className="mt-6">
 						{/* deadline */}
@@ -127,20 +189,32 @@ const Fund = () => {
 						{/* recent dontaions */}
 						<div className="bg-gray-200 mt-4 p-3">
 							<h2 className="font-medium text-xl mb-4">Recent Donations</h2>
-							{null ? (
-								[].map((donator) => {
-									// <div className="rounded bg-white p-2 mb-4">
-									// 	<h4 className="font-medium text-xl">
-									// 		{formatNumber(donator.amount)}
-									// 	</h4>
-									// 	<div className="flex items-center">
-									// 		<h4 className="font-medium">{donator.name}</h4>
-									// 		<h5 className="font-light ml-2 text-sm">
-									// 			{formatDate(donator.date)}
-									// 		</h5>
-									// 	</div>
-									// 	<p className="italic">{donator.msg}</p>
-									// </div>;
+							{donations && donations.length ? (
+								donations.map((donator) => {
+									return (
+										<div
+											key={donator._id}
+											className="rounded bg-white p-2 mb-4"
+										>
+											<h4 className="font-medium text-xl">
+												{formatNumber(donator.amount)}
+											</h4>
+											<div className="flex items-center">
+												<Link href={`/profile/${donator.user_id}`}>
+													<a href={`/profile/${donator.user_id}`}>
+														<h4 className="font-medium capitalize hover:text-primary">
+															{donator.user_name}
+														</h4>
+													</a>
+												</Link>
+
+												<h5 className="font-light ml-2 text-sm">
+													{formatDate(donator.date)}
+												</h5>
+											</div>
+											<p className="italic">{donator.msg}</p>
+										</div>
+									);
 								})
 							) : (
 								<div className="rounded bg-white p-2 mb-4">

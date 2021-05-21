@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useStore } from "../store";
-import { createOrder, displayRazorpay } from "../utils/fetch/subscription";
+import { createOrder, displayRazorpay } from "../utils/fetch/payment";
 import { showModal } from "../store/actions";
 const Subscription = () => {
 	const [state, dispatch] = useStore();
