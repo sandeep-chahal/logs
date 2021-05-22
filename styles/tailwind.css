@@ -213,3 +213,19 @@ body {
 		width: 5px;
 	}
 }
+
+.cursor {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+	background-color: #ffbe0b;
+	mix-blend-mode: difference;
+	z-index: 999;
+	pointer-events: none;
+}
+* {
+	cursor: none !important;
+}

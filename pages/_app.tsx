@@ -7,6 +7,8 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
+import Cursor from "../components/cursor";
+
 import "../styles/tailwind.css";
 
 NProgress.configure({
@@ -22,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<Provider>
 			<Layout>
 				<Component {...pageProps} />
+				<Cursor />
 			</Layout>
 		</Provider>
 	);

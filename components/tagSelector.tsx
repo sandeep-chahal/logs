@@ -35,7 +35,7 @@ const TagSelector = ({
 			{tags.map((tag) => (
 				<div
 					key={tag}
-					className="text-primary mx-3 cursor-pointer"
+					className="text-primary mx-3 "
 					title="click to remove"
 					onClick={() => handleRemoveTag(tag)}
 				>

@@ -42,7 +42,7 @@ const HackerNews = (props: { news: IHackerNews[] }) => {
 								<a
 									target="_blank"
 									href={news.url}
-									className="block mb-6 hover:text-primary"
+									className="block mb-6 hover:text-primary transition-colors duration-200"
 								>
 									<h2 className="text-lg font-medium">{news.title}</h2>
 									<h4>{news.by}</h4>

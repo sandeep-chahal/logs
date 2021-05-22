@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { getFund } from "../../utils/fetch/fund";
 import { IFund } from "../../models/fund";
 import { IDonation } from "../../models/donation";
@@ -104,12 +106,18 @@ const Fund = () => {
 	};
 
 	if (loading)
-		return <div className="h-screen text-center text-2xl">Loading...</div>;
-	if (error)
-		return <div className="h-screen text-center text-2xl">{error}</div>;
+		return <div className="h-screen text-center text-sm">Loading...</div>;
+	if (error) return <div className="h-screen text-center text-sm">{error}</div>;
 	if (fund)
 		return (
-			<div className="min-h-screen w-11/12 md:w-4/5 m-auto flex flex-col md:flex-row justify-between text-black">
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				className="min-h-screen w-11/12 md:w-4/5 m-auto flex flex-col md:flex-row justify-between text-black"
+			>
+				<Head>
+					<title>{fund ? fund.title : "Fund"}</title>
+				</Head>
 				<div className="w-full md:w-1/2 bg-white mr-4 p-4">
 					<h1 className="font-bold text-4xl">
 						{fund.title} ({formatNumber(fund.total)})
@@ -140,7 +148,7 @@ const Fund = () => {
 					<div className="flex justify-between font-medium items-center">
 						<h2 className="text-2xl">Donate</h2>
 						<button
-							className={`py-2 px-4 ${
+							className={`py-2 px-4 rounded ${
 								!popup ? "bg-gradient-1 text-white" : "bg-gray-100"
 							}`}
 							onClick={() => setPopup(true)}
@@ -149,24 +157,51 @@ const Fund = () => {
 							Give
 						</button>
 					</div>
-					{popup && (
-						<DonationPopup
-							onDonate={handleDonate}
-							close={() => setPopup(false)}
-						/>
-					)}
+					<AnimatePresence>
+						{popup && (
+							<motion.div
+								style={{ originY: 0 }}
+								initial={{
+									height: 0,
+									opacity: 0,
+								}}
+								animate={{
+									height: "auto",
+									opacity: 1,
+								}}
+								exit={{
+									height: 0,
+									opacity: 0,
+									transition: {
+										duration: 0.15,
+									},
+								}}
+							>
+								<DonationPopup
+									onDonate={handleDonate}
+									close={() => setPopup(false)}
+								/>
+							</motion.div>
+						)}
+					</AnimatePresence>
 					{/* bars */}
 					<div className="mt-6">
 						{/* deadline */}
 						<h4 className="font-light mb-2">DeadLine</h4>
 						<div className="h-5 bg-gray-100 mb-6 relative">
-							<div
+							<motion.div
+								initial={{
+									width: 0,
+								}}
+								animate={{
+									width: getDatePercentage(fund.date, fund.deadline),
+								}}
 								className="h-5 bg-skyBlue"
 								style={{
-									width: getDatePercentage(fund.date, fund.deadline),
+									// width: getDatePercentage(fund.date, fund.deadline),
 									maxWidth: "100%",
 								}}
-							></div>
+							></motion.div>
 							<span className="abs-center font-medium">
 								{getDaysLeft(fund.deadline, new Date())} Days Left
 							</span>
@@ -175,13 +210,25 @@ const Fund = () => {
 						{/* raised */}
 						<h4 className="font-light mb-2">Raised</h4>
 						<div className="h-5 bg-gray-100 mb-6 relative">
-							<div
+							<motion.div
+								initial={{
+									width: 0,
+								}}
+								animate={{
+									width: `${(fund.raised / fund.total) * 100}%`,
+									transition: {
+										duration: 0.5,
+										bounce: 0.5,
+										type: "spring",
+										stiffness: 75,
+									},
+								}}
 								className="h-5 bg-yellow"
 								style={{
-									width: `${(fund.raised / fund.total) * 100}%`,
+									// width: `${(fund.raised / fund.total) * 100}%`,
 									maxWidth: "100%",
 								}}
-							></div>
+							></motion.div>
 							<span className="abs-center font-medium">
 								{formatNumber(fund.raised)}/{formatNumber(fund.total)}
 							</span>
@@ -224,7 +271,7 @@ const Fund = () => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		);
 
 	return (

@@ -51,17 +51,14 @@ const MiniFund = (props: IProps) => {
 					<div className="flex items-center">
 						<img
 							src="/icons/delete-bin.svg"
-							className="w-6 cursor-pointer"
+							className="w-6 "
 							onClick={() =>
 								props.fundDelete ? props.fundDelete(props.fund._id) : null
 							}
 						/>
 						<Link href={`/fund/edit/${props.fund._id}`}>
 							<a href={`/fund/edit/${props.fund._id}`}>
-								<img
-									src="/icons/edit.svg"
-									className="w-6 ml-4 cursor-pointer"
-								/>
+								<img src="/icons/edit.svg" className="w-6 ml-4 " />
 							</a>
 						</Link>
 					</div>
@@ -78,13 +75,25 @@ const MiniFund = (props: IProps) => {
 			{/* deadline bar */}
 			{props.deadline && (
 				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
-					<div
+					<motion.div
+						initial={{
+							width: 0,
+						}}
+						animate={{
+							width: getDatePercentage(props.fund.date, props.fund.deadline),
+							transition: {
+								duration: 0.5,
+								bounce: 0.5,
+								type: "spring",
+								stiffness: 75,
+							},
+						}}
 						className="h-5 bg-skyBlue"
 						style={{
-							width: getDatePercentage(props.fund.date, props.fund.deadline),
+							// width: getDatePercentage(props.fund.date, props.fund.deadline),
 							maxWidth: "100%",
 						}}
-					></div>
+					></motion.div>
 					<span className="abs-center font-medium">
 						{getDaysLeft(props.fund.deadline, new Date())} Days Left
 					</span>
@@ -93,13 +102,25 @@ const MiniFund = (props: IProps) => {
 			{/* raised bar */}
 			{props.raised && (
 				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
-					<div
+					<motion.div
+						initial={{
+							width: 0,
+						}}
+						animate={{
+							width: `${(props.fund.raised / props.fund.total) * 100}%`,
+							transition: {
+								duration: 0.5,
+								bounce: 0.5,
+								type: "spring",
+								stiffness: 75,
+							},
+						}}
 						className="h-5 bg-yellow"
 						style={{
-							width: `${(props.fund.raised / props.fund.total) * 100}%`,
+							// width: `${(props.fund.raised / props.fund.total) * 100}%`,
 							maxWidth: "100%",
 						}}
-					></div>
+					></motion.div>
 					<span className="abs-center font-medium">
 						{formatNumber(props.fund.raised)}/{formatNumber(props.fund.total)}
 					</span>

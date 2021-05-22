@@ -30,7 +30,7 @@ const Comment = ({ userId, comment, deleteComment }) => {
 								: "Click to delete it."
 						}
 						className={`w-4  ${
-							btnDisable ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+							btnDisable ? "opacity-50 cursor-not-allowed" : ""
 						} `}
 						src="/icons/delete-bin.svg"
 						onClick={handleClick}

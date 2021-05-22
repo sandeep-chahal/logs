@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Head from "next/head";
 import { useStore } from "../store";
 import { createOrder, displayRazorpay } from "../utils/fetch/payment";
 import { showModal } from "../store/actions";
@@ -45,9 +46,12 @@ const Subscription = () => {
 	};
 	return (
 		<div className="min-h-screen flex flex-col items-center">
+			<Head>
+				<title>Subscription</title>
+			</Head>
 			<h1 className="text-center text-2xl font-bold mb-4">Subscription</h1>
 			<div className="flex justify-evenly w-1/2 text-white">
-				<div className="w-11/12 mx-3 h-full rounded-md bg-gray-200 flex flex-col items-center">
+				<div className="w-11/12 mx-3 h-full rounded-md bg-gray-200 flex flex-col items-center shadow-xl">
 					<div className="bg-primary pt-3 w-full">
 						<div className="font-medium text-xl text-center">1 Month</div>
 						<div className="flex font-bold justify-center mt-5">
@@ -69,7 +73,7 @@ const Subscription = () => {
 						{loading ? "Wait!" : "Purchase"}
 					</button>
 				</div>
-				<div className="w-11/12 mx-3 h-full rounded-md bg-gray-200 flex flex-col items-center">
+				<div className="w-11/12 mx-3 h-full rounded-md bg-gray-200 flex flex-col items-center shadow-xl">
 					<div className="bg-secondary pt-3 w-full">
 						<div className="font-medium text-xl text-center">12 Months</div>
 						<div className="flex font-bold justify-center mt-5">

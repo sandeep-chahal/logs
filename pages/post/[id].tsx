@@ -137,7 +137,7 @@ const Post: React.FC<IProps> = (props) => {
 									transition: { duration: 0.1 },
 								}}
 								whileTap={{ scale: 0.8 }}
-								className="flex items-center mx-3 cursor-pointer"
+								className="flex items-center mx-3 "
 								onClick={handleLikeClick}
 							>
 								<div>{formatNumber(parseInt(post.likes_counter))}</div>
@@ -147,10 +147,7 @@ const Post: React.FC<IProps> = (props) => {
 									src={`/icons/like-${liked ? "dark" : "light"}.svg`}
 								/>
 							</motion.div>
-							<label
-								className="flex items-center mx-3 cursor-pointer"
-								htmlFor="comment"
-							>
+							<label className="flex items-center mx-3 " htmlFor="comment">
 								<div>{formatNumber(parseInt(post.comments_counter))}</div>
 								<img className="w-6 mx-1" src={`/icons/comment.svg`} />
 							</label>

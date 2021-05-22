@@ -27,10 +27,7 @@ const DesktopNav = ({
 			<div key="desktop-nav" className="desktop-nav items-center flex">
 				<Link href="/search">
 					<a>
-						<img
-							className="cursor-pointer mx-4 w-6"
-							src="/icons/search-1.svg"
-						/>
+						<img className=" mx-4 w-6" src="/icons/search-1.svg" />
 					</a>
 				</Link>
 				{user &&
@@ -48,12 +45,12 @@ const DesktopNav = ({
 						<div className="border-b-2 border-secondary px-2">Pro 😎</div>
 					))}
 				<Link href="/fund/create">
-					<a className="rounded cursor-pointer px-4 py-1 font-semibold text-gradient-1">
+					<a className="rounded  px-4 py-1 font-semibold text-gradient-1">
 						Create Fund
 					</a>
 				</Link>
 				<Link href="/post/add">
-					<a className="rounded cursor-pointer mx-2 bg-gradient-1 px-4 py-1 text-white font-semibold">
+					<a className="rounded  mx-2 bg-gradient-1 px-4 py-1 text-white font-semibold">
 						Write Post
 					</a>
 				</Link>
@@ -65,10 +62,7 @@ const DesktopNav = ({
 						hasNotif ? "You have some notifications" : "No new notification"
 					}
 				>
-					<img
-						className="cursor-pointer w-full"
-						src="/icons/notification-1.svg"
-					/>
+					<img className=" w-full" src="/icons/notification-1.svg" />
 					{hasNotif ? (
 						<div className="absolute w-2 h-2 bg-primary right-0 top-0 rounded-full"></div>
 					) : null}
@@ -95,7 +89,7 @@ const DesktopNav = ({
 					</Link>
 				) : (
 					<div
-						className="mx-4 cursor-pointer font-medium"
+						className="mx-4  font-medium"
 						onClick={() => router.push("/api/auth/github")}
 					>
 						Login with Github

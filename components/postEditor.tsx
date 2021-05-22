@@ -102,7 +102,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 				<div className="flex flex-col md:flex-row md:items-center">
 					<label
 						htmlFor="upload_img"
-						className="bg-white py-1 px-2 cursor-pointer border-2  rounded p-2"
+						className="bg-white py-1 px-2  border-2  rounded p-2"
 					>
 						{uploading ? "Uploading" : "Upload an image"}
 					</label>
@@ -167,7 +167,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 						{props.markdown}
 					</textarea>
 					<div
-						className="my-2 font-normal inline-flex items-center cursor-pointer"
+						className="my-2 font-normal inline-flex items-center "
 						onClick={handleCheckBox}
 						title="Click to enable/disable live preview"
 					>

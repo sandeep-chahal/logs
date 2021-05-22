@@ -31,8 +31,8 @@ const Post = ({ post }: IProps) => {
 				/>
 			) : null}
 			<Link href={`/post/${post._id}`}>
-				<a>
-					<h2 className="text-2xl lg:text-2xl font-extrabold text-gradient-1 hover:text-primary cursor-pointer">
+				<a href={`/post/${post._id}`}>
+					<h2 className="text-2xl lg:text-2xl font-extrabold text-gradient-1 hover:text-primary transition-colors duration-200">
 						{post.title}
 					</h2>
 				</a>
@@ -44,9 +44,7 @@ const Post = ({ post }: IProps) => {
 					<span className="w-1 h-1 bg-darkBlue rounded inline-block mx-2" />
 					{typeof post.author !== "string" ? (
 						<Link href={`profile/${post.author._id}`}>
-							<a className="cursor-pointer hover:underline capitalize">
-								{post.author.name}
-							</a>
+							<a className=" hover:underline capitalize">{post.author.name}</a>
 						</Link>
 					) : (
 						<span>{post.author}</span>

@@ -66,7 +66,7 @@ const Home = (props: IProps) => {
 							<li
 								onClick={() => handleTagChange(tag)}
 								key={tag}
-								className={`mb-2 cursor-pointer text-lg font-semibold tracking-wider hover:text-primary ${
+								className={`mb-2  text-lg font-semibold tracking-wider hover:text-primary ${
 									tag === selectedTag && "text-primary"
 								}`}
 							>

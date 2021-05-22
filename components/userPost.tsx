@@ -14,7 +14,7 @@ interface IProps {
 const UserPost = ({ post, author, me, deleting, handleDeletePost }: IProps) => {
 	return (
 		<div
-			className={`bg-white p-1 md:p-4 mb-4 cursor-pointer flex md:flex-row flex-col justify-between ${
+			className={`bg-white p-1 md:p-4 mb-4  flex md:flex-row flex-col justify-between ${
 				deleting && "opacity-50"
 			}`}
 			title={

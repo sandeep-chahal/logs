@@ -248,7 +248,7 @@ const Profile: React.FC<IProps> = (props) => {
 					{/* follow/edit */}
 					{me ? (
 						<Link href={`/profile/settings`}>
-							<a className="inline-block bg-secondary text-white text-center cursor-pointer p-1 px-12">
+							<a className="inline-block bg-secondary text-white text-center  p-1 px-12">
 								Edit
 							</a>
 						</Link>
@@ -269,7 +269,7 @@ const Profile: React.FC<IProps> = (props) => {
 			<div className="bg-white m-auto w-11/12 md:w-4/5 mt-20 p-3 md:p-6 mb-12">
 				<div className="inline-flex items-center mb-6 text-2xl font-extrabold ">
 					<div
-						className={`cursor-pointer ${
+						className={` ${
 							tab === "posts"
 								? "border-b-2 border-darkBlue border-opacity-50 text-primary"
 								: ""
@@ -279,7 +279,7 @@ const Profile: React.FC<IProps> = (props) => {
 						Posts
 					</div>
 					<div
-						className={`cursor-pointer ml-4 ${
+						className={` ml-4 ${
 							tab === "funds"
 								? "border-b-2 border-darkBlue border-opacity-50 text-primary"
 								: ""

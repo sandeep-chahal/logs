@@ -35,7 +35,7 @@ const Navbar = () => {
 			<nav className="flex justify-between h-12 items-center pl-5 shadow-md md:px-20 bg-white w-full">
 				<Link href="/">
 					<a onClick={() => setDropDown(false)}>
-						<h2 className="text-2xl cursor-pointer">
+						<h2 className="text-2xl ">
 							<span className="font-light">Dev|</span>
 							<span className="font-bold">Logs</span>
 						</h2>
