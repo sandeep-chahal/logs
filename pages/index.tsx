@@ -146,25 +146,28 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			model: User,
 			select: "name",
 		});
-	const hackerNewsReq = await fetch(
+	const hackerNewsReq = fetch(
 		"https://hacker-news.firebaseio.com/v0/topstories.json"
 	);
 
 	const res = await Promise.all([postsReq, hackerNewsReq, fundsReq]);
 
 	const posts = res[0];
-	const hackerNewsIds = await res[1].json();
 	const funds = res[2];
+	let hackerNews: any[] = [];
+	try {
+		const hackerNewsIds = await res[1].json();
 
-	let hackerNews = await Promise.all(
-		Array.isArray(hackerNewsIds)
-			? hackerNewsIds
-					.filter((_, i) => i < 10)
-					.map((id) =>
-						fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
-					)
-			: []
-	);
+		hackerNews = await Promise.all(
+			Array.isArray(hackerNewsIds)
+				? hackerNewsIds
+						.filter((_, i) => i < 10)
+						.map((id) =>
+							fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+						)
+				: []
+		);
+	} catch (err) {}
 
 	hackerNews = await Promise.all(hackerNews.map((req) => req.json()));
 	return {

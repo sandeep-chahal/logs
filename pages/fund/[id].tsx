@@ -161,7 +161,7 @@ const Fund = () => {
 						<h4 className="font-light mb-2">DeadLine</h4>
 						<div className="h-5 bg-gray-100 mb-6 relative">
 							<div
-								className="h-5 bg-primary"
+								className="h-5 bg-skyBlue"
 								style={{
 									width: getDatePercentage(fund.date, fund.deadline),
 									maxWidth: "100%",
@@ -176,7 +176,7 @@ const Fund = () => {
 						<h4 className="font-light mb-2">Raised</h4>
 						<div className="h-5 bg-gray-100 mb-6 relative">
 							<div
-								className="h-5 bg-primary"
+								className="h-5 bg-yellow"
 								style={{
 									width: `${(fund.raised / fund.total) * 100}%`,
 									maxWidth: "100%",

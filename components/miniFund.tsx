@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import fund, { IFund } from "../models/fund";
+import { motion } from "framer-motion";
 import { IUser } from "../models/user";
 import {
 	formatNumber,
@@ -30,7 +31,9 @@ interface IProps {
 
 const MiniFund = (props: IProps) => {
 	return (
-		<div
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
 			style={{ minWidth: "256px", ...(props.style || {}) }}
 			className={`block bg-white rounded w-64 mr-3 px-3 py-1 ${props.className}`}
 		>
@@ -76,7 +79,7 @@ const MiniFund = (props: IProps) => {
 			{props.deadline && (
 				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
 					<div
-						className="h-5 bg-primary"
+						className="h-5 bg-skyBlue"
 						style={{
 							width: getDatePercentage(props.fund.date, props.fund.deadline),
 							maxWidth: "100%",
@@ -91,7 +94,7 @@ const MiniFund = (props: IProps) => {
 			{props.raised && (
 				<div className={`h-5 bg-gray-100 my-3 relative ${props.barClasses}`}>
 					<div
-						className="h-5 bg-primary"
+						className="h-5 bg-yellow"
 						style={{
 							width: `${(props.fund.raised / props.fund.total) * 100}%`,
 							maxWidth: "100%",
@@ -102,7 +105,7 @@ const MiniFund = (props: IProps) => {
 					</span>
 				</div>
 			)}
-		</div>
+		</motion.div>
 	);
 };
 

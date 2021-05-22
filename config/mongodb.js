@@ -1,22 +1,43 @@
 import mongoose from "mongoose";
 
-async function dbConnect() {
-	/* check if we have connection to our database*/
-	if (global.mongo && global.mongo.connection.readyState >= 1) {
-		await Promise.resolve(global.mongo);
+const connectDB = async () => {
+	if (mongoose.connections[0].readyState) {
+		// Use current db connection
+		console.log("using CACHED db");
 		return;
 	}
-
-	console.log("creating new db connection");
-	/* connecting to our database */
-	global.mongo = await mongoose.connect(process.env.MONGODB_URI, {
-		useNewUrlParser: true,
+	// Use new db connection
+	console.log("creating NEW db");
+	await mongoose.connect(process.env.MONGODB_URI, {
 		useUnifiedTopology: true,
 		useFindAndModify: false,
+		useCreateIndex: true,
+		useNewUrlParser: true,
 	});
-}
+	return;
+};
 
-export default dbConnect;
+export default connectDB;
+
+// import mongoose from "mongoose";
+
+// async function dbConnect() {
+// 	/* check if we have connection to our database*/
+// 	if (global.mongo && global.mongo.connection.readyState >= 1) {
+// 		await Promise.resolve(global.mongo);
+// 		return;
+// 	}
+
+// 	console.log("creating new db connection");
+// 	/* connecting to our database */
+// 	global.mongo = await mongoose.connect(process.env.MONGODB_URI, {
+// 		useNewUrlParser: true,
+// 		useUnifiedTopology: true,
+// 		useFindAndModify: false,
+// 	});
+// }
+
+// export default dbConnect;
 
 // import mongoose from "mongoose";
 
