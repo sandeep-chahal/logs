@@ -20,7 +20,7 @@ export default async (req, res) => {
 
 		await User.findByIdAndUpdate(req.user._id, data);
 		const user = await User.findById(req.user._id).select(
-			"_id email photo name"
+			"_id email photo name subscription"
 		);
 		console.log(user);
 		req.login(user, (err) => {});

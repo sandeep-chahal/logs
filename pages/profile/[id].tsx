@@ -42,6 +42,7 @@ const Profile: React.FC<IProps> = (props) => {
 		setUser(props.user);
 		setFollowing(props.isFollowing);
 		setPosts(props.posts || []);
+		setFunds(props.funds || []);
 	}, [props]);
 
 	const [state, dispatch] = useStore();

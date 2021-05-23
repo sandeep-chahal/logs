@@ -60,7 +60,8 @@ export const getDatePercentage = (s, e) => {
 	const start = new Date(s);
 	const end = new Date(e);
 	const today = new Date();
-	return 100 - Math.round(((today - start) / (end - start)) * 100) + "%";
+	const percetage = Math.round(((today - start) / (end - start)) * 100);
+	return (percetage ? 100 - percetage : percetage) + "%";
 };
 export const formatDate = (time) => {
 	const fromNow = dayjs(time).fromNow();

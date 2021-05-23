@@ -150,6 +150,7 @@ const FundEditor: React.FC<IProps> = (props) => {
 					{/* Total Fund Amount Wants To Raise */}
 					<input
 						type="number"
+						max={500000}
 						placeholder="Total Amount"
 						className="mt-6 p-2 mb-4 w-2/5 border-2  rounded"
 						onChange={(e) => setTotalAmount(Number(e.target.value))}

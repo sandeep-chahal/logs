@@ -23,7 +23,7 @@ export default async (req, res) => {
 	return res.json({
 		error: false,
 		data: {
-			id: fund._id,
+			_id: fund._id,
 		},
 	});
 };
