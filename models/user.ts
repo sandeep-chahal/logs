@@ -23,6 +23,8 @@ const userSchema = new mongoose.Schema({
 	activeDonation: {
 		id: String,
 		on_fund: String,
+		fund_title: String,
+		fund_user: String,
 		amount: Number,
 		msg: String,
 	},
@@ -60,6 +62,8 @@ export interface IUser {
 	activeDonation?: {
 		id: string;
 		on_fund: string;
+		fund_title: string;
+		fund_user: string;
 		amount: number;
 		msg: string;
 	};

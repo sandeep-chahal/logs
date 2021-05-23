@@ -160,9 +160,7 @@ const PostEditor: React.FC<IProps> = (props) => {
 						style={{ minHeight: "16rem" }}
 						className="mr-4 p-4 border-2 w-full rounded"
 						placeholder="Write your markdown here . . . "
-						onChange={(e) =>
-							setMarkdown(e.target.value.replaceAll("\n", "\n\n"))
-						}
+						onChange={(e) => setMarkdown(e.target.value)}
 					>
 						{props.markdown}
 					</textarea>
@@ -184,7 +182,11 @@ const PostEditor: React.FC<IProps> = (props) => {
 						// @ts-ignore
 						style={{ minHeight: "16rem" }}
 						className="w-full p-4 markdown border-2 rounded"
-						children={livePreview ? markdown : "Live preview is disabled"}
+						children={
+							livePreview
+								? markdown.replaceAll("\n", "\n\n")
+								: "Live preview is disabled"
+						}
 					/>
 				</div>
 

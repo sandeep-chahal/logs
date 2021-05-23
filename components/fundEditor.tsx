@@ -4,6 +4,7 @@ import { modifyFund } from "../utils/fetch/fund";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
 import uploadFile from "../utils/fetch/uploadFile";
+import dayjs from "dayjs";
 
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -93,7 +94,7 @@ const FundEditor: React.FC<IProps> = (props) => {
 				setLoading(false);
 			} else {
 				// @ts-ignore
-				router.push("/fund/" + res.data.id);
+				router.push("/fund/" + res.data._id);
 			}
 		});
 	};
@@ -158,6 +159,7 @@ const FundEditor: React.FC<IProps> = (props) => {
 					{/* DeadLine */}
 					<input
 						type="date"
+						min={dayjs(new Date()).format("YYYY-MM-DD")}
 						placeholder="Deadline"
 						className="mt-6 p-2 mb-4 w-2/5 border-2  rounded"
 						onChange={(e) => setDeadline(e.target.value)}
@@ -172,9 +174,7 @@ const FundEditor: React.FC<IProps> = (props) => {
 						style={{ minHeight: "16rem" }}
 						className="mr-4 p-4 border-2 w-full rounded"
 						placeholder="Write fund summary here . . . "
-						onChange={(e) =>
-							setSummary(e.target.value.replaceAll("\n", "\n\n"))
-						}
+						onChange={(e) => setSummary(e.target.value)}
 						value={summary}
 					></textarea>
 					<div
@@ -195,7 +195,11 @@ const FundEditor: React.FC<IProps> = (props) => {
 						// @ts-ignore
 						style={{ minHeight: "16rem" }}
 						className="w-full p-4 markdown border-2 rounded"
-						children={livePreview ? summary : "Live preview is disabled"}
+						children={
+							livePreview
+								? summary.replaceAll("\n", "\n\n")
+								: "Live preview is disabled"
+						}
 					/>
 				</div>
 

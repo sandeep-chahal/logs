@@ -6,6 +6,7 @@ const Cursor = () => {
 	const cursorY = useMotionValue(-100);
 
 	useEffect(() => {
+		if (typeof window !== "undefined" && window.innerWidth < 768) return;
 		const moveCursor = (e: MouseEvent) => {
 			cursorX.set(e.clientX - 16);
 			cursorY.set(e.clientY - 16);
@@ -18,6 +19,7 @@ const Cursor = () => {
 		};
 	}, []);
 
+	if (typeof window !== "undefined" && window.innerWidth < 768) return null;
 	return (
 		<motion.div
 			className="cursor"

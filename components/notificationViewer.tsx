@@ -5,44 +5,54 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { formatNumber } from "../utils";
 
 const Notification: React.FC<{ notification: INotf; close: () => void }> = ({
 	notification,
 	close,
 }) => {
-	const showNotf = () => {
-		if (notification.type === "follow")
-			return (
-				<>
+	if (notification.type === "follow")
+		return (
+			<Link href={"/profile/" + notification.from.id}>
+				<a className="p-2 block bg-white mb-4 ml-2" onClick={close}>
 					<div>
 						<span className="font-bold">{notification.from.name}</span> started
 						following you.
 					</div>
-				</>
-			);
-		return (
-			<>
-				<span className="font-bold">{notification.from.name}</span> commented on{" "}
-				<span className="font-bold">{notification.post?.title}</span>
-			</>
+					<div className="text-sm font-light">
+						{dayjs(notification.date).format("dddd, MMMM D YYYY")}
+					</div>
+				</a>
+			</Link>
 		);
-	};
-	return (
-		<Link
-			href={
-				notification.type === "follow"
-					? "/profile/" + notification.from.id
-					: "/post/" + notification.post?.id
-			}
-		>
-			<a className="p-2 block bg-white mb-4 ml-2" onClick={close}>
-				{showNotf()}
-				<div className="text-sm font-light">
-					{dayjs(notification.date).format("dddd, MMMM D YYYY")}
-				</div>
-			</a>
-		</Link>
-	);
+	else if (notification.type === "comment")
+		return (
+			<Link href={"/post/" + notification.post?.id}>
+				<a className="p-2 block bg-white mb-4 ml-2" onClick={close}>
+					<span className="font-bold">{notification.from.name}</span> commented
+					on <span className="font-bold">{notification.post?.title}</span>
+					<div className="text-sm font-light">
+						{dayjs(notification.date).format("dddd, MMMM D YYYY")}
+					</div>
+				</a>
+			</Link>
+		);
+	else if (notification.type === "donation")
+		return (
+			<Link href={"/fund/" + notification.on?.id}>
+				<a className="p-2 block bg-white mb-4 ml-2" onClick={close}>
+					<span className="font-bold">{notification.from.name}</span> donated{" "}
+					<span className="font-bold">
+						{formatNumber(notification.on?.amount)}
+					</span>{" "}
+					on <span className="font-bold">{notification.on?.name}</span>
+					<div className="text-sm font-light">
+						{dayjs(notification.date).format("dddd, MMMM D YYYY")}
+					</div>
+				</a>
+			</Link>
+		);
+	return <div>--</div>;
 };
 
 const NotificationViewer = ({ close }: { close: () => void }) => {

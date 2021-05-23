@@ -3,6 +3,7 @@ import crypto from "crypto";
 import User from "../../../models/user";
 import Donation from "../../../models/donation";
 import Fund from "../../../models/fund";
+import { addNotf } from "../../../services/redis";
 
 export default async (req, res) => {
 	if (req.method != "POST") return res.end("Only Post Request are accepted!");
@@ -62,6 +63,20 @@ export default async (req, res) => {
 
 			const results = await Promise.all(prom);
 			console.log(results);
+
+			await addNotf(activeDonation.fund_user, {
+				date: Date.now(),
+				from: {
+					id: req.user._id,
+					name: req.user.name,
+				},
+				on: {
+					id: activeDonation.on_fund,
+					name: activeDonation.fund_title,
+					amount: activeDonation.amount,
+				},
+				type: "donation",
+			});
 
 			res.json({
 				error: false,

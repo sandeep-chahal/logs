@@ -1,3 +1,7 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
 export const getUser = () => {
 	try {
 		const user = JSON.parse(localStorage.getItem("user"));
@@ -33,31 +37,6 @@ export const formatErrors = (errors) => {
 	return temp;
 };
 
-const weekdays = [
-	"Sunday",
-	"Monday",
-	"Tuesday",
-	"Wednesday",
-	"Thursday",
-	"Friday",
-	"Saturday",
-];
-
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-
 const convert24to12 = (date) => {
 	const hour = date.getHour();
 	const min = date.getMinutes();
@@ -67,46 +46,30 @@ const convert24to12 = (date) => {
 	return `${hour}:${min} a.m`;
 };
 
-const calculateMin = (date, now) => {
-	const diff = now.getMilliseconds() - date.getMilliseconds();
-	if (diff < 60000) {
-		let sec = diff < 600000;
-		if (sec) return `${Math.ceil(diff / 1000)} sec ago`;
-		return `${Math.ceil(diff / 60000)} min ago`;
-	}
-	return `at ${convert24to12(date)}`;
-};
-
 export const getDaysLeft = (d1, d2) => {
 	try {
 		const date1 = new Date(d1);
 		const date2 = new Date(d2);
 		return parseInt((date1 - date2) / (1000 * 60 * 60 * 24));
 	} catch (err) {
-		return 0;
 		console.log(err);
+		return 0;
 	}
 };
 export const getDatePercentage = (s, e) => {
 	const start = new Date(s);
 	const end = new Date(e);
 	const today = new Date();
-	return 100 - Math.round(100 - ((end - start) * 100) / today) + "%";
+	return 100 - Math.round(((today - start) / (end - start)) * 100) + "%";
 };
 export const formatDate = (time) => {
-	const date = new Date(time);
-	const now = new Date();
+	const fromNow = dayjs(time).fromNow();
 	if (
-		now.getMonth() === date.getMonth() &&
-		now.getDate() <= date.getDate() + 1
-	) {
-		if (now.getDate() === date.getDate()) {
-			return `Today, ${calculateMin(date, now)}`;
-		} else {
-			return `Yesterday, ${calculateMin(date, now)}`;
-		}
-	}
-	return `${weekdays[date.getDay()]}, ${
-		months[date.getMonth()]
-	} ${date.getDate()}, ${date.getFullYear()}`;
+		fromNow.includes("Seconds") ||
+		fromNow.includes("Minutes") ||
+		fromNow.includes("Hours")
+	)
+		return fromNow;
+
+	return dayjs(time).format("dddd, MMMM D, YYYY");
 };
