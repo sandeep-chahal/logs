@@ -113,7 +113,7 @@ const Post: React.FC<IProps> = (props) => {
 			</Head>
 			<div className="w-full flex realtive flex-col md:flex-row items-start">
 				{/* post */}
-				<article className="p-4 text-darkBlue md:w-3/4">
+				<article className="p-4 text-darkBlue w-full md:w-3/4">
 					{/* title */}
 					<h2 className="text-2xl md:text-3xl font-extrabold text-gradient-3">
 						{post.title}

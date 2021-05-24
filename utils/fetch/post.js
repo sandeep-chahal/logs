@@ -60,8 +60,8 @@ export const handleComment = (id, comment, setComments, setPost, setButton) => {
 				console.log(data);
 			} else {
 				setPost((prev) => ({
-					...prev,
 					comments_counter: prev.comments_counter + 1,
+					...prev,
 				}));
 
 				setComments((prev) => {
