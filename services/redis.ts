@@ -1,7 +1,6 @@
 import { IPost } from "../models/post";
 import redis from "../config/redis";
 import { INotf } from "../types";
-import { stringify } from "querystring";
 const promisify = async <T>(fn: any, ...args: string[]): Promise<T | null> => {
 	return new Promise<T | null>((resolve, reject) => {
 		fn(...args, (err: Error, rep: T | null) => {

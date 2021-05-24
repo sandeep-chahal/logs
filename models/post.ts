@@ -1,4 +1,4 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose from "mongoose";
 import { IUser } from "./user";
 
 const postSchema = new mongoose.Schema({

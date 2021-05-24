@@ -1,4 +1,4 @@
-import { formatErrors, setUser } from "../index";
+import { setUser } from "../index";
 import NProgress from "nprogress";
 
 export const getLatest = async () => {

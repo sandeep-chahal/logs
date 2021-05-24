@@ -1,8 +1,7 @@
 import Comment from "./comment";
 import AddComment from "./add";
-import { getUser } from "../../utils";
 import { handleDeleteComment, loadMoreComments } from "../../utils/fetch/post";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useStore } from "../../store";
 
 export default ({ id, comments, post, setPost, setComments }) => {

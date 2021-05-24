@@ -3,7 +3,6 @@ import dbConnect from "../../../config/mongodb";
 import User from "../../../models/user";
 import Fund from "../../../models/fund";
 import Donation from "../../../models/donation";
-import { addNotf } from "../../../services/redis";
 
 export default async (req, res) => {
 	const result = await withMiddlewares(req, res, "3", "valid-id");

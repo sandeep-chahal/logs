@@ -67,7 +67,8 @@ const Fund = () => {
 	const loadData = async () => {
 		if (!router.query.id) return;
 		const data = await getFund(router.query.id);
-		if (!data || data.error) setError(data.msg);
+		if (!data || data.error)
+			setError(data ? data.msg : "Something went worng!");
 		else {
 			setFund(data.data.fund);
 			setDonation(data.data.donations);
@@ -116,7 +117,7 @@ const Fund = () => {
 				className="min-h-screen w-11/12 md:w-4/5 m-auto flex flex-col md:flex-row justify-between text-black"
 			>
 				<Head>
-					<title>{fund ? fund.title : "Fund"}</title>
+					<title>{fund.title}</title>
 				</Head>
 				<div className="w-full md:w-1/2 bg-white mr-4 p-4">
 					<h1 className="font-bold text-4xl">

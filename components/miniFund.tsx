@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import fund, { IFund } from "../models/fund";
+import { IFund } from "../models/fund";
 import { motion } from "framer-motion";
 import { IUser } from "../models/user";
 import {

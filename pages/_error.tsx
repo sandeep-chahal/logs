@@ -40,8 +40,7 @@ function getErrorData(code: string) {
 			return {
 				img: "/fatal-error-3.svg",
 				text: "You know you can't do that!",
-				info:
-					"You don't have permissions to do this task. Please ask you dad first.",
+				info: "You don't have permissions to do this task. Please ask you dad first.",
 			};
 		case "104":
 			return {
@@ -53,8 +52,7 @@ function getErrorData(code: string) {
 			return {
 				img: "/fatal-error-4.svg",
 				text: "Wrong address mate!",
-				info:
-					"The Id you were provided is not valid. Please go ask for the valid Id.",
+				info: "The Id you were provided is not valid. Please go ask for the valid Id.",
 			};
 		default:
 			return {
@@ -63,11 +61,6 @@ function getErrorData(code: string) {
 				info: "Something unknown happened, we don't know what it is.",
 			};
 	}
-	return {
-		img: "",
-		text: "",
-		info: "",
-	};
 }
 
 export default ErrorPage;

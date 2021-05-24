@@ -161,9 +161,8 @@ const PostEditor: React.FC<IProps> = (props) => {
 						className="mr-4 p-4 border-2 w-full rounded"
 						placeholder="Write your markdown here . . . "
 						onChange={(e) => setMarkdown(e.target.value)}
-					>
-						{props.markdown}
-					</textarea>
+						value={props.markdown}
+					></textarea>
 					<div
 						className="my-2 font-normal inline-flex items-center "
 						onClick={handleCheckBox}

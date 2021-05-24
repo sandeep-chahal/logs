@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface IProps {
 	tags: string[];
 	setTags: (k: (prev: string[]) => string[]) => void;

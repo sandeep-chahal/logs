@@ -61,7 +61,7 @@ const Settings = ({ user }: IProps) => {
 			.then((data) => {
 				console.log("-user-".repeat(50));
 				console.log(data);
-				if (data && data.error) {
+				if (!data || data.error) {
 					setError(data.errors || {});
 					setLoading(false);
 				} else {

@@ -37,15 +37,6 @@ export const formatErrors = (errors) => {
 	return temp;
 };
 
-const convert24to12 = (date) => {
-	const hour = date.getHour();
-	const min = date.getMinutes();
-	if (hour > 12) {
-		return `${hour - 12}:${min} p.m`;
-	}
-	return `${hour}:${min} a.m`;
-};
-
 export const getDaysLeft = (d1, d2) => {
 	try {
 		const date1 = new Date(d1);

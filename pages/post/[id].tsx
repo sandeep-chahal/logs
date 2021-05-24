@@ -277,7 +277,6 @@ export const getServerSideProps = async ({
 			};
 		}
 	}
-	return null;
 };
 
 export default Post;

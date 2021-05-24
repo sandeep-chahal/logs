@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { getNotification } from "../utils/fetch/user";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { formatNumber } from "../utils";
 

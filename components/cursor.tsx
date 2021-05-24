@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { motion, useMotionValue } from "framer-motion";
 
 const Cursor = () => {
@@ -11,8 +11,8 @@ const Cursor = () => {
 			cursorX.set(e.clientX - 16);
 			cursorY.set(e.clientY - 16);
 		};
-
-		window.addEventListener("mousemove", moveCursor);
+		if (typeof window !== "undefined")
+			window.addEventListener("mousemove", moveCursor);
 
 		return () => {
 			window.removeEventListener("mousemove", moveCursor);

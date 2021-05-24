@@ -1,5 +1,5 @@
 import passport from "passport";
-import { GithubStrategy, GoogleStrategy } from "../config/passportStrategy";
+import { GithubStrategy } from "../config/passportStrategy";
 import cookieSession from "cookie-session";
 import url from "url";
 

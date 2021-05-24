@@ -1,4 +1,4 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose from "mongoose";
 
 const followSchema = new mongoose.Schema({
 	from: {
