@@ -65,7 +65,7 @@ export const handleComment = (id, comment, setComments, setPost, setButton) => {
 				}));
 
 				setComments((prev) => {
-					return [data.data, ...prev];
+					return [...prev, data.data];
 				});
 			}
 		})

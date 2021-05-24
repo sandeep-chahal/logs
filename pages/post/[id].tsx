@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { formatNumber } from "../../utils";
 import { handleLikeUnlike } from "../../utils/fetch/post";
 import Comments from "../../components/comments";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -46,6 +46,12 @@ const Post: React.FC<IProps> = (props) => {
 	const [post, setPost] = useState(props.post);
 	const [wait, setWait] = useState(false);
 	const [_, dispatch] = useStore();
+
+	useEffect(() => {
+		setLiked(props.liked);
+		setComments(props.comments);
+		setPost(props.post);
+	}, [props]);
 
 	const handleLikeClick = () => {
 		if (wait) return;

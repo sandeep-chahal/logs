@@ -26,7 +26,7 @@ const HackerNews = (props: { news: IHackerNews[] }) => {
 	return (
 		<div
 			style={{ top: "80px" }}
-			className="sticky-news md:sticky bg-white md:p-4 w-11/12 md:w-1/3 md:mr-12 overflow-y-auto"
+			className="sticky-card md:sticky bg-white md:p-4 w-11/12 md:w-1/3 md:mr-12 overflow-y-auto"
 		>
 			<h2 className="text-xl font-bold mb-4">Latest Hacker News</h2>
 			<motion.div variants={containerVarient} initial="hidden" animate="show">
