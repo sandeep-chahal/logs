@@ -206,10 +206,10 @@ body {
 	.notification {
 		width: 25rem;
 	}
-	.hacker-news {
+	.sticky-card {
 		height: 85vh;
 	}
-	.hacker-news::-webkit-scrollbar {
+	.sticky-card::-webkit-scrollbar {
 		width: 5px;
 	}
 }

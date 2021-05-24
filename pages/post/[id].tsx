@@ -12,10 +12,12 @@ import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { IUser } from "../../models/user";
 import { IPost } from "../../models/post";
+import { IFund } from "../../models/fund";
 import { IComment } from "../../models/comment";
 import Head from "next/head";
 import { useStore } from "../../store";
 import { showModal } from "../../store/actions";
+import UserCard from "../../components/userCard";
 
 const renderers = {
 	code: ({ language = "js", value = "" }) => {
@@ -35,6 +37,7 @@ interface IProps {
 	comments: IComment[];
 	liked: boolean;
 	limit: boolean;
+	fund: IFund;
 }
 
 const Post: React.FC<IProps> = (props) => {
@@ -80,6 +83,12 @@ const Post: React.FC<IProps> = (props) => {
 				setWait(false);
 			});
 	};
+	const handleShare = () => {
+		navigator.share({
+			title: post.title,
+			url: window.location.href,
+		});
+	};
 
 	return (
 		<section className="p-2 md:px-10 lg:px-20 min-h-screen">
@@ -102,83 +111,97 @@ const Post: React.FC<IProps> = (props) => {
 					<meta property="og:image" content={post.header_img} />
 				) : null}
 			</Head>
-			{/* post */}
-			<article className="p-4 text-darkBlue">
-				{/* title */}
-				<h2 className="text-2xl md:text-3xl font-extrabold text-gradient-3">
-					{post.title}
-				</h2>
-				{/* author name , date published */}
-				<div className="flex flex-col md:flex-row lg:items-center text-base font-medium">
-					<div className="flex items-center">
-						<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
-						<span>{post.author.name}</span>
-					</div>
-					<div className="flex items-center md:ml-3">
-						<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
-						<span>{dayjs(post.createdOn).format("dddd, MMMM D YYYY")}</span>
-					</div>
-				</div>
-				{/* tags */}
-				<div className="flex my-2">
-					{post.tags.map((tag, i) => (
-						<div className="text-primary mx-3" key={tag + i}>
-							#{tag}
+			<div className="w-full flex realtive flex-col md:flex-row items-start">
+				{/* post */}
+				<article className="p-4 text-darkBlue md:w-3/4">
+					{/* title */}
+					<h2 className="text-2xl md:text-3xl font-extrabold text-gradient-3">
+						{post.title}
+					</h2>
+					{/* author name , date published */}
+					<div className="flex flex-col md:flex-row lg:items-center text-base font-medium">
+						<div className="flex items-center">
+							<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
+							<span>{post.author.name}</span>
 						</div>
-					))}
-				</div>
-				{!props.limit ? (
-					<>
-						{/* likes and comments */}
-						<div className="flex items-center font-light">
-							<motion.div
-								whileHover={{
-									scale: 1.2,
-									transition: { duration: 0.1 },
-								}}
-								whileTap={{ scale: 0.8 }}
-								className="flex items-center mx-3 "
-								onClick={handleLikeClick}
-							>
-								<div>{formatNumber(parseInt(post.likes_counter))}</div>
+						<div className="flex items-center md:ml-3">
+							<span className="w-1 h-1 bg-darkBlue rounded block mr-3" />
+							<span>{dayjs(post.createdOn).format("dddd, MMMM D YYYY")}</span>
+						</div>
+					</div>
+					{/* tags */}
+					<div className="flex my-2">
+						{post.tags.map((tag, i) => (
+							<div className="text-primary mx-3" key={tag + i}>
+								#{tag}
+							</div>
+						))}
+					</div>
+					{!props.limit ? (
+						<>
+							{/* likes and comments */}
+							<div className="flex items-center font-light">
+								<motion.div
+									whileHover={{
+										scale: 1.2,
+										transition: { duration: 0.1 },
+									}}
+									whileTap={{ scale: 0.8 }}
+									className="flex items-center mx-3 "
+									onClick={handleLikeClick}
+								>
+									<div>{formatNumber(parseInt(post.likes_counter))}</div>
 
-								<img
-									className="w-6 mx-1 pb-2"
-									src={`/icons/like-${liked ? "dark" : "light"}.svg`}
+									<img
+										className="w-6 mx-1 pb-2"
+										src={`/icons/like-${liked ? "dark" : "light"}.svg`}
+									/>
+								</motion.div>
+								<label className="flex items-center mx-3 " htmlFor="comment">
+									<div>{formatNumber(parseInt(post.comments_counter))}</div>
+									<img className="w-6 mx-1" src={`/icons/comment.svg`} />
+								</label>
+								<motion.img
+									whileHover={{
+										scale: 1.2,
+										transition: { duration: 0.1 },
+									}}
+									whileTap={{ scale: 0.8 }}
+									className="w-6 mx-1"
+									src={`/icons/share.svg`}
+									onClick={handleShare}
+									title="Share"
 								/>
-							</motion.div>
-							<label className="flex items-center mx-3 " htmlFor="comment">
-								<div>{formatNumber(parseInt(post.comments_counter))}</div>
-								<img className="w-6 mx-1" src={`/icons/comment.svg`} />
-							</label>
-						</div>
+							</div>
 
-						{/* header image */}
-						{post.header_img ? (
-							<motion.img
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								alt="post header image"
-								src={post.header_img}
-								className="block m-auto my-4"
+							{/* header image */}
+							{post.header_img ? (
+								<motion.img
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									alt="post header image"
+									src={post.header_img}
+									className="block m-auto my-4"
+								/>
+							) : null}
+
+							{/* markdown */}
+							<ReactMarkdown
+								renderers={renderers}
+								plugins={[gfm]}
+								className="mt-6 markdown font-medium"
+								children={post.markdown}
 							/>
-						) : null}
-
-						{/* markdown */}
-						<ReactMarkdown
-							renderers={renderers}
-							plugins={[gfm]}
-							className="mt-6 markdown font-medium"
-							children={post.markdown}
-						/>
-					</>
-				) : (
-					<div className="text-red-700 text-xl">
-						You have exhausted your daily limit. Please buy a subscription to
-						continue reading...
-					</div>
-				)}
-			</article>
+						</>
+					) : (
+						<div className="text-red-700 text-xl">
+							You have exhausted your daily limit. Please buy a subscription to
+							continue reading...
+						</div>
+					)}
+				</article>
+				<UserCard user={post.author} fund={props.fund} className="ml-4" />
+			</div>
 			{/* comments */}
 			{!props.limit && (
 				<Comments

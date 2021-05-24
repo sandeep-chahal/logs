@@ -9,7 +9,6 @@ import {
 	getDatePercentage,
 	getDaysLeft,
 } from "../utils";
-import { handleComment } from "../utils/fetch/post";
 
 // @ts-ignore
 export interface IExtFund extends IFund {
