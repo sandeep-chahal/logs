@@ -16,8 +16,6 @@ export default async (postId, user) => {
 			Post.findById(postId).populate({
 				path: "author",
 				model: User,
-				// select:
-				// 	"name email follower_counter following_counter photo summary title subscription",
 			})
 		);
 		proms.push(Comment.find({ on_post: postId }).limit(5));
@@ -34,20 +32,20 @@ export default async (postId, user) => {
 
 		let following;
 		let fund;
-		if (user) {
-			const prom2 = [];
+		const prom2 = [];
+
+		prom2.push(Fund.find({ user: post.author._id }).limit(1));
+		if (user)
 			prom2.push(
 				Follow.exists({
 					to: post.author._id,
 					from: user._id,
 				})
 			);
-			prom2.push(Fund.find({ user: post.author._id }).limit(1));
-			const res = await Promise.all(prom2);
-			following = res[0];
-			fund = Array.isArray(res[1]) && res[1].length ? res[1][0] : null;
-			console.log(res);
-		}
+		const res = await Promise.all(prom2);
+		following = res[1];
+		fund = Array.isArray(res[0]) && res[0].length ? res[0][0] : null;
+		console.log(res);
 
 		return {
 			post,

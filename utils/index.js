@@ -5,7 +5,7 @@ dayjs.extend(relativeTime);
 export const getUser = () => {
 	try {
 		const user = JSON.parse(localStorage.getItem("user"));
-		if (!user) return null;
+		if (!user || !user.expiresOn) return null;
 		// check if it's expired
 		if (user.expiresOn - Date.now() < 0) {
 			setUser(null);
@@ -17,7 +17,9 @@ export const getUser = () => {
 	}
 };
 export const setUser = (user) => {
-	localStorage.setItem("user", JSON.stringify(user));
+	const oldUser = getUser();
+	const newUser = { ...[oldUser || {}], ...[user || {}] };
+	localStorage.setItem("user", JSON.stringify(newUser));
 };
 export const formatNumber = (num) =>
 	num < 1000

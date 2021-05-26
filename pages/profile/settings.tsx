@@ -35,6 +35,7 @@ const Settings = ({ user }: IProps) => {
 
 	const [error, setError] = useState<IError>({});
 	const [loading, setLoading] = useState(false);
+	const [name, setName] = useState(user.name);
 	const [photo, setPhoto] = useState(user.photo);
 	const [title, setTitle] = useState(user.title);
 	const [summary, setSummary] = useState(user.summary);
@@ -49,6 +50,7 @@ const Settings = ({ user }: IProps) => {
 		setError({});
 		// @ts-ignore
 		updateProfile({
+			name,
 			photo,
 			title,
 			summary,
@@ -94,7 +96,7 @@ const Settings = ({ user }: IProps) => {
 	return (
 		<div className="w-11/12 md:w-2/4 m-auto my-8 text-darkBlue">
 			<Head>
-				<title>{user.name} | Edit Profile</title>
+				<title>{name} | Edit Profile</title>
 			</Head>
 			<div className="bg-white p-8 mb-8">
 				<h2 className="text-2xl font-extrabold mb-6">User</h2>
@@ -102,16 +104,16 @@ const Settings = ({ user }: IProps) => {
 					disabled={true}
 					type="email"
 					name="Email"
-					value={state.user.email}
+					value={user.email}
 					setState={() => {}}
 					placeholder="Email"
 				/>
 				<Input
-					disabled={true}
+					disabled={loading}
 					type="text"
 					name="Name"
-					value={state.user.name}
-					setState={() => {}}
+					value={name}
+					setState={setName}
 					placeholder="Name"
 				/>
 				<Input
@@ -164,7 +166,7 @@ const Settings = ({ user }: IProps) => {
 					name="Website"
 					value={web || ""}
 					setState={setWeb}
-					placeholder={state.user.name.replaceAll(" ", "") + ".com"}
+					placeholder={name ? name.replaceAll(" ", "") + ".com" : "Example.Com"}
 				/>
 				<Input
 					err={error["linkedin"]}

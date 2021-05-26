@@ -13,7 +13,7 @@ const callbackHandler = async (accessToken, refreshToken, profile, cb) => {
 		console.log(profile);
 
 		// get the user profile
-		const name = profile.displayName;
+		const name = profile.displayName || profile.username || "Unknown";
 		const email = profile.emails ? profile.emails[0].value : profile.username;
 		const photo = profile.photos ? profile.photos[0].value : "";
 		const provider = profile.provider;

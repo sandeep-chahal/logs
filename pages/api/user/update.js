@@ -10,6 +10,7 @@ export default async (req, res) => {
 		// extract data
 		const data = {};
 		if (req.body.photo) data.photo = req.body.photo;
+		data.name = req.body.name;
 		data.title = req.body.title;
 		data.summary = req.body.summary;
 		data.location = req.body.location;
